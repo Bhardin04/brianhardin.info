@@ -10,7 +10,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <p>
-          Testing changes to Amazon!
+          I think I got this to work!
         </p>
         <a
           className="App-link"
