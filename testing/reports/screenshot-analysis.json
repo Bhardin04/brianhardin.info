@@ -1,0 +1,96 @@
+{
+  "timestamp": "2025-07-08T16:40:06.850Z",
+  "totalScreenshots": 40,
+  "darkModeScreenshots": 5,
+  "lightModeScreenshots": 5,
+  "pages": [
+    {
+      "name": "homepage",
+      "lightMode": true,
+      "darkMode": true,
+      "complete": true
+    },
+    {
+      "name": "about",
+      "lightMode": true,
+      "darkMode": true,
+      "complete": true
+    },
+    {
+      "name": "projects",
+      "lightMode": true,
+      "darkMode": true,
+      "complete": true
+    },
+    {
+      "name": "blog",
+      "lightMode": true,
+      "darkMode": true,
+      "complete": true
+    },
+    {
+      "name": "contact",
+      "lightMode": true,
+      "darkMode": true,
+      "complete": true
+    }
+  ],
+  "files": {
+    "darkMode": [
+      "about-dark.png",
+      "blog-dark.png",
+      "contact-dark.png",
+      "homepage-dark.png",
+      "projects-dark.png"
+    ],
+    "lightMode": [
+      "about-light.png",
+      "blog-light.png",
+      "contact-light.png",
+      "homepage-light.png",
+      "projects-light.png"
+    ],
+    "all": [
+      "about-dark.png",
+      "about-light.png",
+      "about_desktop.png",
+      "about_mobile.png",
+      "blog-dark.png",
+      "blog-light.png",
+      "contact-dark.png",
+      "contact-light.png",
+      "contact_desktop.png",
+      "contact_desktop_large.png",
+      "contact_desktop_small.png",
+      "contact_mobile.png",
+      "contact_mobile_landscape.png",
+      "contact_mobile_portrait.png",
+      "contact_tablet_landscape.png",
+      "contact_tablet_portrait.png",
+      "homepage-dark.png",
+      "homepage-light.png",
+      "homepage_desktop.png",
+      "homepage_desktop_large.png",
+      "homepage_desktop_small.png",
+      "homepage_mobile.png",
+      "homepage_mobile_landscape.png",
+      "homepage_mobile_portrait.png",
+      "homepage_tablet_landscape.png",
+      "homepage_tablet_portrait.png",
+      "project_detail_desktop.png",
+      "project_detail_mobile.png",
+      "projects-dark.png",
+      "projects-light.png",
+      "projects_desktop.png",
+      "projects_mobile.png",
+      "resume_desktop.png",
+      "resume_desktop_large.png",
+      "resume_desktop_small.png",
+      "resume_mobile.png",
+      "resume_mobile_landscape.png",
+      "resume_mobile_portrait.png",
+      "resume_tablet_landscape.png",
+      "resume_tablet_portrait.png"
+    ]
+  }
+}
