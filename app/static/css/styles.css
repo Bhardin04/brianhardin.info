@@ -49,3 +49,27 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
+
+/* HTMX Loading States */
+.htmx-indicator {
+    display: none;
+}
+
+.htmx-request .htmx-indicator {
+    display: inline;
+}
+
+.htmx-request .htmx-not-indicator {
+    display: none;
+}
+
+/* Form validation styles */
+.invalid {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 1px #ef4444 !important;
+}
+
+.valid {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 1px #10b981 !important;
+}
