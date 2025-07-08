@@ -150,3 +150,16 @@ cython_debug/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Node.js dependencies (for testing tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing artifacts
+testing/screenshots/
+testing/node_modules/
+*.png
+*.jpg
+*.jpeg
