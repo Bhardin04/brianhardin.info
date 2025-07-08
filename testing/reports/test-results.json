@@ -1,0 +1,18 @@
+{
+  "summary": {
+    "passed": 0,
+    "failed": 1,
+    "total": 1,
+    "passRate": "0.0"
+  },
+  "results": [
+    {
+      "test": "Test Execution",
+      "passed": false,
+      "message": "Error during test execution: socket hang up",
+      "screenshot": null,
+      "timestamp": "2025-07-08T14:02:15.330Z"
+    }
+  ],
+  "timestamp": "2025-07-08T14:02:15.332Z"
+}
