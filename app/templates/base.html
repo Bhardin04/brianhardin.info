@@ -3,8 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Brian Hardin{% endblock %}</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>{% block title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}</title>
+    <meta name="title" content="{% block meta_title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}">
+    <meta name="description" content="{% block meta_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}Python, FastAPI, Software Engineer, Web Development, Backend Development, Portfolio{% endblock %}">
+    <meta name="author" content="Brian Hardin">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}https://brianhardin.info{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://brianhardin.info/static/images/og-image.jpg{% endblock %}">
+    <meta property="og:site_name" content="Brian Hardin">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{% block twitter_url %}https://brianhardin.info{% endblock %}">
+    <meta property="twitter:title" content="{% block twitter_title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
+    <meta property="twitter:image" content="{% block twitter_image %}https://brianhardin.info/static/images/og-image.jpg{% endblock %}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{% block canonical %}https://brianhardin.info{% endblock %}">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/favicon.ico') }}">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Brian Hardin",
+        "jobTitle": "Software Engineer",
+        "description": "Experienced Python developer specializing in FastAPI, web applications, and modern software architecture",
+        "url": "https://brianhardin.info",
+        "image": "https://brianhardin.info/static/images/profile.jpg",
+        "sameAs": [
+            "https://github.com/Bhardin04",
+            "https://linkedin.com/in/brianhardin"
+        ],
+        "knowsAbout": [
+            "Python",
+            "FastAPI",
+            "Web Development",
+            "Software Engineering",
+            "Backend Development",
+            "HTMX",
+            "Tailwind CSS",
+            "Docker"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "professional",
+            "url": "https://brianhardin.info/contact"
+        }
+    }
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
