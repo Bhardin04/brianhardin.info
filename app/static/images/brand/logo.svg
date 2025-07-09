@@ -1,0 +1,47 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Brand gradients -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="pythonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="55" fill="url(#primaryGradient)" stroke="url(#accentGradient)" stroke-width="3"/>
+  
+  <!-- Inner hexagon pattern (representing code structure) -->
+  <path d="M 60 25 L 80 35 L 80 55 L 60 65 L 40 55 L 40 35 Z" fill="none" stroke="url(#accentGradient)" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Letters BH -->
+  <text x="60" y="75" font-family="Inter, sans-serif" font-size="32" font-weight="800" text-anchor="middle" fill="white" filter="url(#glow)">BH</text>
+  
+  <!-- Python-inspired decorative elements -->
+  <circle cx="35" cy="35" r="3" fill="url(#pythonGradient)" opacity="0.8"/>
+  <circle cx="85" cy="35" r="3" fill="url(#accentGradient)" opacity="0.8"/>
+  <circle cx="35" cy="85" r="3" fill="url(#accentGradient)" opacity="0.8"/>
+  <circle cx="85" cy="85" r="3" fill="url(#pythonGradient)" opacity="0.8"/>
+  
+  <!-- Subtle code brackets -->
+  <text x="25" y="65" font-family="JetBrains Mono, monospace" font-size="16" font-weight="600" text-anchor="middle" fill="url(#accentGradient)" opacity="0.4">{</text>
+  <text x="95" y="65" font-family="JetBrains Mono, monospace" font-size="16" font-weight="600" text-anchor="middle" fill="url(#accentGradient)" opacity="0.4">}</text>
+</svg>

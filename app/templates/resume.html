@@ -1,175 +1,393 @@
 {% extends "base.html" %}
 
 {% block title %}Resume - Brian Hardin{% endblock %}
+{% block meta_title %}Resume - Brian Hardin{% endblock %}
+{% block meta_description %}Professional resume and experience of Brian Hardin, Python developer specializing in FastAPI, web applications, and modern software engineering solutions.{% endblock %}
+{% block meta_keywords %}Resume, Brian Hardin, Python Developer, FastAPI, Web Development, Software Engineer, Experience{% endblock %}
+
+{% block og_title %}Resume - Brian Hardin{% endblock %}
+{% block og_description %}Professional resume and experience of Brian Hardin, Python developer specializing in FastAPI, web applications, and modern software engineering solutions.{% endblock %}
+{% block og_url %}https://brianhardin.info/resume{% endblock %}
+{% block canonical %}https://brianhardin.info/resume{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Resume</h1>
-        <p class="text-lg text-gray-600">Python Developer & Technology Professional</p>
-        <div class="mt-6">
-            <a href="#" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                Download PDF
-            </a>
-        </div>
-    </div>
-
-    <!-- Professional Summary -->
-    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Professional Summary</h2>
-        <p class="text-gray-600 leading-relaxed">
-            Experienced Python developer with a passion for building scalable web applications and solving complex problems. 
-            Skilled in modern frameworks, database design, and cloud technologies. Strong advocate for clean code, 
-            testing, and documentation. Seeking opportunities to contribute to innovative projects and grow with a dynamic team.
-        </p>
-    </div>
-
-    <!-- Experience -->
-    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Experience</h2>
-        
-        <div class="space-y-8">
-            <div class="border-l-4 border-blue-500 pl-6">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                    <h3 class="text-xl font-medium text-gray-900">Senior Python Developer</h3>
-                    <span class="text-sm text-gray-500">2022 - Present</span>
-                </div>
-                <p class="text-gray-700 font-medium mb-2">Tech Company Name</p>
-                <ul class="text-gray-600 space-y-1">
-                    <li>• Developed and maintained high-performance web applications using FastAPI and Django</li>
-                    <li>• Designed and implemented RESTful APIs serving millions of requests daily</li>
-                    <li>• Led code reviews and mentored junior developers</li>
-                    <li>• Improved application performance by 40% through optimization and caching strategies</li>
-                </ul>
+<!-- Resume Hero Section -->
+<section class="section-sm bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div class="container">
+        <div class="text-center mb-12 slide-up">
+            <div class="inline-flex items-center px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium mb-4">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Professional Resume
             </div>
-
-            <div class="border-l-4 border-blue-500 pl-6">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                    <h3 class="text-xl font-medium text-gray-900">Python Developer</h3>
-                    <span class="text-sm text-gray-500">2020 - 2022</span>
-                </div>
-                <p class="text-gray-700 font-medium mb-2">Previous Company</p>
-                <ul class="text-gray-600 space-y-1">
-                    <li>• Built web applications using Flask and PostgreSQL</li>
-                    <li>• Collaborated with cross-functional teams to deliver features on time</li>
-                    <li>• Implemented automated testing and CI/CD pipelines</li>
-                    <li>• Contributed to open-source projects and technical documentation</li>
-                </ul>
+            <h1 class="heading-hero text-gradient-primary slide-up-delay-2">
+                Brian Hardin
+            </h1>
+            <p class="body-large text-center max-w-3xl mx-auto slide-up-delay-3">
+                Python Developer & Technology Professional
+            </p>
+            
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center slide-up-delay-3">
+                <a href="/contact" class="btn-primary-premium hover-glow">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    Get in Touch
+                </a>
+                <a href="#" class="btn-secondary-premium hover-lift">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Download PDF
+                </a>
             </div>
-
-            <div class="border-l-4 border-blue-500 pl-6">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                    <h3 class="text-xl font-medium text-gray-900">Junior Developer</h3>
-                    <span class="text-sm text-gray-500">2018 - 2020</span>
-                </div>
-                <p class="text-gray-700 font-medium mb-2">Startup Company</p>
-                <ul class="text-gray-600 space-y-1">
-                    <li>• Developed features for web applications using Python and JavaScript</li>
-                    <li>• Participated in agile development processes</li>
-                    <li>• Learned best practices in software development and testing</li>
-                    <li>• Contributed to database design and optimization</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Skills -->
-    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Technical Skills</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-                <h3 class="text-lg font-medium text-gray-900 mb-3">Languages & Frameworks</h3>
-                <div class="space-y-2">
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">Python</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">FastAPI</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">Django</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">Flask</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="text-lg font-medium text-gray-900 mb-3">Tools & Technologies</h3>
-                <div class="space-y-2">
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">PostgreSQL</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">Docker</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">AWS</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium text-gray-700 w-20">Git</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 ml-4">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: 90%"></div>
-                        </div>
-                    </div>
+            
+            <!-- Brand Signature -->
+            <div class="mt-8 flex justify-center slide-up-delay-3">
+                <div class="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400">
+                    <img src="/static/images/brand/python-icon.svg" alt="Python" class="w-6 h-6 opacity-60">
+                    <span>Python expertise at your service</span>
                 </div>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Education -->
-    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Education</h2>
-        
-        <div class="border-l-4 border-blue-500 pl-6">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                <h3 class="text-xl font-medium text-gray-900">Bachelor of Science in Computer Science</h3>
-                <span class="text-sm text-gray-500">2014 - 2018</span>
+<!-- Resume Content -->
+<section class="section-sm">
+    <div class="container">
+        <div class="max-w-4xl mx-auto">
+            <!-- Professional Summary -->
+            <div class="content-section">
+                <div class="card p-8 mb-8 hover:shadow-xl transition-all duration-300 brand-accent-line">
+                    <h2 class="heading-2 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Professional Summary
+                    </h2>
+                    <div class="prose-width">
+                        <p class="body-text">
+                            Experienced Python developer with a passion for building scalable web applications and solving complex problems. 
+                            Skilled in modern frameworks, database design, and cloud technologies. Strong advocate for clean code, 
+                            testing, and documentation. Seeking opportunities to contribute to innovative projects and grow with a dynamic team.
+                        </p>
+                    </div>
+                </div>
             </div>
-            <p class="text-gray-700 font-medium mb-2">University Name</p>
-            <p class="text-gray-600">Relevant coursework: Data Structures, Algorithms, Database Systems, Web Development</p>
+
+            <!-- Experience -->
+            <div class="content-section">
+                <div class="card p-8 mb-8 hover:shadow-xl transition-all duration-300 brand-accent-line">
+                    <h2 class="heading-2 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
+                        </svg>
+                        Experience
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <div class="border-l-4 border-primary-500 pl-6 content-block">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                <h3 class="heading-3 brand-primary">Senior Python Developer</h3>
+                                <span class="badge badge-primary">2022 - Present</span>
+                            </div>
+                            <p class="body-text font-medium mb-3">Tech Company Name</p>
+                            <ul class="list-styled">
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Developed and maintained high-performance web applications using FastAPI and Django</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Designed and implemented RESTful APIs serving millions of requests daily</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Led code reviews and mentored junior developers</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Improved application performance by 40% through optimization and caching strategies</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="border-l-4 border-primary-500 pl-6 content-block">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                <h3 class="heading-3 brand-primary">Python Developer</h3>
+                                <span class="badge badge-secondary">2020 - 2022</span>
+                            </div>
+                            <p class="body-text font-medium mb-3">Previous Company</p>
+                            <ul class="list-styled">
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Built web applications using Flask and PostgreSQL</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Collaborated with cross-functional teams to deliver features on time</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Implemented automated testing and CI/CD pipelines</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Contributed to open-source projects and technical documentation</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="border-l-4 border-primary-500 pl-6 content-block">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                <h3 class="heading-3 brand-primary">Junior Developer</h3>
+                                <span class="badge badge-muted">2018 - 2020</span>
+                            </div>
+                            <p class="body-text font-medium mb-3">Startup Company</p>
+                            <ul class="list-styled">
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Developed features for web applications using Python and JavaScript</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Participated in agile development processes</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Learned best practices in software development and testing</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                        <svg class="w-3 h-3 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="body-small mb-0">Contributed to database design and optimization</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="content-section">
+                <div class="card p-8 mb-8 hover:shadow-xl transition-all duration-300 brand-accent-line">
+                    <h2 class="heading-2 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-secondary-600 dark:text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        Technical Skills
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="content-block">
+                            <h3 class="heading-4 brand-secondary">Languages & Frameworks</h3>
+                            <div class="space-y-4">
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">Python</span>
+                                        <span class="body-small text-muted">95%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-primary" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">FastAPI</span>
+                                        <span class="body-small text-muted">90%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-primary" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">Django</span>
+                                        <span class="body-small text-muted">85%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-primary" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">Flask</span>
+                                        <span class="body-small text-muted">80%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-primary" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content-block">
+                            <h3 class="heading-4 brand-secondary">Tools & Technologies</h3>
+                            <div class="space-y-4">
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">PostgreSQL</span>
+                                        <span class="body-small text-muted">85%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-accent" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">Docker</span>
+                                        <span class="body-small text-muted">80%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-accent" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">AWS</span>
+                                        <span class="body-small text-muted">75%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-accent" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="body-small font-medium">Git</span>
+                                        <span class="body-small text-muted">90%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-brand-gradient-accent" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="content-section">
+                <div class="card p-8 mb-8 hover:shadow-xl transition-all duration-300 brand-accent-line">
+                    <h2 class="heading-2 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-premium-600 dark:text-premium-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        Education
+                    </h2>
+                    
+                    <div class="border-l-4 border-premium-500 pl-6 content-block">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="heading-3 brand-premium">Bachelor of Science in Computer Science</h3>
+                            <span class="badge badge-premium">2014 - 2018</span>
+                        </div>
+                        <p class="body-text font-medium mb-3">University Name</p>
+                        <p class="body-small text-muted">Relevant coursework: Data Structures, Algorithms, Database Systems, Web Development</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications -->
+            <div class="content-section">
+                <div class="card p-8 mb-8 hover:shadow-xl transition-all duration-300 brand-accent-line">
+                    <h2 class="heading-2 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-warning-600 dark:text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                        Certifications
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="card p-6 border-l-4 border-warning-500">
+                            <h3 class="heading-4 brand-warning">AWS Certified Developer</h3>
+                            <p class="body-small text-muted">Amazon Web Services</p>
+                            <span class="badge badge-warning">2023</span>
+                        </div>
+                        <div class="card p-6 border-l-4 border-warning-500">
+                            <h3 class="heading-4 brand-warning">Python Professional Certificate</h3>
+                            <p class="body-small text-muted">Python Institute</p>
+                            <span class="badge badge-warning">2022</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</section>
 
-    <!-- Certifications -->
-    <div class="bg-white rounded-lg shadow-sm p-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Certifications</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="border rounded-lg p-4">
-                <h3 class="font-medium text-gray-900">AWS Certified Developer</h3>
-                <p class="text-sm text-gray-600">Amazon Web Services</p>
-                <span class="text-xs text-gray-500">2023</span>
-            </div>
-            <div class="border rounded-lg p-4">
-                <h3 class="font-medium text-gray-900">Python Professional Certificate</h3>
-                <p class="text-sm text-gray-600">Python Institute</p>
-                <span class="text-xs text-gray-500">2022</span>
+<!-- Contact CTA Section -->
+<section class="section-sm bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="heading-2 text-gradient-primary mb-4">Ready to Work Together?</h2>
+            <p class="body-large text-muted mb-8 max-w-2xl mx-auto">
+                Let's discuss how my Python expertise can contribute to your next project.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/contact" class="btn-primary-premium hover-glow">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    Get in Touch
+                </a>
+                <a href="/projects" class="btn-secondary-premium hover-lift">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                    View Projects
+                </a>
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

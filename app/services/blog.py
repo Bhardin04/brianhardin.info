@@ -1,24 +1,20 @@
 import re
-import os
 from datetime import datetime
-from typing import List, Optional, Dict, Any
 from pathlib import Path
 
-import markdown
 import frontmatter
-from markdown.extensions import codehilite, toc, tables
-from pygments.formatters import HtmlFormatter
+import markdown
 
 from app.models.blog import BlogPost, BlogPostSummary
 
 
 class BlogService:
     """Service for managing blog posts with markdown content."""
-    
+
     def __init__(self, posts_directory: str = "content/blog"):
         self.posts_directory = Path(posts_directory)
         self.posts_directory.mkdir(parents=True, exist_ok=True)
-        
+
         # Configure markdown with extensions
         self.md = markdown.Markdown(
             extensions=[
@@ -38,7 +34,7 @@ class BlogService:
                 }
             }
         )
-    
+
     def _calculate_reading_time(self, content: str) -> int:
         """Calculate estimated reading time in minutes."""
         # Remove markdown syntax and count words
@@ -46,43 +42,43 @@ class BlogService:
         words = len(text.split())
         # Average reading speed: 200 words per minute
         return max(1, round(words / 200))
-    
+
     def _generate_slug(self, title: str) -> str:
         """Generate URL-friendly slug from title."""
         slug = re.sub(r'[^\w\s-]', '', title.lower())
         slug = re.sub(r'[-\s]+', '-', slug)
         return slug.strip('-')
-    
-    def _load_post_from_file(self, file_path: Path) -> Optional[BlogPost]:
+
+    def _load_post_from_file(self, file_path: Path) -> BlogPost | None:
         """Load a blog post from a markdown file with frontmatter."""
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, encoding='utf-8') as f:
                 post = frontmatter.load(f)
-            
+
             # Extract frontmatter metadata
             metadata = post.metadata
             content = post.content
-            
+
             # Convert markdown to HTML
             content_html = self.md.convert(content)
-            
+
             # Generate values if not provided
             slug = metadata.get('slug') or self._generate_slug(metadata['title'])
             reading_time = self._calculate_reading_time(content)
-            
+
             # Parse dates
             created_at = metadata.get('created_at')
             if isinstance(created_at, str):
                 created_at = datetime.fromisoformat(created_at)
             elif not created_at:
                 created_at = datetime.fromtimestamp(file_path.stat().st_mtime)
-            
+
             published_at = metadata.get('published_at')
             if isinstance(published_at, str):
                 published_at = datetime.fromisoformat(published_at)
             elif metadata.get('published', False) and not published_at:
                 published_at = created_at
-            
+
             return BlogPost(
                 id=metadata.get('id', hash(slug) % 10000),
                 title=metadata['title'],
@@ -103,28 +99,27 @@ class BlogService:
         except Exception as e:
             print(f"Error loading post from {file_path}: {e}")
             return None
-    
-    def get_all_posts(self, published_only: bool = True) -> List[BlogPost]:
+
+    def get_all_posts(self, published_only: bool = True) -> list[BlogPost]:
         """Get all blog posts, optionally filtered by published status."""
-        posts = []
-        
+
         # For now, return sample posts since we don't have markdown files yet
         sample_posts = self._get_sample_posts()
-        
+
         if published_only:
             return [post for post in sample_posts if post.published]
         return sample_posts
-    
-    def get_posts_summary(self, published_only: bool = True, limit: Optional[int] = None) -> List[BlogPostSummary]:
+
+    def get_posts_summary(self, published_only: bool = True, limit: int | None = None) -> list[BlogPostSummary]:
         """Get blog post summaries for listing pages."""
         posts = self.get_all_posts(published_only)
-        
+
         # Sort by published date (newest first)
         posts.sort(key=lambda p: p.published_at or p.created_at, reverse=True)
-        
+
         if limit:
             posts = posts[:limit]
-        
+
         return [
             BlogPostSummary(
                 id=post.id,
@@ -141,35 +136,35 @@ class BlogService:
             )
             for post in posts
         ]
-    
-    def get_post_by_slug(self, slug: str) -> Optional[BlogPost]:
+
+    def get_post_by_slug(self, slug: str) -> BlogPost | None:
         """Get a specific blog post by its slug."""
         posts = self.get_all_posts(published_only=False)
         for post in posts:
             if post.slug == slug:
                 return post
         return None
-    
-    def get_post_by_id(self, post_id: int) -> Optional[BlogPost]:
+
+    def get_post_by_id(self, post_id: int) -> BlogPost | None:
         """Get a specific blog post by its ID."""
         posts = self.get_all_posts(published_only=False)
         for post in posts:
             if post.id == post_id:
                 return post
         return None
-    
-    def get_featured_posts(self, limit: int = 3) -> List[BlogPost]:
+
+    def get_featured_posts(self, limit: int = 3) -> list[BlogPost]:
         """Get featured blog posts."""
         posts = [post for post in self.get_all_posts() if post.featured]
         posts.sort(key=lambda p: p.published_at or p.created_at, reverse=True)
         return posts[:limit]
-    
-    def get_posts_by_tag(self, tag: str) -> List[BlogPost]:
+
+    def get_posts_by_tag(self, tag: str) -> list[BlogPost]:
         """Get blog posts filtered by tag."""
         posts = self.get_all_posts()
         return [post for post in posts if tag.lower() in [t.lower() for t in post.tags]]
-    
-    def _get_sample_posts(self) -> List[BlogPost]:
+
+    def _get_sample_posts(self) -> list[BlogPost]:
         """Generate sample blog posts for demonstration."""
         return [
             BlogPost(
@@ -211,8 +206,8 @@ async def home(request: Request):
 HTMX allows you to add AJAX, CSS Transitions, WebSockets and Server Sent Events directly in HTML:
 
 ```html
-<button hx-post="/api/contact" 
-        hx-target="#form-message" 
+<button hx-post="/api/contact"
+        hx-target="#form-message"
         hx-swap="innerHTML">
     Send Message
 </button>
@@ -362,9 +357,9 @@ def test_db():
     engine = create_engine("sqlite:///test.db")
     TestingSessionLocal = sessionmaker(bind=engine)
     Base.metadata.create_all(bind=engine)
-    
+
     yield TestingSessionLocal()
-    
+
     # Cleanup
     Base.metadata.drop_all(bind=engine)
 ```

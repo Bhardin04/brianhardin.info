@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException, Form
+from fastapi import APIRouter, Form, HTTPException
 from fastapi.responses import HTMLResponse
+
+from app.models.contact import ContactForm
 from app.models.project import Project
-from app.models.contact import ContactForm, ContactResponse
 from app.services.email import email_service
 
 router = APIRouter()
@@ -79,10 +80,10 @@ async def get_project(project_id: int):
             demo_url=None
         )
     }
-    
+
     if project_id not in projects:
         raise HTTPException(status_code=404, detail="Project not found")
-    
+
     return projects[project_id]
 
 @router.post("/contact", response_class=HTMLResponse)
@@ -105,7 +106,7 @@ async def submit_contact_form(
 
         # Send email
         success = await email_service.send_contact_email(contact_data)
-        
+
         if success:
             return """
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
@@ -118,14 +119,14 @@ async def submit_contact_form(
                 <strong>Error!</strong> There was a problem sending your message. Please try again or email me directly.
             </div>
             """
-            
+
     except ValueError as e:
         return f"""
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             <strong>Error!</strong> {str(e)}
         </div>
         """
-    except Exception as e:
+    except Exception:
         return """
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             <strong>Error!</strong> An unexpected error occurred. Please try again later.

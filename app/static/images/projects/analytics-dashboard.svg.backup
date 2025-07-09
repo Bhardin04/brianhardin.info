@@ -1,0 +1,228 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dashboard-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="primary-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="success-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="warning-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="error-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <!-- Shadow filters -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#1e293b" flood-opacity="0.1"/>
+    </filter>
+    <filter id="card-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="#1e293b" flood-opacity="0.05"/>
+    </filter>
+    <!-- Glow effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#bg-gradient)"/>
+  
+  <!-- Browser Window -->
+  <rect x="40" y="40" width="1120" height="720" rx="12" fill="#ffffff" filter="url(#shadow)"/>
+  
+  <!-- Browser Header -->
+  <rect x="40" y="40" width="1120" height="50" rx="12" fill="#f1f5f9"/>
+  <rect x="40" y="78" width="1120" height="2" fill="#e2e8f0"/>
+  
+  <!-- Traffic Lights -->
+  <circle cx="70" cy="65" r="8" fill="#ef4444"/>
+  <circle cx="95" cy="65" r="8" fill="#f59e0b"/>
+  <circle cx="120" cy="65" r="8" fill="#10b981"/>
+  
+  <!-- URL Bar -->
+  <rect x="200" y="50" width="400" height="30" rx="15" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="69" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">🔒 analytics.brianhardin.info</text>
+  
+  <!-- Dashboard Container -->
+  <rect x="40" y="90" width="1120" height="670" fill="url(#dashboard-bg)"/>
+  
+  <!-- Top Navigation -->
+  <rect x="40" y="90" width="1120" height="70" fill="#ffffff"/>
+  <rect x="40" y="158" width="1120" height="2" fill="#e2e8f0"/>
+  
+  <!-- Logo and Title -->
+  <circle cx="80" cy="125" r="16" fill="url(#primary-gradient)"/>
+  <text x="74" y="131" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold">📊</text>
+  <text x="110" y="131" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold">Fortune 500 Analytics</text>
+  
+  <!-- Navigation Tabs -->
+  <rect x="400" y="110" width="100" height="30" rx="6" fill="#3b82f6"/>
+  <text x="450" y="128" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" text-anchor="middle">Overview</text>
+  <text x="520" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Sales</text>
+  <text x="570" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Marketing</text>
+  <text x="630" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Users</text>
+  <text x="680" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Reports</text>
+  
+  <!-- Real-time Status -->
+  <circle cx="1050" cy="125" r="6" fill="#10b981" filter="url(#glow)"/>
+  <text x="1070" y="130" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">Live Data</text>
+  
+  <!-- Export Button -->
+  <rect x="900" y="110" width="80" height="30" rx="6" fill="transparent" stroke="#3b82f6" stroke-width="2"/>
+  <text x="940" y="128" fill="#3b82f6" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" text-anchor="middle">Export</text>
+  
+  <!-- KPI Cards Row -->
+  <g transform="translate(60, 180)">
+    <!-- Revenue Card -->
+    <rect width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="0" y="0" width="250" height="4" rx="2" fill="url(#success-gradient)"/>
+    <text x="20" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">Total Revenue</text>
+    <text x="20" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">$2.1M</text>
+    <text x="20" y="80" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↗ +12.5%</text>
+    <text x="20" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">vs last month</text>
+    
+    <!-- User Growth Card -->
+    <rect x="270" width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="270" y="0" width="250" height="4" rx="2" fill="url(#primary-gradient)"/>
+    <text x="290" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">Active Users</text>
+    <text x="290" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">47.2K</text>
+    <text x="290" y="80" fill="#3b82f6" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↗ +8.3%</text>
+    <text x="290" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">vs last month</text>
+    
+    <!-- Conversion Rate Card -->
+    <rect x="540" width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="540" y="0" width="250" height="4" rx="2" fill="url(#warning-gradient)"/>
+    <text x="560" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">Conversion Rate</text>
+    <text x="560" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">3.47%</text>
+    <text x="560" y="80" fill="#f59e0b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↗ +0.12%</text>
+    <text x="560" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">vs last month</text>
+    
+    <!-- Bounce Rate Card -->
+    <rect x="810" width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="810" y="0" width="250" height="4" rx="2" fill="url(#error-gradient)"/>
+    <text x="830" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">Bounce Rate</text>
+    <text x="830" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">24.8%</text>
+    <text x="830" y="80" fill="#ef4444" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↘ -2.1%</text>
+    <text x="830" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">vs last month</text>
+  </g>
+  
+  <!-- Main Chart Area -->
+  <rect x="60" y="320" width="720" height="400" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+  <text x="80" y="350" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold">Revenue Trends (Last 12 Months)</text>
+  <text x="80" y="370" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14">Real-time data processing • 10M+ records daily</text>
+  
+  <!-- Chart Grid -->
+  <g stroke="#f1f5f9" stroke-width="1" opacity="0.5">
+    <line x1="100" y1="390" x2="740" y2="390"/>
+    <line x1="100" y1="440" x2="740" y2="440"/>
+    <line x1="100" y1="490" x2="740" y2="490"/>
+    <line x1="100" y1="540" x2="740" y2="540"/>
+    <line x1="100" y1="590" x2="740" y2="590"/>
+    <line x1="100" y1="640" x2="740" y2="640"/>
+  </g>
+  
+  <!-- Chart Area Fill -->
+  <path d="M 100 580 L 150 560 L 200 540 L 250 520 L 300 500 L 350 480 L 400 460 L 450 440 L 500 420 L 550 400 L 600 380 L 650 360 L 700 340 L 740 320 L 740 640 L 100 640 Z" 
+        fill="url(#primary-gradient)" opacity="0.1"/>
+  
+  <!-- Main Chart Line -->
+  <path d="M 100 580 L 150 560 L 200 540 L 250 520 L 300 500 L 350 480 L 400 460 L 450 440 L 500 420 L 550 400 L 600 380 L 650 360 L 700 340 L 740 320" 
+        stroke="url(#primary-gradient)" stroke-width="4" fill="none"/>
+  
+  <!-- Data Points -->
+  <circle cx="100" cy="580" r="6" fill="#3b82f6"/>
+  <circle cx="200" cy="540" r="6" fill="#3b82f6"/>
+  <circle cx="300" cy="500" r="6" fill="#3b82f6"/>
+  <circle cx="400" cy="460" r="6" fill="#3b82f6"/>
+  <circle cx="500" cy="420" r="6" fill="#3b82f6"/>
+  <circle cx="600" cy="380" r="6" fill="#3b82f6"/>
+  <circle cx="700" cy="340" r="6" fill="#3b82f6"/>
+  <circle cx="740" cy="320" r="6" fill="#3b82f6"/>
+  
+  <!-- Chart Labels -->
+  <text x="100" y="660" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Jan</text>
+  <text x="200" y="660" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Mar</text>
+  <text x="300" y="660" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">May</text>
+  <text x="400" y="660" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Jul</text>
+  <text x="500" y="660" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Sep</text>
+  <text x="600" y="660" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Nov</text>
+  <text x="700" y="660" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Dec</text>
+  
+  <!-- Y-axis Labels -->
+  <text x="85" y="400" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="end">$2.5M</text>
+  <text x="85" y="450" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="end">$2.0M</text>
+  <text x="85" y="500" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="end">$1.5M</text>
+  <text x="85" y="550" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="end">$1.0M</text>
+  <text x="85" y="600" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="end">$0.5M</text>
+  
+  <!-- Side Panel -->
+  <rect x="800" y="320" width="300" height="400" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+  <text x="820" y="350" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold">Top Metrics</text>
+  
+  <!-- Donut Chart -->
+  <g transform="translate(950, 420)">
+    <circle cx="0" cy="0" r="60" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+    <circle cx="0" cy="0" r="40" fill="#ffffff"/>
+    
+    <!-- Donut segments -->
+    <path d="M 0 -60 A 60 60 0 0 1 42 42 L 28 28 A 40 40 0 0 0 0 -40 Z" fill="#3b82f6"/>
+    <path d="M 42 42 A 60 60 0 0 1 0 60 L 0 40 A 40 40 0 0 0 28 28 Z" fill="#10b981"/>
+    <path d="M 0 60 A 60 60 0 0 1 -42 42 L -28 28 A 40 40 0 0 0 0 40 Z" fill="#f59e0b"/>
+    <path d="M -42 42 A 60 60 0 0 1 0 -60 L 0 -40 A 40 40 0 0 0 -28 28 Z" fill="#ef4444"/>
+    
+    <!-- Center Value -->
+    <text x="0" y="-5" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">89.2%</text>
+    <text x="0" y="15" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Success Rate</text>
+  </g>
+  
+  <!-- Legend -->
+  <g transform="translate(820, 520)">
+    <rect x="0" y="0" width="12" height="12" rx="2" fill="#3b82f6"/>
+    <text x="20" y="10" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Desktop • 45%</text>
+    
+    <rect x="0" y="25" width="12" height="12" rx="2" fill="#10b981"/>
+    <text x="20" y="35" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Mobile • 35%</text>
+    
+    <rect x="0" y="50" width="12" height="12" rx="2" fill="#f59e0b"/>
+    <text x="20" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Tablet • 15%</text>
+    
+    <rect x="0" y="75" width="12" height="12" rx="2" fill="#ef4444"/>
+    <text x="20" y="85" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Other • 5%</text>
+  </g>
+  
+  <!-- Recent Activity -->
+  <text x="820" y="620" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold">Recent Activity</text>
+  <g transform="translate(820, 640)">
+    <circle cx="8" cy="8" r="4" fill="#10b981"/>
+    <text x="20" y="12" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Report generated • 2 min ago</text>
+    
+    <circle cx="8" cy="28" r="4" fill="#3b82f6"/>
+    <text x="20" y="32" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Data refresh • 5 min ago</text>
+    
+    <circle cx="8" cy="48" r="4" fill="#f59e0b"/>
+    <text x="20" y="52" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Alert triggered • 15 min ago</text>
+  </g>
+  
+  <!-- Footer -->
+  <rect x="40" y="730" width="1120" height="30" fill="#f8fafc"/>
+  <text x="60" y="748" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">Powered by: Streamlit • Plotly • Pandas • PostgreSQL • Celery • Redis</text>
+  <text x="1050" y="748" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="12">🟢 All systems operational</text>
+</svg>
