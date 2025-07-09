@@ -117,6 +117,7 @@ brianhardin.info/
 ### Features
 - [Contact Form](docs/features/contact-form.md) - Setup and configuration
 - [Responsive Design](docs/features/responsive-design.md) - UI/UX considerations
+- [Interactive Demos](docs/features/interactive-demos.md) - Hands-on project experiences
 
 ### Development
 - [Testing Guide](docs/development/testing.md) - Testing strategy and execution
@@ -154,6 +155,7 @@ brianhardin.info/
 - **Performance Monitoring**: Analytics and performance tracking
 
 ### 🚀 Upcoming Features
+- **Interactive Project Demos**: Hands-on experiences with live data manipulation and real-time results
 - **Complex Project Details**: Full case study templates with comprehensive project data
 - **Blog CMS**: Admin interface for content management
 - **Portfolio Expansion**: Additional project showcases
