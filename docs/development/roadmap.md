@@ -94,11 +94,14 @@
   - Customer churn analysis and retention metrics
   - EBITDA calculations and profitability measures
   - Interactive charts and trend visualizations
+- [ ] **🏆 Collections Management Dashboard** - Comprehensive AR collections and DSO tracking
+  - DSO analytics with targets and benchmarking
+  - Collector performance metrics and rankings
+  - Collections MTD tracking and velocity analysis
+  - Past due balances with aging analysis and risk classification
+  - Customer target list with priority scoring and outreach tracking
+  - Communication activity tracking (calls, emails, meetings)
 - [ ] **Automation Suite Playground** - Workflow automation with visual process builder
-- [ ] **E-commerce API Explorer** - Product catalog with cart functionality
-- [ ] **Portfolio Website Builder** - Responsive design demonstration
-- [ ] **Data Processing Demos** - Live data transformation and visualization
-- [ ] **Algorithm Visualizations** - Step-by-step process demonstrations
 
 ### UI/UX Improvements
 - [ ] Implement dark mode toggle
@@ -245,8 +248,7 @@
 1. **🏆 Automated Payment Application System** - Showcase complex financial processing logic
 2. **🏆 NetSuite to SAP Data Pipeline Integration** - Demonstrate enterprise data integration
 3. **🏆 Sales & Revenue Dashboard** - Comprehensive financial analytics and business intelligence
-4. **Automation Suite Playground** - Workflow automation capabilities
-5. **E-commerce API Explorer** - Complete user flow demonstration
-6. **Portfolio Website Builder** - Meta-demonstration of development process
+4. **🏆 Collections Management Dashboard** - AR collections and DSO tracking capabilities
+5. **Automation Suite Playground** - Workflow automation capabilities
 
 See [Interactive Demos Documentation](../features/interactive-demos.md) for detailed implementation plan.
