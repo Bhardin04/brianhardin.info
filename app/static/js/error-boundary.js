@@ -29,7 +29,6 @@ class ErrorBoundary {
      */
     initialize() {
         this.setupErrorCatching();
-        this.setupRetryMechanism();
         this.addBoundaryMarker();
     }
 
