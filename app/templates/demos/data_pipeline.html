@@ -1,0 +1,916 @@
+{% extends "base.html" %}
+{% set page_title = "NetSuite to SAP Data Pipeline Demo" %}
+{% set page_description = "Interactive demonstration of enterprise data integration and transformation" %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
+    <!-- Demo Header -->
+    <div class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">NetSuite to SAP Data Pipeline</h1>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                        Interactive demonstration of enterprise data integration and transformation workflows
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="session-status" class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                        <div class="h-2 w-2 bg-yellow-400 rounded-full mr-2"></div>
+                        Initializing...
+                    </div>
+                    <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
+                        ← Back to Demos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Content -->
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8">
+        
+        <!-- Pipeline Steps Navigation -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <nav aria-label="Pipeline Steps">
+                    <ol class="flex items-center space-x-4 sm:space-x-6">
+                        <li class="flex items-center">
+                            <div id="step-1" class="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-full">
+                                <span class="text-white text-sm font-medium">1</span>
+                            </div>
+                            <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Data Source</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div id="step-2" class="flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full ml-4">
+                                <span class="text-white text-sm font-medium">2</span>
+                            </div>
+                            <span class="ml-2 text-sm font-medium text-gray-500">Transform</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div id="step-3" class="flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full ml-4">
+                                <span class="text-white text-sm font-medium">3</span>
+                            </div>
+                            <span class="ml-2 text-sm font-medium text-gray-500">Process</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div id="step-4" class="flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full ml-4">
+                                <span class="text-white text-sm font-medium">4</span>
+                            </div>
+                            <span class="ml-2 text-sm font-medium text-gray-500">Results</span>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-8">
+            
+            <!-- Configuration Panel -->
+            <div class="lg:col-span-4">
+                <!-- Step 1: Data Source Selection -->
+                <div id="step-1-panel" class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Data Source Configuration</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Select NetSuite data source and extraction parameters</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <form id="extraction-form" class="space-y-4">
+                            <!-- Data Source -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    NetSuite Data Source
+                                </label>
+                                <select id="data-source" class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm">
+                                    <option value="">Select data source...</option>
+                                </select>
+                            </div>
+
+                            <!-- Date Range -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Start Date
+                                    </label>
+                                    <input type="date" id="start-date" 
+                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        End Date
+                                    </label>
+                                    <input type="date" id="end-date" 
+                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700">
+                                </div>
+                            </div>
+
+                            <!-- Filters -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Customer Filter (Optional)
+                                </label>
+                                <input type="text" id="customer-filter" 
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
+                                       placeholder="Filter by customer name or ID">
+                            </div>
+
+                            <!-- Amount Range -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Min Amount
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" id="amount-min" 
+                                               class="w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
+                                               placeholder="0.00">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Max Amount
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" id="amount-max" 
+                                               class="w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
+                                               placeholder="100000.00">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Output Format -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Output Format
+                                </label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700">
+                                        <input type="radio" name="output_format" value="xml" class="mr-2" checked>
+                                        <span class="text-sm">XML</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700">
+                                        <input type="radio" name="output_format" value="json" class="mr-2">
+                                        <span class="text-sm">JSON</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Extract Button -->
+                            <button type="submit" id="extract-btn" 
+                                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                Start Data Extraction
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Connection Status -->
+                <div class="mt-6 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Connection Status</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600 dark:text-gray-300">NetSuite API</span>
+                                <div class="flex items-center">
+                                    <div class="h-2 w-2 bg-green-400 rounded-full mr-2"></div>
+                                    <span class="text-sm text-green-600">Connected</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600 dark:text-gray-300">SAP Interface</span>
+                                <div class="flex items-center">
+                                    <div class="h-2 w-2 bg-green-400 rounded-full mr-2"></div>
+                                    <span class="text-sm text-green-600">Ready</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600 dark:text-gray-300">Transform Engine</span>
+                                <div class="flex items-center">
+                                    <div class="h-2 w-2 bg-green-400 rounded-full mr-2"></div>
+                                    <span class="text-sm text-green-600">Online</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Display Panel -->
+            <div class="lg:col-span-8">
+                
+                <!-- Data Preview Panel -->
+                <div id="data-preview" class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Data Preview</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Sample records matching your selection criteria</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="preview-content" class="text-center py-8 text-gray-500 dark:text-gray-400">
+                            Select a data source and configure extraction parameters to preview data
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transformation Mapping -->
+                <div id="transformation-panel" class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6 hidden">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Data Transformation</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">NetSuite to SAP field mapping and transformation rules</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="transformation-content">
+                            <!-- Dynamic transformation mapping will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Status -->
+                <div id="processing-panel" class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6 hidden">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Processing Pipeline</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Real-time data processing and validation status</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="processing-content">
+                            <!-- Dynamic processing status will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div id="results-panel" class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hidden">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Processing Results</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Extraction and transformation summary</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="results-content">
+                            <!-- Dynamic results will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Demo Functionality -->
+<!-- Include WebSocket utilities -->
+<script src="/static/js/websocket-client.js"></script>
+<script src="/static/js/error-handler.js"></script>
+<script src="/static/js/connection-manager.js"></script>
+<script src="/static/js/error-boundary.js"></script>
+
+<script>
+let demoSession = null;
+let currentStep = 1;
+let availableSources = [];
+let outputFormats = [];
+let websocketConnection = null;
+let progressInterval = null;
+
+// Initialize demo session
+async function initializeDemo() {
+    try {
+        const response = await fetch('/demos/api/data-pipeline/session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            demoSession = result.data.session_id;
+            availableSources = result.data.available_sources;
+            outputFormats = result.data.output_formats;
+            
+            updateSessionStatus('Connected', 'green');
+            populateDataSources();
+            setDefaultDates();
+            setupWebSocketConnection();
+        } else {
+            updateSessionStatus('Error', 'red');
+            console.error('Failed to initialize demo session');
+        }
+    } catch (error) {
+        updateSessionStatus('Error', 'red');
+        console.error('Error initializing demo:', error);
+    }
+}
+
+// Update session status indicator
+function updateSessionStatus(status, color) {
+    const statusElement = document.getElementById('session-status');
+    const dot = statusElement.querySelector('div');
+    const text = statusElement.childNodes[2];
+    
+    dot.className = `h-2 w-2 bg-${color}-400 rounded-full mr-2`;
+    text.textContent = status;
+}
+
+// Populate data sources dropdown
+function populateDataSources() {
+    const select = document.getElementById('data-source');
+    select.innerHTML = '<option value="">Select data source...</option>';
+    
+    availableSources.forEach(source => {
+        const option = document.createElement('option');
+        option.value = source.value;
+        option.textContent = source.label;
+        select.appendChild(option);
+    });
+}
+
+// Set default date range (last 30 days)
+function setDefaultDates() {
+    const endDate = new Date();
+    const startDate = new Date(endDate.getTime() - (30 * 24 * 60 * 60 * 1000));
+    
+    document.getElementById('end-date').value = endDate.toISOString().split('T')[0];
+    document.getElementById('start-date').value = startDate.toISOString().split('T')[0];
+}
+
+// Update step indicator
+function updateStepIndicator(step) {
+    // Reset all steps
+    for (let i = 1; i <= 4; i++) {
+        const stepElement = document.getElementById(`step-${i}`);
+        const isActive = i <= step;
+        const isCompleted = i < step;
+        
+        if (isCompleted) {
+            stepElement.className = 'flex items-center justify-center w-8 h-8 bg-green-600 rounded-full';
+            stepElement.innerHTML = '<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
+        } else if (isActive) {
+            stepElement.className = 'flex items-center justify-center w-8 h-8 bg-blue-600 rounded-full';
+            stepElement.innerHTML = `<span class="text-white text-sm font-medium">${i}</span>`;
+        } else {
+            stepElement.className = 'flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full';
+            stepElement.innerHTML = `<span class="text-white text-sm font-medium">${i}</span>`;
+        }
+    }
+    currentStep = step;
+}
+
+// Data source change handler
+document.getElementById('data-source').addEventListener('change', function(e) {
+    const sourceValue = e.target.value;
+    if (sourceValue) {
+        showDataPreview(sourceValue);
+    }
+});
+
+// Show data preview
+function showDataPreview(sourceType) {
+    const previewContent = document.getElementById('preview-content');
+    
+    // Sample data based on source type
+    const sampleData = getSampleDataForSource(sourceType);
+    
+    previewContent.innerHTML = `
+        <div class="text-left">
+            <div class="mb-4">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    ${sourceType.replace('_', ' ').toUpperCase()}
+                </span>
+                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Sample records preview</span>
+            </div>
+            
+            <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                <pre class="text-gray-800 dark:text-gray-200">${JSON.stringify(sampleData, null, 2)}</pre>
+            </div>
+            
+            <div class="mt-4 text-sm text-gray-600 dark:text-gray-300">
+                Configure extraction parameters and click "Start Data Extraction" to proceed.
+            </div>
+        </div>
+    `;
+}
+
+// Get sample data for different source types
+function getSampleDataForSource(sourceType) {
+    const samples = {
+        'netsuite_payments': [
+            {
+                "id": "PAY-000123",
+                "tranid": "PAYMENT-2024-001",
+                "trandate": "2024-01-15",
+                "entity": "456",
+                "amount": 15000.00,
+                "currency": "USD",
+                "payment_method": "ACH",
+                "reference": "ACH123456789"
+            }
+        ],
+        'netsuite_invoices': [
+            {
+                "id": "INV-000789",
+                "tranid": "INV-2024-001",
+                "trandate": "2024-01-15",
+                "entity": "123",
+                "amount": 25000.00,
+                "currency": "USD",
+                "status": "Open",
+                "due_date": "2024-02-15"
+            }
+        ],
+        'netsuite_credit_memos': [
+            {
+                "id": "CM-000456",
+                "tranid": "CM-2024-001",
+                "trandate": "2024-01-20",
+                "entity": "789",
+                "amount": -5000.00,
+                "currency": "USD",
+                "applied_to": "INV-2024-001"
+            }
+        ],
+        'netsuite_journal_entries': [
+            {
+                "id": "JE-000321",
+                "tranid": "JE-2024-001",
+                "trandate": "2024-01-25",
+                "account": "1200",
+                "debit": 10000.00,
+                "credit": 0.00,
+                "memo": "Accrual adjustment"
+            }
+        ]
+    };
+    
+    return samples[sourceType] || [{"message": "No sample data available"}];
+}
+
+// Form submission handler
+document.getElementById('extraction-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    if (!demoSession) {
+        alert('Demo session not initialized. Please refresh the page.');
+        return;
+    }
+    
+    // Get form data
+    const formData = {
+        source: document.getElementById('data-source').value,
+        start_date: document.getElementById('start-date').value + 'T00:00:00',
+        end_date: document.getElementById('end-date').value + 'T23:59:59',
+        customer_filter: document.getElementById('customer-filter').value || null,
+        amount_min: parseFloat(document.getElementById('amount-min').value) || null,
+        amount_max: parseFloat(document.getElementById('amount-max').value) || null,
+        output_format: document.querySelector('input[name="output_format"]:checked').value
+    };
+    
+    // Validate required fields
+    if (!formData.source || !formData.start_date || !formData.end_date) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+    
+    // Start extraction process
+    await startExtractionProcess(formData);
+});
+
+// Start extraction process
+async function startExtractionProcess(params) {
+    const extractBtn = document.getElementById('extract-btn');
+    extractBtn.disabled = true;
+    extractBtn.textContent = 'Processing...';
+    
+    // Step 2: Show transformation mapping
+    updateStepIndicator(2);
+    showTransformationMapping(params.source, params.output_format);
+    
+    // Step 3: Show processing
+    setTimeout(() => {
+        updateStepIndicator(3);
+        showProcessingStatus();
+    }, 2000);
+    
+    // Step 4: Extract data and show results
+    setTimeout(async () => {
+        await extractData(params);
+    }, 4000);
+}
+
+// Show transformation mapping
+function showTransformationMapping(sourceType, outputFormat) {
+    const panel = document.getElementById('transformation-panel');
+    const content = document.getElementById('transformation-content');
+    
+    panel.classList.remove('hidden');
+    
+    const mappings = getTransformationMappings(sourceType);
+    
+    content.innerHTML = `
+        <div class="grid md:grid-cols-2 gap-6">
+            <div>
+                <h4 class="font-medium text-gray-900 dark:text-white mb-3">NetSuite Source Fields</h4>
+                <div class="space-y-2">
+                    ${mappings.map(mapping => `
+                        <div class="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <span class="text-sm font-medium">${mapping.source}</span>
+                            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-medium text-gray-900 dark:text-white mb-3">SAP Target Fields (${outputFormat.toUpperCase()})</h4>
+                <div class="space-y-2">
+                    ${mappings.map(mapping => `
+                        <div class="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                            <span class="text-sm font-medium">${mapping.target}</span>
+                            <span class="text-xs text-gray-500">${mapping.transformation}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+            <h5 class="font-medium text-yellow-800 dark:text-yellow-200 mb-2">Transformation Rules</h5>
+            <ul class="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
+                <li>• Date fields converted to SAP date format (YYYYMMDD)</li>
+                <li>• Currency amounts validated and formatted to 2 decimal places</li>
+                <li>• Entity IDs mapped to SAP customer/vendor master data</li>
+                <li>• Transaction IDs preserved with prefix mapping</li>
+            </ul>
+        </div>
+    `;
+}
+
+// Get transformation mappings for different source types
+function getTransformationMappings(sourceType) {
+    const mappings = {
+        'netsuite_payments': [
+            { source: 'tranid', target: 'DocumentNumber', transformation: 'Direct mapping' },
+            { source: 'trandate', target: 'PostingDate', transformation: 'Date format' },
+            { source: 'entity', target: 'CustomerNumber', transformation: 'Entity lookup' },
+            { source: 'amount', target: 'Amount', transformation: 'Currency format' },
+            { source: 'payment_method', target: 'PaymentMethod', transformation: 'Code mapping' }
+        ],
+        'netsuite_invoices': [
+            { source: 'tranid', target: 'InvoiceNumber', transformation: 'Direct mapping' },
+            { source: 'trandate', target: 'InvoiceDate', transformation: 'Date format' },
+            { source: 'entity', target: 'CustomerNumber', transformation: 'Entity lookup' },
+            { source: 'amount', target: 'InvoiceAmount', transformation: 'Currency format' },
+            { source: 'due_date', target: 'DueDate', transformation: 'Date format' }
+        ]
+    };
+    
+    return mappings[sourceType] || [];
+}
+
+// Show processing status
+function showProcessingStatus() {
+    const panel = document.getElementById('processing-panel');
+    const content = document.getElementById('processing-content');
+    
+    panel.classList.remove('hidden');
+    
+    content.innerHTML = `
+        <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div class="flex items-center">
+                    <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-3"></div>
+                    <span class="font-medium">Extracting data from NetSuite...</span>
+                </div>
+                <span class="text-sm text-blue-600">In Progress</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <div class="flex items-center">
+                    <div class="h-5 w-5 border-2 border-gray-300 rounded-full mr-3"></div>
+                    <span class="font-medium text-gray-500">Applying transformation rules...</span>
+                </div>
+                <span class="text-sm text-gray-500">Pending</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <div class="flex items-center">
+                    <div class="h-5 w-5 border-2 border-gray-300 rounded-full mr-3"></div>
+                    <span class="font-medium text-gray-500">Validating data quality...</span>
+                </div>
+                <span class="text-sm text-gray-500">Pending</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <div class="flex items-center">
+                    <div class="h-5 w-5 border-2 border-gray-300 rounded-full mr-3"></div>
+                    <span class="font-medium text-gray-500">Preparing SAP integration...</span>
+                </div>
+                <span class="text-sm text-gray-500">Pending</span>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <div class="bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-1000" style="width: 25%"></div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Processing pipeline: <span id="progress-text">25%</span> complete</p>
+        </div>
+    `;
+    
+    // Animate progress
+    setTimeout(() => {
+        document.getElementById('progress-bar').style.width = '75%';
+        document.getElementById('progress-text').textContent = '75%';
+    }, 1000);
+}
+
+// Extract data via API
+async function extractData(params) {
+    try {
+        // Start real-time processing simulation if WebSocket is connected
+        if (websocketConnection) {
+            window.demoWebSocket.startSimulation('data_pipeline', demoSession, {
+                total_records: params.record_limit || 100
+            });
+        }
+        
+        const response = await fetch('/demos/api/data-pipeline/extract', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                session_id: demoSession,
+                params: params
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            updateStepIndicator(4);
+            showResults(result.data);
+        } else {
+            showError(result.message || 'Extraction failed');
+        }
+    } catch (error) {
+        showError(`Extraction error: ${error.message}`);
+    } finally {
+        const extractBtn = document.getElementById('extract-btn');
+        extractBtn.disabled = false;
+        extractBtn.textContent = 'Start Data Extraction';
+    }
+}
+
+// Show extraction results
+function showResults(result) {
+    const panel = document.getElementById('results-panel');
+    const content = document.getElementById('results-content');
+    
+    panel.classList.remove('hidden');
+    
+    const successRate = result.success_rate * 100;
+    const statusColor = successRate >= 95 ? 'green' : successRate >= 85 ? 'yellow' : 'red';
+    
+    content.innerHTML = `
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                <div class="text-2xl font-bold text-blue-600">${result.total_records.toLocaleString()}</div>
+                <div class="text-sm text-blue-800 dark:text-blue-200">Total Records</div>
+            </div>
+            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                <div class="text-2xl font-bold text-green-600">${result.processed_records.toLocaleString()}</div>
+                <div class="text-sm text-green-800 dark:text-green-200">Processed Successfully</div>
+            </div>
+            <div class="bg-${statusColor}-50 dark:bg-${statusColor}-900/20 rounded-lg p-4">
+                <div class="text-2xl font-bold text-${statusColor}-600">${successRate.toFixed(1)}%</div>
+                <div class="text-sm text-${statusColor}-800 dark:text-${statusColor}-200">Success Rate</div>
+            </div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div>
+                <h4 class="font-medium text-gray-900 dark:text-white mb-3">Processing Summary</h4>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-300">Batch ID:</span>
+                        <span class="text-sm font-medium">${result.batch_id}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-300">Processing Time:</span>
+                        <span class="text-sm font-medium">${(result.processing_time_ms / 1000).toFixed(2)}s</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-300">Failed Records:</span>
+                        <span class="text-sm font-medium text-red-600">${result.failed_records}</span>
+                    </div>
+                </div>
+            </div>
+            
+            ${result.errors && result.errors.length > 0 ? `
+            <div>
+                <h4 class="font-medium text-gray-900 dark:text-white mb-3">Processing Errors</h4>
+                <div class="space-y-2">
+                    ${result.errors.map(error => `
+                        <div class="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 p-2 rounded">
+                            ${error}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            ` : ''}
+        </div>
+        
+        <div class="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <div class="flex items-center">
+                <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-medium text-green-800 dark:text-green-200">
+                    Data extraction and transformation completed successfully!
+                </span>
+            </div>
+            <p class="text-sm text-green-700 dark:text-green-300 mt-2">
+                Records are now ready for SAP integration. Processed data has been validated and formatted according to SAP requirements.
+            </p>
+        </div>
+    `;
+    
+    // Update processing status to completed
+    updateProcessingStatus();
+}
+
+// Update processing status to completed
+function updateProcessingStatus() {
+    const content = document.getElementById('processing-content');
+    
+    content.innerHTML = `
+        <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-medium">Data extraction completed</span>
+                </div>
+                <span class="text-sm text-green-600">Complete</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-medium">Transformation rules applied</span>
+                </div>
+                <span class="text-sm text-green-600">Complete</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-medium">Data quality validation passed</span>
+                </div>
+                <span class="text-sm text-green-600">Complete</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-medium">SAP integration ready</span>
+                </div>
+                <span class="text-sm text-green-600">Complete</span>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <div class="bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Processing pipeline: 100% complete</p>
+        </div>
+    `;
+}
+
+// Show error message
+function showError(message) {
+    const panel = document.getElementById('results-panel');
+    const content = document.getElementById('results-content');
+    
+    panel.classList.remove('hidden');
+    updateStepIndicator(4);
+    
+    content.innerHTML = `
+        <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
+            <div class="flex items-center mb-4">
+                <svg class="h-6 w-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3 class="text-lg font-medium text-red-800 dark:text-red-200">Processing Error</h3>
+            </div>
+            <p class="text-red-700 dark:text-red-300">${message}</p>
+            <div class="mt-4">
+                <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                    Retry Demo
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Setup WebSocket connection for real-time updates
+function setupWebSocketConnection() {
+    if (!demoSession) return;
+    
+    websocketConnection = window.demoWebSocket.connect('data_pipeline', demoSession, {
+        onMessage: (data) => {
+            handleRealtimeUpdate(data);
+        },
+        onOpen: () => {
+            console.log('WebSocket connected for data pipeline');
+        },
+        onClose: () => {
+            console.log('WebSocket disconnected');
+        },
+        onError: (error) => {
+            console.error('WebSocket error:', error);
+        }
+    });
+}
+
+// Handle real-time updates from WebSocket
+function handleRealtimeUpdate(data) {
+    if (data.type === 'pipeline_progress') {
+        const { step, progress, status, details } = data;
+        updatePipelineProgress(step, progress, status, details);
+    }
+}
+
+// Update pipeline progress in real-time
+function updatePipelineProgress(step, progress, status, details) {
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+    }
+    
+    if (progressText) {
+        progressText.textContent = `${progress.toFixed(1)}%`;
+    }
+    
+    // Update step description if details are provided
+    if (details && details.current_stage) {
+        const stageText = document.querySelector('#pipeline-content p');
+        if (stageText) {
+            stageText.innerHTML = `Processing pipeline: <span class="font-medium">${details.current_stage}</span> - <span id="progress-text">${progress.toFixed(1)}%</span> complete`;
+        }
+    }
+    
+    // Show completion notification
+    if (status === 'completed' && progress >= 100) {
+        if (window.demoWebSocket && window.demoWebSocket.showNotification) {
+            window.demoWebSocket.showNotification('Pipeline Complete', 'Data processing finished successfully', 'success');
+        }
+    }
+}
+
+// Initialize demo when page loads
+document.addEventListener('DOMContentLoaded', initializeDemo);
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (websocketConnection) {
+        window.demoWebSocket.disconnect('data_pipeline', demoSession);
+    }
+    if (progressInterval) {
+        clearInterval(progressInterval);
+    }
+});
+</script>
+{% endblock %}
