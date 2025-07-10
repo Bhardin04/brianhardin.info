@@ -34,7 +34,7 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8">
         
         <!-- DSO Metrics Section -->
-        <div class="mb-8">
+        <div class="mb-8 error-boundary" data-error-context="dso-metrics-section">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">DSO Analytics & Performance</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
@@ -104,7 +104,7 @@
         </div>
 
         <!-- Main Dashboard Grid -->
-        <div class="grid lg:grid-cols-12 gap-8 mb-8">
+        <div class="grid lg:grid-cols-12 gap-8 mb-8 error-boundary" data-error-context="dashboard-grid-section">
             
             <!-- Aging Analysis -->
             <div class="lg:col-span-6">
@@ -286,6 +286,14 @@
 
 <!-- Include Chart.js for visualizations -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+<script src="/static/js/chart-utils.js"></script>
+<script src="/static/js/websocket-client.js"></script>
+<script src="/static/js/user-preferences.js"></script>
+<script src="/static/js/preferences-ui.js"></script>
+<script src="/static/js/analytics-tracker.js"></script>
+<script src="/static/js/performance-monitor.js"></script>
+<script src="/static/js/analytics-dashboard.js"></script>
 <script src="/static/js/error-handler.js"></script>
 <script src="/static/js/connection-manager.js"></script>
 <script src="/static/js/error-boundary.js"></script>
@@ -300,7 +308,7 @@ let charts = {};
 // Initialize demo session
 async function initializeDemo() {
     try {
-        const response = await fetch('/demos/api/collections/session', {
+        const response = await window.connectionManager.fetch('/demos/api/collections/session', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -312,6 +320,20 @@ async function initializeDemo() {
         if (result.success) {
             demoSession = result.data.session_id;
             updateSessionStatus('Connected', 'green');
+            
+            // Initialize analytics tracking
+            if (window.demoAnalytics) {
+                window.demoAnalytics.trackDemoStart('collections_dashboard', demoSession, {
+                    userAgent: navigator.userAgent,
+                    screenResolution: `${screen.width}x${screen.height}`
+                });
+            }
+            
+            // Apply user preferences if available
+            if (window.userPreferences) {
+                window.userPreferences.initialize('collections_dashboard');
+            }
+            
             await loadCollectionsData();
         } else {
             updateSessionStatus('Error', 'red');
@@ -320,6 +342,20 @@ async function initializeDemo() {
     } catch (error) {
         updateSessionStatus('Error', 'red');
         console.error('Error initializing demo:', error);
+        
+        // Use error handler for recovery
+        if (window.errorHandler) {
+            const errorInfo = {
+                type: 'demo_initialization_error',
+                message: `Collections demo initialization failed: ${error.message}`,
+                error: error,
+                context: 'demo_initialization',
+                timestamp: Date.now(),
+                severity: 'high'
+            };
+            
+            window.errorHandler.handleError(errorInfo);
+        }
     }
 }
 
@@ -336,7 +372,7 @@ function updateSessionStatus(status, color) {
 // Load collections dashboard data
 async function loadCollectionsData() {
     try {
-        const response = await fetch('/demos/api/collections/data', {
+        const response = await window.connectionManager.fetch('/demos/api/collections/data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -416,15 +452,16 @@ function renderDSOMetrics(dsoData) {
 
 // Render aging chart
 function renderAgingChart(agingData) {
-    const ctx = document.getElementById('aging-chart');
-    
-    if (charts.aging) {
-        charts.aging.destroy();
-    }
-    
-    // Clear loading state
-    ctx.innerHTML = '<canvas></canvas>';
-    const canvas = ctx.querySelector('canvas');
+    try {
+        const ctx = document.getElementById('aging-chart');
+        
+        if (charts.aging) {
+            charts.aging.destroy();
+        }
+        
+        // Clear loading state
+        ctx.innerHTML = '<canvas></canvas>';
+        const canvas = ctx.querySelector('canvas');
     
     const labels = agingData.map(bucket => bucket.bucket_name);
     const amounts = agingData.map(bucket => bucket.amount);
@@ -463,6 +500,22 @@ function renderAgingChart(agingData) {
             }
         }
     });
+    } catch (error) {
+        // Handle chart rendering error
+        const errorInfo = {
+            type: 'chart_error',
+            message: `Failed to render aging chart: ${error.message}`,
+            error: error,
+            context: 'aging-chart-section',
+            chartType: 'aging_analysis',
+            timestamp: Date.now(),
+            severity: 'medium'
+        };
+        
+        if (window.errorHandler) {
+            window.errorHandler.handleError(errorInfo);
+        }
+    }
 }
 
 // Render collector performance
@@ -734,6 +787,35 @@ document.getElementById('customer-search').addEventListener('input', function(e)
 });
 
 // Initialize demo when page loads
-document.addEventListener('DOMContentLoaded', initializeDemo);
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize error boundaries first
+    if (window.ErrorBoundary) {
+        window.ErrorBoundary.create('.error-boundary', {
+            retryable: true,
+            logErrors: true,
+            onError: (error, boundary) => {
+                // Custom error handling for demo context
+                if (window.demoAnalytics) {
+                    window.demoAnalytics.trackError(error, {
+                        boundaryId: boundary.getBoundaryId(),
+                        context: boundary.element.getAttribute('data-error-context')
+                    });
+                }
+            }
+        });
+    }
+    
+    initializeDemo();
+    
+    // Initialize analytics if available
+    if (window.demoAnalytics) {
+        window.demoAnalytics.initialize('collections_dashboard');
+    }
+    
+    // Initialize performance monitoring
+    if (window.performanceMonitor) {
+        window.performanceMonitor.startMonitoring('collections_dashboard');
+    }
+});
 </script>
 {% endblock %}
