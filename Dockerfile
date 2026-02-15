@@ -16,4 +16,5 @@ USER appuser
 ENV PORT=8000
 EXPOSE ${PORT}
 
-CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
+ENV PATH="/app/.venv/bin:$PATH"
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
