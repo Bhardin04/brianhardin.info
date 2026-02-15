@@ -106,17 +106,11 @@ jobs:
     environment: production
     
     steps:
-    - name: Deploy to production
+    - name: Trigger Render Deploy
       run: |
-        echo "Deployment step would go here"
-        echo "This could include:"
-        echo "- Updating container in cloud provider"
-        echo "- Running database migrations"
-        echo "- Health checks"
-        echo "- Rollback on failure"
-        
+        curl -s -o /dev/null -w "%{http_code}" "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" | grep -q "200" || exit 1
+
     - name: Notify deployment status
       if: always()
       run: |
-        echo "Deployment completed"
-        echo "Status: ${{ job.status }}"
+        echo "Deployment status: ${{ job.status }}"
