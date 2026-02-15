@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from starlette.responses import Response
 
 from app.routers import api, blog, pages, projects
 
@@ -21,10 +22,10 @@ app.include_router(blog.router)
 
 
 @app.get("/", response_class=HTMLResponse)
-async def homepage(request: Request):
+async def homepage(request: Request) -> Response:
     return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/health")
-async def health_check():
+async def health_check() -> dict[str, str]:
     return {"status": "healthy"}

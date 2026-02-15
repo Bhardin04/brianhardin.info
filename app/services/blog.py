@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import frontmatter
-import markdown
+import markdown  # type: ignore[import-untyped]
 
 from app.models.blog import BlogPost, BlogPostSummary
 

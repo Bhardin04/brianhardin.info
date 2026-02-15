@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 @router.get("/projects")
-async def get_projects():
+async def get_projects() -> list[Project]:
     return [
         Project(
             id=1,
@@ -61,7 +61,7 @@ async def get_projects():
 
 
 @router.get("/projects/{project_id}")
-async def get_project(project_id: int):
+async def get_project(project_id: int) -> Project:
     projects = {
         1: Project(
             id=1,
@@ -124,7 +124,7 @@ async def submit_contact_form(
     subject: str = Form(...),
     message: str = Form(...),
     company: str = Form(None),
-):
+) -> str:
     try:
         # Create contact form data
         contact_data = ContactForm(

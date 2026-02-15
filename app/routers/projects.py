@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from starlette.responses import Response
 
 from app.models.project import Project
 
@@ -9,7 +10,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/", response_class=HTMLResponse)
-async def projects_list(request: Request):
+async def projects_list(request: Request) -> Response:
     projects = [
         Project(
             id=1,
@@ -26,7 +27,7 @@ async def projects_list(request: Request):
 
 
 @router.get("/{project_id}", response_class=HTMLResponse)
-async def project_detail(request: Request, project_id: int):
+async def project_detail(request: Request, project_id: int) -> Response:
     project = Project(
         id=project_id,
         title="Project Details",

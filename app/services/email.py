@@ -8,12 +8,14 @@ from app.models.contact import ContactForm
 
 
 class EmailService:
-    def __init__(self):
+    def __init__(self) -> None:
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
         self.smtp_username = os.getenv("SMTP_USERNAME")
         self.smtp_password = os.getenv("SMTP_PASSWORD")
-        self.from_email = os.getenv("FROM_EMAIL", self.smtp_username)
+        self.from_email: str = (
+            os.getenv("FROM_EMAIL") or os.getenv("SMTP_USERNAME") or ""
+        )
         self.to_email = os.getenv("TO_EMAIL", "brian.hardin@icloud.com")
 
     async def send_contact_email(self, contact_data: ContactForm) -> bool:
