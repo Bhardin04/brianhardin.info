@@ -1,5 +1,5 @@
-import pytest
 from fastapi.testclient import TestClient
+
 from app.main import app
 from app.services.blog import blog_service
 
@@ -40,7 +40,7 @@ class TestBlogRoutes:
         posts = response.json()
         assert isinstance(posts, list)
         assert len(posts) > 0
-        
+
         # Check post structure
         post = posts[0]
         required_fields = ["id", "title", "slug", "excerpt", "tags", "published"]
@@ -99,13 +99,13 @@ class TestBlogService:
         """Test getting blog post summaries."""
         summaries = blog_service.get_posts_summary()
         assert len(summaries) > 0
-        
+
         # Check summary structure
         summary = summaries[0]
-        assert hasattr(summary, 'id')
-        assert hasattr(summary, 'title')
-        assert hasattr(summary, 'slug')
-        assert hasattr(summary, 'excerpt')
+        assert hasattr(summary, "id")
+        assert hasattr(summary, "title")
+        assert hasattr(summary, "slug")
+        assert hasattr(summary, "excerpt")
 
     def test_get_post_by_slug(self):
         """Test getting a post by slug."""

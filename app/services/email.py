@@ -1,9 +1,11 @@
-import aiosmtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from typing import Optional
 import os
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+import aiosmtplib
+
 from app.models.contact import ContactForm
+
 
 class EmailService:
     def __init__(self):
@@ -31,7 +33,7 @@ class EmailService:
             # Attach parts
             text_part = MIMEText(text_content, "plain")
             html_part = MIMEText(html_content, "html")
-            
+
             message.attach(text_part)
             message.attach(html_part)
 
@@ -61,8 +63,10 @@ class EmailService:
 
     def _create_text_content(self, contact_data: ContactForm) -> str:
         """Create plain text email content"""
-        company_info = f"\nCompany: {contact_data.company}" if contact_data.company else ""
-        
+        company_info = (
+            f"\nCompany: {contact_data.company}" if contact_data.company else ""
+        )
+
         return f"""
 New contact form submission from brianhardin.info
 
@@ -79,12 +83,16 @@ This message was sent from the contact form on brianhardin.info
 
     def _create_html_content(self, contact_data: ContactForm) -> str:
         """Create HTML email content"""
-        company_row = f"""
+        company_row = (
+            f"""
         <tr>
             <td style="padding: 8px 0; font-weight: bold;">Company:</td>
             <td style="padding: 8px 0;">{contact_data.company}</td>
         </tr>
-        """ if contact_data.company else ""
+        """
+            if contact_data.company
+            else ""
+        )
 
         return f"""
         <!DOCTYPE html>
@@ -98,7 +106,7 @@ This message was sent from the contact form on brianhardin.info
                 <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">
                     New Contact Form Submission
                 </h2>
-                
+
                 <table style="width: 100%; margin: 20px 0;">
                     <tr>
                         <td style="padding: 8px 0; font-weight: bold;">Name:</td>
@@ -120,19 +128,20 @@ This message was sent from the contact form on brianhardin.info
                 <div style="margin: 20px 0;">
                     <h3 style="color: #374151;">Message:</h3>
                     <div style="background: #f9fafb; padding: 15px; border-left: 4px solid #2563eb; margin: 10px 0;">
-                        {contact_data.message.replace(chr(10), '<br>')}
+                        {contact_data.message.replace(chr(10), "<br>")}
                     </div>
                 </div>
 
                 <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
                 <p style="color: #6b7280; font-size: 14px;">
-                    This message was sent from the contact form on 
+                    This message was sent from the contact form on
                     <a href="https://brianhardin.info" style="color: #2563eb;">brianhardin.info</a>
                 </p>
             </div>
         </body>
         </html>
         """
+
 
 # Create global email service instance
 email_service = EmailService()
