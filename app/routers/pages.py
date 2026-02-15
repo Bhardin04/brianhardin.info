@@ -9,14 +9,20 @@ templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/about", response_class=HTMLResponse)
 async def about(request: Request) -> Response:
-    return templates.TemplateResponse("about.html", {"request": request})
+    return templates.TemplateResponse(
+        "about.html", {"request": request, "current_page": "about"}
+    )
 
 
 @router.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request) -> Response:
-    return templates.TemplateResponse("contact.html", {"request": request})
+    return templates.TemplateResponse(
+        "contact.html", {"request": request, "current_page": "contact"}
+    )
 
 
 @router.get("/resume", response_class=HTMLResponse)
 async def resume(request: Request) -> Response:
-    return templates.TemplateResponse("resume.html", {"request": request})
+    return templates.TemplateResponse(
+        "resume.html", {"request": request, "current_page": "resume"}
+    )

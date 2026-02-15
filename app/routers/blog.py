@@ -38,6 +38,7 @@ async def blog_list(request: Request, tag: str | None = None) -> Response:
             "all_tags": sorted(all_tags),
             "current_tag": tag,
             "page_title": page_title,
+            "current_page": "blog",
         },
     )
 
@@ -67,7 +68,12 @@ async def blog_post(request: Request, slug: str) -> Response:
 
     return templates.TemplateResponse(
         "blog/post.html",
-        {"request": request, "post": post, "related_posts": related_posts},
+        {
+            "request": request,
+            "post": post,
+            "related_posts": related_posts,
+            "current_page": "blog",
+        },
     )
 
 
