@@ -162,10 +162,42 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-800 dark:bg-gray-900 text-white">
-        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p>&copy; 2024 Brian Hardin. Built with Python & FastAPI.</p>
+    <footer class="bg-gray-800 dark:bg-gray-900 text-gray-300">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Brand -->
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-3">Brian Hardin</h3>
+                    <p class="text-sm text-gray-400">Python developer & software engineer building scalable web applications with modern tools.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="/about" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="/projects" class="hover:text-white transition-colors">Projects</a></li>
+                        <li><a href="/blog" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="/contact" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="/resume" class="hover:text-white transition-colors">Resume</a></li>
+                    </ul>
+                </div>
+
+                <!-- Connect -->
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-3">Connect</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://github.com/Bhardin04" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="https://www.linkedin.com/in/brian-hardin-csw-css-a71b0ba/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn</a></li>
+                        <li><a href="https://twitter.com/@BrianHardi16691" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Twitter</a></li>
+                        <li><a href="mailto:brian.hardin@icloud.com" class="hover:text-white transition-colors">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Brian Hardin. Built with Python & FastAPI.</p>
             </div>
         </div>
     </footer>
