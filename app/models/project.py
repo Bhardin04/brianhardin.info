@@ -1,23 +1,25 @@
-from pydantic import BaseModel, HttpUrl
-from typing import List, Optional
 from datetime import datetime
+
+from pydantic import BaseModel
+
 
 class Project(BaseModel):
     id: int
     title: str
     description: str
-    technologies: List[str]
-    github_url: Optional[HttpUrl] = None
-    demo_url: Optional[HttpUrl] = None
-    image_url: Optional[str] = None
-    created_at: Optional[datetime] = None
+    technologies: list[str]
+    github_url: str | None = None
+    demo_url: str | None = None
+    image_url: str | None = None
+    created_at: datetime | None = None
     featured: bool = False
+
 
 class ProjectCreate(BaseModel):
     title: str
     description: str
-    technologies: List[str]
-    github_url: Optional[HttpUrl] = None
-    demo_url: Optional[HttpUrl] = None
-    image_url: Optional[str] = None
+    technologies: list[str]
+    github_url: str | None = None
+    demo_url: str | None = None
+    image_url: str | None = None
     featured: bool = False
