@@ -118,7 +118,13 @@ jobs:
     steps:
     - name: Trigger Render Deploy
       run: |
-        curl -s -o /dev/null -w "%{http_code}" "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" | grep -q "200" || exit 1
+        if [ -z "$DEPLOY_URL" ]; then
+          echo "::warning::RENDER_DEPLOY_HOOK_URL secret is not set. Skipping deploy."
+          exit 0
+        fi
+        curl -s -o /dev/null -w "%{http_code}" "$DEPLOY_URL" | grep -q "200" || exit 1
+      env:
+        DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
     - name: Notify deployment status
       if: always()
