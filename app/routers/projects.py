@@ -22,7 +22,8 @@ async def projects_list(request: Request) -> Response:
         )
     ]
     return templates.TemplateResponse(
-        "projects.html", {"request": request, "projects": projects}
+        "projects.html",
+        {"request": request, "projects": projects, "current_page": "projects"},
     )
 
 
@@ -37,5 +38,6 @@ async def project_detail(request: Request, project_id: int) -> Response:
         demo_url="https://example.com",
     )
     return templates.TemplateResponse(
-        "project_detail.html", {"request": request, "project": project}
+        "project_detail.html",
+        {"request": request, "project": project, "current_page": "projects"},
     )
