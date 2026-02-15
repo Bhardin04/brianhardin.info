@@ -23,7 +23,9 @@ app.include_router(blog.router)
 
 @app.get("/", response_class=HTMLResponse)
 async def homepage(request: Request) -> Response:
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "current_page": "home"}
+    )
 
 
 @app.get("/health")
