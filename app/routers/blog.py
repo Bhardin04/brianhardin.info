@@ -32,9 +32,9 @@ async def blog_list(request: Request, tag: str | None = None) -> Response:
     featured_posts = blog_service.get_featured_posts(limit=3)
 
     return templates.TemplateResponse(
+        request,
         "blog/index.html",
-        {
-            "request": request,
+        context={
             "posts": posts,
             "featured_posts": featured_posts,
             "all_tags": sorted(all_tags),
@@ -111,9 +111,9 @@ async def blog_post(request: Request, slug: str) -> Response:
                     break
 
     return templates.TemplateResponse(
+        request,
         "blog/post.html",
-        {
-            "request": request,
+        context={
             "post": post,
             "related_posts": related_posts,
             "current_page": "blog",
