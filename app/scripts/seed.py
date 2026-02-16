@@ -96,7 +96,7 @@ async def seed_blog_posts_from_files(
     async for db in get_db():
         for file_path in md_files:
             # Skip non-post files
-            if file_path.name == "content-strategy.md":
+            if file_path.name in ("content-strategy.md", "remaining-topics.md"):
                 continue
 
             try:
