@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from slowapi import _rate_limit_exceeded_handler
@@ -15,7 +15,7 @@ from starlette.responses import Response
 
 from app.database.connection import close_db, init_db
 from app.middleware import limiter
-from app.routers import api, blog, demos, pages, projects
+from app.routers import api, auth, blog, demos, pages, projects
 from app.services.blog import blog_service
 from app.services.project import project_service
 
@@ -48,6 +48,17 @@ app.include_router(projects.router, prefix="/projects")
 app.include_router(api.router, prefix="/api")
 app.include_router(blog.router)
 app.include_router(demos.router, prefix="/demos")
+app.include_router(auth.router)
+
+
+@app.exception_handler(401)
+async def unauthorized_handler(
+    request: Request, exc: StarletteHTTPException
+) -> Response:
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    return Response(content="Unauthorized", status_code=401, media_type="text/plain")
 
 
 @app.exception_handler(403)
