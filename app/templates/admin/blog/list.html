@@ -1,0 +1,100 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Blog Posts</h1>
+        <a href="/admin/blog/new"
+           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            New Post
+        </a>
+    </div>
+
+    {% if posts %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-200 dark:border-gray-700">
+                        <th class="px-6 py-3">Title</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3">Tags</th>
+                        <th class="px-6 py-3">Created</th>
+                        <th class="px-6 py-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for post in posts %}
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ post.title }}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">/blog/{{ post.slug }}</div>
+                                </div>
+                                {% if post.featured %}
+                                <span class="ml-2 inline-flex px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300">Featured</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4" id="status-{{ post.id }}">
+                            {% if post.published %}
+                            <span class="inline-flex px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300">Published</span>
+                            {% else %}
+                            <span class="inline-flex px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">Draft</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                {% for tag in post.tags_list %}
+                                <span class="inline-flex px-2 py-0.5 text-xs rounded bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ post.created_at.strftime('%b %d, %Y') }}</td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end space-x-2">
+                                <form method="post" action="/admin/blog/{{ post.id }}/publish" class="inline">
+                                    <button type="submit"
+                                            class="text-sm px-3 py-1 rounded-lg border
+                                                   {% if post.published %}border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700
+                                                   {% else %}border-green-300 dark:border-green-700 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20{% endif %}
+                                                   transition-colors">
+                                        {{ 'Unpublish' if post.published else 'Publish' }}
+                                    </button>
+                                </form>
+                                <a href="/admin/blog/{{ post.id }}/edit"
+                                   class="text-sm px-3 py-1 rounded-lg border border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
+                                    Edit
+                                </a>
+                                <form method="post" action="/admin/blog/{{ post.id }}/delete"
+                                      onsubmit="return confirm('Delete this post?')">
+                                    <button type="submit"
+                                            class="text-sm px-3 py-1 rounded-lg border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 px-6 py-12 text-center">
+        <svg class="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+        </svg>
+        <p class="text-gray-500 dark:text-gray-400 mb-4">No blog posts yet.</p>
+        <a href="/admin/blog/new" class="text-blue-600 dark:text-blue-400 hover:underline">Create your first post</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

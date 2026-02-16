@@ -32,7 +32,8 @@ async def require_admin(
         if row is None:
             raise HTTPException(status_code=401, detail="Invalid session")
 
-        if row.expires_at < datetime.now(UTC):
+        now = datetime.now(UTC).replace(tzinfo=None)
+        if row.expires_at.replace(tzinfo=None) < now:
             await db.delete(row)
             await db.commit()
             raise HTTPException(status_code=401, detail="Session expired")
