@@ -41,8 +41,8 @@
     <link rel="apple-touch-icon" href="/static/images/brand/logo.svg">
 
     <!-- Theme Color -->
-    <meta name="theme-color" content="#1e293b">
-    <meta name="msapplication-TileColor" content="#1e293b">
+    <meta name="theme-color" content="#1a2e4a">
+    <meta name="msapplication-TileColor" content="#1a2e4a">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="language" content="en">
@@ -64,7 +64,7 @@
     <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
     <!-- Structured Data -->
@@ -171,8 +171,8 @@
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md">Skip to main content</a>
+<body class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-md" style="background-color: #1a2e4a; color: white;">Skip to main content</a>
 
     <nav class="sticky top-0 z-50 backdrop-blur-sm border-b bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -180,7 +180,7 @@
                 <div class="flex items-center">
                     <a href="/" class="flex items-center space-x-3 hover:scale-105 transition-transform">
                         <img src="/static/images/brand/logo.svg" alt="Brian Hardin" class="brand-logo-small">
-                        <span class="text-xl font-extrabold text-gradient-primary">Brian Hardin</span>
+                        <span class="logo-wordmark">Brian Hardin</span>
                     </a>
                 </div>
 
@@ -189,7 +189,7 @@
                     {% set nav_items = [('/', 'Home'), ('/about', 'About'), ('/projects', 'Projects'), ('/demos', 'Demos'), ('/resume', 'Resume'), ('/blog', 'Blog'), ('/contact', 'Contact')] %}
                     {% for href, label in nav_items %}
                     {% set is_active = (request.url.path == href) or (href != '/' and request.url.path.startswith(href)) %}
-                    <a href="{{ href }}" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors min-h-[44px] flex items-center {% if is_active %}text-blue-600 dark:text-blue-400 font-semibold{% else %}text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white{% endif %}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
+                    <a href="{{ href }}" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors min-h-[44px] flex items-center {% if is_active %}font-semibold{% else %}text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white{% endif %}"{% if is_active %} aria-current="page"{% endif %} {% if is_active %}style="color: #b87333;"{% endif %}>{{ label }}</a>
                     {% endfor %}
 
                     <!-- Dark mode toggle -->
@@ -238,7 +238,7 @@
             <div class="px-4 py-3 space-y-1">
                 {% for href, label in nav_items %}
                 {% set is_active = (request.url.path == href) or (href != '/' and request.url.path.startswith(href)) %}
-                <a href="{{ href }}" class="block px-3 py-3 min-h-[44px] rounded-md transition-colors {% if is_active %}text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
+                <a href="{{ href }}" class="block px-3 py-3 min-h-[44px] rounded-md transition-colors {% if is_active %}font-semibold{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}"{% if is_active %} aria-current="page" style="color: #b87333; background-color: rgba(184, 115, 51, 0.08);"{% endif %}>{{ label }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -248,7 +248,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-800 dark:bg-gray-900 text-gray-100 border-t border-gray-200 dark:border-gray-700 brand-pattern">
+    <footer class="text-gray-100 border-t border-gray-200 dark:border-gray-700 brand-pattern" style="background-color: #1a2e4a;">
         <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="flex flex-col md:flex-row justify-between items-center">
@@ -284,7 +284,7 @@
     <!-- Scroll to top button -->
     <button id="scroll-to-top" type="button"
             aria-label="Scroll to top"
-            class="fixed bottom-6 right-6 z-40 hidden w-12 h-12 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-opacity duration-200 opacity-0">
+            class="fixed bottom-6 right-6 z-40 hidden w-12 h-12 rounded-full text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-opacity duration-200 opacity-0" style="background-color: #1a2e4a;">
         <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
         </svg>
