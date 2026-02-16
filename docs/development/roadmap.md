@@ -33,7 +33,7 @@
 - [x] Improve mobile navigation spacing
 
 ### General
-- [ ] Reduce excessive white space before footer on some pages
+- [x] Reduce excessive white space before footer on some pages
 - [ ] Implement proper routing for multiple projects
 
 ## Performance & SEO
