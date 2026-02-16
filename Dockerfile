@@ -8,6 +8,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
 COPY app/ ./app/
+COPY content/ ./content/
 
 RUN adduser --disabled-password --gecos "" appuser && \
     chown -R appuser:appuser /app
