@@ -10,7 +10,7 @@ class AnalyticsDashboard {
         this.charts = new Map();
         this.updateInterval = null;
         this.refreshRate = 5000; // 5 seconds
-        
+
         this.initialize();
     }
 
@@ -27,11 +27,11 @@ class AnalyticsDashboard {
      */
     show() {
         if (this.isVisible) return;
-        
+
         this.createDashboard();
         this.isVisible = true;
         this.startUpdating();
-        
+
         // Animate in
         requestAnimationFrame(() => {
             this.dashboard.style.opacity = '1';
@@ -43,13 +43,13 @@ class AnalyticsDashboard {
      */
     hide() {
         if (!this.isVisible || !this.dashboard) return;
-        
+
         this.isVisible = false;
         this.stopUpdating();
-        
+
         // Animate out
         this.dashboard.style.opacity = '0';
-        
+
         setTimeout(() => {
             if (this.dashboard && this.dashboard.parentElement) {
                 this.dashboard.parentElement.removeChild(this.dashboard);
@@ -63,12 +63,12 @@ class AnalyticsDashboard {
      */
     createDashboard() {
         if (this.dashboard) return;
-        
+
         this.dashboard = document.createElement('div');
         this.dashboard.className = 'analytics-dashboard';
         this.dashboard.style.opacity = '0';
         this.dashboard.style.transition = 'opacity 0.3s ease';
-        
+
         this.dashboard.innerHTML = `
             <div class="analytics-content">
                 <div class="analytics-header">
@@ -79,7 +79,7 @@ class AnalyticsDashboard {
                         <button id="close-analytics" class="btn-close">×</button>
                     </div>
                 </div>
-                
+
                 <div class="analytics-grid">
                     ${this.createOverviewSection()}
                     ${this.createPerformanceSection()}
@@ -90,7 +90,7 @@ class AnalyticsDashboard {
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(this.dashboard);
         this.attachEventListeners();
         this.updateDashboard();
@@ -102,7 +102,7 @@ class AnalyticsDashboard {
     createOverviewSection() {
         const summary = window.demoAnalytics?.getAnalyticsSummary() || {};
         const performanceStatus = window.performanceMonitor?.getStatus() || 'unknown';
-        
+
         return `
             <div class="analytics-section overview-section">
                 <h3 class="section-title">Session Overview</h3>
@@ -276,7 +276,7 @@ class AnalyticsDashboard {
      */
     startUpdating() {
         if (this.updateInterval) return;
-        
+
         this.updateInterval = setInterval(() => {
             this.updateDashboard();
         }, this.refreshRate);
@@ -297,7 +297,7 @@ class AnalyticsDashboard {
      */
     updateDashboard() {
         if (!this.isVisible || !this.dashboard) return;
-        
+
         this.updateOverviewSection();
         this.updatePerformanceSection();
         this.updateEngagementSection();
@@ -311,7 +311,7 @@ class AnalyticsDashboard {
     updateOverviewSection() {
         const summary = window.demoAnalytics?.getAnalyticsSummary() || {};
         const performanceStatus = window.performanceMonitor?.getStatus() || 'unknown';
-        
+
         // Update metric cards
         const metricCards = this.dashboard.querySelectorAll('.metric-card');
         if (metricCards.length >= 4) {
@@ -332,7 +332,7 @@ class AnalyticsDashboard {
 
         // Update performance chart
         this.updatePerformanceChart(performanceSummary);
-        
+
         // Update performance details
         const detailsElement = this.dashboard.querySelector('#performance-details');
         if (detailsElement) {
@@ -362,18 +362,18 @@ class AnalyticsDashboard {
      */
     updateEngagementSection() {
         const summary = window.demoAnalytics?.getAnalyticsSummary() || {};
-        
+
         // Update engagement stats
         const interactionCount = this.dashboard.querySelector('#interaction-count');
         const featuresCount = this.dashboard.querySelector('#features-count');
         const exportsCount = this.dashboard.querySelector('#exports-count');
         const currentDemo = this.dashboard.querySelector('#current-demo');
-        
+
         if (interactionCount) interactionCount.textContent = summary.currentDemo?.interactions || 0;
         if (featuresCount) featuresCount.textContent = summary.currentDemo?.features?.size || 0;
         if (exportsCount) exportsCount.textContent = summary.currentDemo?.exports || 0;
         if (currentDemo) currentDemo.textContent = summary.currentDemo?.type || 'None';
-        
+
         // Update engagement chart
         this.updateEngagementChart(summary);
     }
@@ -384,15 +384,15 @@ class AnalyticsDashboard {
     updateErrorsSection() {
         const alerts = window.performanceMonitor?.alerts || [];
         const recentAlerts = alerts.slice(-5).reverse(); // Last 5 alerts, newest first
-        
+
         const errorsList = this.dashboard.querySelector('#errors-list');
         if (!errorsList) return;
-        
+
         if (recentAlerts.length === 0) {
             errorsList.innerHTML = '<div class="no-errors">No recent errors or alerts</div>';
             return;
         }
-        
+
         errorsList.innerHTML = recentAlerts.map(alert => `
             <div class="error-item ${alert.severity}">
                 <div class="error-header">
@@ -411,12 +411,12 @@ class AnalyticsDashboard {
         const heatmapData = window.demoAnalytics?.getHeatmapData() || {};
         const container = this.dashboard.querySelector('#heatmap-container');
         if (!container) return;
-        
+
         if (Object.keys(heatmapData).length === 0) {
             container.innerHTML = '<div class="heatmap-placeholder">No interaction data yet. Start using the demo to see heatmap data.</div>';
             return;
         }
-        
+
         // Create simplified heatmap visualization
         const maxClicks = Math.max(...Object.values(heatmapData));
         const heatmapHTML = Object.entries(heatmapData).map(([coords, clicks]) => {
@@ -424,14 +424,14 @@ class AnalyticsDashboard {
             const intensity = clicks / maxClicks;
             return `
                 <div class="heatmap-point" style="
-                    left: ${x * 50}px; 
-                    top: ${y * 50}px; 
+                    left: ${x * 50}px;
+                    top: ${y * 50}px;
                     opacity: ${intensity};
                     background-color: hsl(${(1 - intensity) * 120}, 100%, 50%);
                 " title="${clicks} interactions"></div>
             `;
         }).join('');
-        
+
         container.innerHTML = `
             <div class="heatmap-visualization" style="position: relative; height: 200px; overflow: hidden;">
                 ${heatmapHTML}
@@ -445,21 +445,21 @@ class AnalyticsDashboard {
     updatePerformanceChart(data) {
         const canvas = this.dashboard.querySelector('#performance-chart');
         if (!canvas) return;
-        
+
         // Simplified chart rendering (in a real implementation, use Chart.js)
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         // Draw memory usage bar
         const memoryPercentage = data.averageMemoryUsage / 100;
         ctx.fillStyle = memoryPercentage > 0.8 ? '#ef4444' : memoryPercentage > 0.6 ? '#f59e0b' : '#10b981';
         ctx.fillRect(10, 10, canvas.width * memoryPercentage - 20, 30);
-        
+
         // Draw FPS indicator
         const fpsPercentage = Math.min(data.averageFPS / 60, 1);
         ctx.fillStyle = fpsPercentage < 0.5 ? '#ef4444' : fpsPercentage < 0.75 ? '#f59e0b' : '#10b981';
         ctx.fillRect(10, 50, canvas.width * fpsPercentage - 20, 30);
-        
+
         // Labels
         ctx.fillStyle = '#374151';
         ctx.font = '12px sans-serif';
@@ -473,31 +473,31 @@ class AnalyticsDashboard {
     updateEngagementChart(data) {
         const canvas = this.dashboard.querySelector('#engagement-chart');
         if (!canvas || !data.currentDemo) return;
-        
+
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         // Simple pie chart for feature usage
         const features = Array.from(data.currentDemo.features || []);
         if (features.length === 0) return;
-        
+
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const radius = Math.min(centerX, centerY) - 10;
-        
+
         const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
         let currentAngle = 0;
-        
+
         features.forEach((feature, index) => {
             const sliceAngle = (2 * Math.PI) / features.length;
-            
+
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
             ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
             ctx.closePath();
             ctx.fillStyle = colors[index % colors.length];
             ctx.fill();
-            
+
             currentAngle += sliceAngle;
         });
     }
@@ -507,19 +507,19 @@ class AnalyticsDashboard {
      */
     addActivityItem(event) {
         if (!this.isVisible || !this.dashboard) return;
-        
+
         const activityFeed = this.dashboard.querySelector('#activity-feed');
         if (!activityFeed) return;
-        
+
         const activityItem = document.createElement('div');
         activityItem.className = 'activity-item';
         activityItem.innerHTML = `
             <span class="activity-time">${new Date().toLocaleTimeString()}</span>
             <span class="activity-text">${this.formatActivityText(event)}</span>
         `;
-        
+
         activityFeed.insertBefore(activityItem, activityFeed.firstChild);
-        
+
         // Keep only last 10 items
         const items = activityFeed.querySelectorAll('.activity-item');
         if (items.length > 10) {
@@ -553,7 +553,7 @@ class AnalyticsDashboard {
     exportAnalyticsData() {
         const analyticsData = window.demoAnalytics?.exportAnalyticsData();
         const performanceData = window.performanceMonitor?.exportPerformanceData();
-        
+
         // Combine both exports
         const combinedData = {
             analytics: analyticsData,
@@ -561,20 +561,20 @@ class AnalyticsDashboard {
             exportedAt: new Date().toISOString(),
             exportType: 'combined_dashboard_export'
         };
-        
+
         const blob = new Blob([JSON.stringify(combinedData, null, 2)], {
             type: 'application/json'
         });
-        
+
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
         link.download = `analytics_dashboard_${new Date().toISOString().split('T')[0]}.json`;
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         URL.revokeObjectURL(url);
     }
 }

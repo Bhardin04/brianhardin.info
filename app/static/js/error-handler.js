@@ -13,7 +13,7 @@ class ErrorHandler {
         this.retryDelays = [1000, 2000, 5000]; // Progressive delay
         this.isOnline = navigator.onLine;
         this.offlineQueue = [];
-        
+
         this.initialize();
     }
 
@@ -136,14 +136,14 @@ class ErrorHandler {
             if (!this.isOnline) {
                 return this.queueForOffline(error);
             }
-            
+
             const retryKey = `${error.url}_${error.timestamp}`;
             const attempts = this.retryAttempts.get(retryKey) || 0;
-            
+
             if (attempts < this.maxRetries) {
                 this.retryAttempts.set(retryKey, attempts + 1);
                 await this.delay(this.retryDelays[attempts] || 5000);
-                
+
                 try {
                     const response = await fetch(error.url, error.options);
                     if (response.ok) {
@@ -155,7 +155,7 @@ class ErrorHandler {
                     // Will be caught by the next attempt or fallback
                 }
             }
-            
+
             return this.activateFallback('network_error', error);
         });
 
@@ -203,7 +203,7 @@ class ErrorHandler {
                     return { success: true };
                 }
             }
-            
+
             // Disable real-time features gracefully
             return this.disableRealtimeFeatures();
         });
@@ -322,7 +322,7 @@ class ErrorHandler {
     async handleError(errorInfo) {
         // Add to error queue
         this.errorQueue.push(errorInfo);
-        
+
         // Track with analytics
         if (window.demoAnalytics) {
             window.demoAnalytics.trackError(errorInfo);
@@ -381,7 +381,7 @@ class ErrorHandler {
         const fallbackElement = document.createElement('div');
         fallbackElement.innerHTML = fallback.template;
         fallbackElement.className = 'error-boundary-fallback';
-        
+
         // Add custom CSS if provided
         if (fallback.css) {
             this.injectCSS(fallback.css, `fallback-${errorType}`);
@@ -402,14 +402,14 @@ class ErrorHandler {
     findErrorTarget(error) {
         // Try to find specific element based on error context
         if (error.context) {
-            const contextElement = document.getElementById(error.context) || 
+            const contextElement = document.getElementById(error.context) ||
                                  document.querySelector(`[data-context="${error.context}"]`);
             if (contextElement) return contextElement;
         }
 
         // Default to main content area
-        return document.querySelector('main') || 
-               document.querySelector('.content') || 
+        return document.querySelector('main') ||
+               document.querySelector('.content') ||
                document.body;
     }
 
@@ -423,8 +423,8 @@ class ErrorHandler {
         });
 
         this.showNotification(
-            'Operation Queued', 
-            'This operation will be retried when you\'re back online', 
+            'Operation Queued',
+            'This operation will be retried when you\'re back online',
             'info'
         );
 
@@ -450,8 +450,8 @@ class ErrorHandler {
 
         if (this.offlineQueue.length > 0) {
             this.showNotification(
-                'Some Operations Failed', 
-                `${this.offlineQueue.length} operations are still pending`, 
+                'Some Operations Failed',
+                `${this.offlineQueue.length} operations are still pending`,
                 'warning'
             );
         }
@@ -476,7 +476,7 @@ class ErrorHandler {
      */
     showErrorNotification(error) {
         const userFriendlyMessage = this.getUserFriendlyMessage(error);
-        
+
         if (window.demoWebSocket?.showNotification) {
             window.demoWebSocket.showNotification(
                 'Error Occurred',
@@ -669,14 +669,14 @@ class ErrorHandler {
 
     logError(error) {
         console.error('Unrecovered error:', error);
-        
+
         // Send to server for logging
         this.sendErrorReport(error);
     }
 
     logRecovery(error, result) {
         console.log('Error recovered:', error.type, result);
-        
+
         if (window.demoAnalytics) {
             window.demoAnalytics.trackEvent('error_recovery', {
                 errorType: error.type,

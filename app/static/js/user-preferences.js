@@ -74,7 +74,7 @@ class UserPreferencesManager {
     getPreference(key, defaultValue = null) {
         const keys = key.split('.');
         let value = this.preferences;
-        
+
         for (const k of keys) {
             if (value && typeof value === 'object' && k in value) {
                 value = value[k];
@@ -82,7 +82,7 @@ class UserPreferencesManager {
                 return defaultValue;
             }
         }
-        
+
         return value;
     }
 
@@ -92,7 +92,7 @@ class UserPreferencesManager {
     setPreference(key, value) {
         const keys = key.split('.');
         let current = this.preferences;
-        
+
         for (let i = 0; i < keys.length - 1; i++) {
             const k = keys[i];
             if (!(k in current) || typeof current[k] !== 'object') {
@@ -100,7 +100,7 @@ class UserPreferencesManager {
             }
             current = current[k];
         }
-        
+
         current[keys[keys.length - 1]] = value;
         this.savePreferences();
     }
@@ -130,7 +130,7 @@ class UserPreferencesManager {
      */
     loadDemoState(demoType, sessionId) {
         const key = `${this.storagePrefix}state_${demoType}_${sessionId}`;
-        
+
         try {
             const stored = localStorage.getItem(key);
             if (stored) {
@@ -141,7 +141,7 @@ class UserPreferencesManager {
         } catch (error) {
             console.error('Error loading demo state:', error);
         }
-        
+
         return null;
     }
 
@@ -150,7 +150,7 @@ class UserPreferencesManager {
      */
     getAllDemoStates() {
         const states = [];
-        
+
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key && key.startsWith(`${this.storagePrefix}state_`)) {
@@ -162,7 +162,7 @@ class UserPreferencesManager {
                 }
             }
         }
-        
+
         return states.sort((a, b) => b.timestamp - a.timestamp);
     }
 
@@ -172,7 +172,7 @@ class UserPreferencesManager {
     clearOldStates() {
         const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
         const keysToRemove = [];
-        
+
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key && key.startsWith(`${this.storagePrefix}state_`)) {
@@ -186,11 +186,11 @@ class UserPreferencesManager {
                 }
             }
         }
-        
+
         keysToRemove.forEach(key => {
             localStorage.removeItem(key);
         });
-        
+
         console.log(`Cleared ${keysToRemove.length} old demo states`);
     }
 
@@ -233,22 +233,22 @@ class UserPreferencesManager {
             exportedAt: new Date().toISOString(),
             version: '1.0'
         };
-        
+
         const blob = new Blob([JSON.stringify(data, null, 2)], {
             type: 'application/json'
         });
-        
+
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
         link.download = `demo_preferences_${new Date().toISOString().split('T')[0]}.json`;
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         URL.revokeObjectURL(url);
-        
+
         return data;
     }
 
@@ -258,16 +258,16 @@ class UserPreferencesManager {
     async importUserData(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            
+
             reader.onload = (e) => {
                 try {
                     const data = JSON.parse(e.target.result);
-                    
+
                     if (data.preferences) {
                         this.preferences = { ...this.getDefaultPreferences(), ...data.preferences };
                         this.savePreferences();
                     }
-                    
+
                     if (data.demoStates && Array.isArray(data.demoStates)) {
                         data.demoStates.forEach(state => {
                             if (state.demoType && state.sessionId) {
@@ -275,13 +275,13 @@ class UserPreferencesManager {
                             }
                         });
                     }
-                    
+
                     resolve(data);
                 } catch (error) {
                     reject(new Error('Invalid data format'));
                 }
             };
-            
+
             reader.onerror = () => reject(new Error('File read error'));
             reader.readAsText(file);
         });
@@ -301,7 +301,7 @@ class UserPreferencesManager {
     clearAllData() {
         // Clear preferences
         localStorage.removeItem(`${this.storagePrefix}preferences`);
-        
+
         // Clear demo states
         const keysToRemove = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -310,15 +310,15 @@ class UserPreferencesManager {
                 keysToRemove.push(key);
             }
         }
-        
+
         keysToRemove.forEach(key => {
             localStorage.removeItem(key);
         });
-        
+
         // Clear session data
         this.sessionData.clear();
         this.demoStates.clear();
-        
+
         // Reset to defaults
         this.preferences = this.getDefaultPreferences();
     }
@@ -329,7 +329,7 @@ class UserPreferencesManager {
     applyTheme() {
         const theme = this.getPreference('theme', 'auto');
         const root = document.documentElement;
-        
+
         if (theme === 'dark') {
             root.classList.add('dark');
         } else if (theme === 'light') {
@@ -362,7 +362,7 @@ class UserPreferencesManager {
      */
     startAutoSave(demoType, sessionId, getStateCallback) {
         if (!this.getPreference('autoSave', true)) return;
-        
+
         const interval = setInterval(() => {
             if (typeof getStateCallback === 'function') {
                 try {
@@ -378,7 +378,7 @@ class UserPreferencesManager {
 
         // Store interval reference for cleanup
         this.saveSessionData(`autoSave_${demoType}_${sessionId}`, interval);
-        
+
         return interval;
     }
 
@@ -404,21 +404,21 @@ class UserPreferencesManager {
             lastUsed: null,
             favoriteDemo: null
         };
-        
+
         const states = this.getAllDemoStates();
         stats.totalSessions = states.length;
-        
+
         states.forEach(state => {
             if (!stats.demoUsage[state.demoType]) {
                 stats.demoUsage[state.demoType] = 0;
             }
             stats.demoUsage[state.demoType]++;
-            
+
             if (!stats.lastUsed || state.timestamp > stats.lastUsed) {
                 stats.lastUsed = state.timestamp;
             }
         });
-        
+
         // Find favorite demo
         let maxUsage = 0;
         Object.entries(stats.demoUsage).forEach(([demo, count]) => {
@@ -427,7 +427,7 @@ class UserPreferencesManager {
                 stats.favoriteDemo = demo;
             }
         });
-        
+
         return stats;
     }
 
@@ -437,7 +437,7 @@ class UserPreferencesManager {
     trackExport(format) {
         const currentCount = this.getSessionData('exportCount') || 0;
         this.saveSessionData('exportCount', currentCount + 1);
-        
+
         const formatCount = this.getSessionData(`export_${format}`) || 0;
         this.saveSessionData(`export_${format}`, formatCount + 1);
     }

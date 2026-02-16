@@ -11,20 +11,20 @@ Replace current orange/blue scheme with sophisticated premium palette:
   --color-primary: #1E293B;        /* Deep Slate */
   --color-primary-light: #334155;   /* Lighter Slate */
   --color-primary-dark: #0F172A;    /* Charcoal */
-  
+
   /* Secondary Colors */
   --color-secondary: #0EA5E9;       /* Electric Blue */
   --color-secondary-light: #38BDF8;  /* Light Blue */
   --color-secondary-dark: #0284C7;   /* Dark Blue */
-  
+
   /* Accent Colors */
   --color-accent: #10B981;          /* Emerald Green */
   --color-premium: #F59E0B;         /* Gold Accent */
-  
+
   /* Neutral Colors */
   --color-neutral-light: #F8FAFC;   /* Warm Gray */
   --color-neutral-dark: #0F172A;    /* Charcoal */
-  
+
   /* Background Colors */
   --color-bg-primary: #FFFFFF;      /* Pure White */
   --color-bg-secondary: #F8FAFC;    /* Subtle Gray */
@@ -88,11 +88,11 @@ Update to professional font stack:
 <section class="hero-premium">
   <div class="hero-content">
     <h1 class="hero-title">
-      Transform Your Vision Into 
+      Transform Your Vision Into
       <span class="text-gradient-premium">Scalable Python Solutions</span>
     </h1>
     <p class="hero-subtitle">
-      Senior Python developer with proven track record of delivering 
+      Senior Python developer with proven track record of delivering
       enterprise-grade applications that drive business growth
     </p>
     <div class="hero-metrics">
@@ -138,7 +138,7 @@ Replace technology lists with business outcomes:
   <div class="testimonial-carousel">
     <div class="testimonial">
       <blockquote>
-        "Brian's FastAPI architecture reduced our API response times by 60% 
+        "Brian's FastAPI architecture reduced our API response times by 60%
         and eliminated our scaling bottlenecks."
       </blockquote>
       <cite>— Sarah Chen, CTO at TechCorp</cite>

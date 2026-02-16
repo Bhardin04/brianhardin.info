@@ -8,34 +8,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Admin Panel / CMS** - Full content management system with GitHub OAuth authentication
+  - Blog CRUD: create, edit, delete, publish/unpublish with markdown rendering
+  - Project CRUD: full management including case study data (problem/solution/outcome/timeline)
+  - Contact inbox: view, mark read, archive, and delete contact form submissions
+  - Site settings: key-value configuration management
+  - Dashboard: stats cards with post/project/message counts
+  - Standalone admin layout with sidebar navigation and dark mode
+- **Database Layer** - SQLAlchemy 2.0 async ORM with PostgreSQL (production) and SQLite (local dev)
+  - 5 tables: blog_posts, projects, contact_messages, admin_sessions, site_settings
+  - Async engine with `expire_on_commit=False` for safe post-commit access
+  - Feature-flagged migration: `USE_DATABASE` env var controls DB vs in-memory routing
+- **GitHub OAuth** - Admin authentication via GitHub OAuth with session-based access
+  - Configurable admin username via `ADMIN_GITHUB_USERNAME`
+  - 24-hour session TTL with `secrets.token_urlsafe(48)` tokens
+  - HTTPS proxy header support for Render deployment
+- **Data Seeding** - `python -m app.scripts.seed` migrates hardcoded data to database (idempotent)
+- **DB Adapters** - SQLAlchemy to Pydantic model converters for public routes
+- **Contact Form DB Storage** - Contact submissions saved to database alongside email sending
 - **Rate Limiting** - Per-route rate limits using `slowapi` on contact form (1/min, 3/hr), analytics (30/min), error reporting (10/min), demo sessions (10/min), and demo data endpoints (20/min)
 - **CSRF Protection** - Double Submit Cookie pattern on contact form with HMAC-signed tokens, 1-hour expiry, and `httponly`/`samesite=strict` cookie
 - **Security Tests** - Comprehensive test suite for CSRF token generation/validation, protection flow, and rate limiting behavior
-- **Breadcrumb Navigation** - Consistent breadcrumb nav (`Home > Section > Page`) on project detail and all demo pages, replacing simple back-links with semantic `<nav aria-label="Breadcrumb">` markup for improved wayfinding and SEO
-- **Custom Error Pages** - Styled 404 and 500 error pages extending base template with navigation back to site
-- **XML Sitemap** - `/sitemap.xml` endpoint with static pages, project details, blog posts, and demo pages
-- **RSS Feed** - `/blog/feed.xml` endpoint with RSS 2.0 format and atom:link self-reference
-- **Scroll-to-Top Button** - Fixed-position button with smooth scroll, `requestAnimationFrame` debounce, and `prefers-reduced-motion` support
-- **Demos Router Registration** - Fixed bug where demos router was not included in the app, preventing `/demos/` from loading
-- **Demo Test Suite** - 38 new tests covering demo page rendering, API endpoints, service business logic, session management, and WebSocket communication
-- **ProjectService** - Centralized project data service (`app/services/project.py`) as single source of truth, replacing duplicate project definitions across routers
+- **Breadcrumb Navigation** - Consistent breadcrumb nav on project detail and all demo pages
+- **Custom Error Pages** - Styled 404 and 500 error pages extending base template
+- **XML Sitemap** - `/sitemap.xml` endpoint with dynamic project/blog URLs from database
+- **RSS Feed** - `/blog/feed.xml` endpoint with RSS 2.0 format
+- **Demo Test Suite** - 38 tests covering demo page rendering, API endpoints, service business logic, session management, and WebSocket communication
+- **Database Tests** - 23 tests covering DB services, adapters, seed script, and JSON roundtrips
+- **ProjectService** - Centralized project data service as single source of truth
 
 ### Changed
+- **`USE_DATABASE` default** - Changed from `false` to `true`; database is now the primary content source
 - **Pre-commit Hooks** - Removed redundant `black` and `isort` (handled by ruff); updated ruff to v0.12.2, pre-commit-hooks to v5.0.0, mypy to v1.14.1, bandit to 1.8.3
 - **Pydantic V2 Migration** - Replaced deprecated `class Config` with `model_config = ConfigDict()` and `.dict()` with `.model_dump()` across all models and services
-- **Starlette TemplateResponse** - Updated all `TemplateResponse` calls to new API signature (`request` as first positional arg, `context=` kwarg) across all routers
+- **Starlette TemplateResponse** - Updated all `TemplateResponse` calls to new API signature
 
 ### Security
-- **SMTP Header Injection Prevention** - Sanitize email subject by stripping `\r` and `\n` characters before setting header
-- **Demo Session Limits** - Added `MAX_SESSIONS=100` and `SESSION_TTL_SECONDS=3600` to prevent unbounded memory growth from demo sessions
-- **WebSocket Connection Limits** - Added `MAX_CONNECTIONS=200` and `MAX_CONNECTIONS_PER_SESSION=5` to prevent resource exhaustion
-- **Pipeline Record Cap** - Capped WebSocket pipeline `total_records` to 1000 to prevent DoS via excessive simulation
+- **GitHub OAuth Admin Access** - Only configured GitHub username can access admin panel
+- **SMTP Header Injection Prevention** - Sanitize email subject by stripping `\r` and `\n` characters
+- **Demo Session Limits** - `MAX_SESSIONS=100` and `SESSION_TTL_SECONDS=3600` to prevent unbounded memory growth
+- **WebSocket Connection Limits** - `MAX_CONNECTIONS=200` and `MAX_CONNECTIONS_PER_SESSION=5`
+- **Pipeline Record Cap** - Capped WebSocket pipeline `total_records` to 1000
 
 ### Fixed
-- **500 Error Handler Type** - Changed exception parameter from `StarletteHTTPException` to `Exception` to properly catch all 500 errors
-- **Suggestion-level UX improvements** - Dynamic Tailwind class fix (CDN-safe object mapping), debounced search inputs, Google Fonts loaded via `<link>`, scoped connection monitoring to demo pages, reduced motion support (scroll-behavior, transform suppression), print styles, flex-wrap on demo headers, empty state messages for filtered tables, SEO meta tag propagation from page variables, improved CTA copy, mobile menu transition
-- **Dark mode blog sidebar** - Added missing `dark:bg-gray-800` to "About This Blog" card on blog index, fixing invisible text on white background in dark mode
-- **Footer whitespace** - Added sticky footer layout (`flex-col` + `flex-1`), reduced excessive padding on demos page (hero, grid, CTA), tightened contact page bottom padding, defined missing CSS spacing variables (`--space-4`, `--space-16`, `--space-24`, `--space-32`) used by section and container classes
+- **500 Error Handler Type** - Changed exception parameter from `StarletteHTTPException` to `Exception`
+- **OAuth Redirect URI** - Added `--proxy-headers` and `--forwarded-allow-ips *` to Dockerfile for HTTPS behind Render's proxy
+- **Naive Datetime Handling** - Normalized to naive UTC (`datetime.now(UTC).replace(tzinfo=None)`) for cross-database compatibility
+- **Dark mode blog sidebar** - Added missing `dark:bg-gray-800` to "About This Blog" card
+- **Footer whitespace** - Added sticky footer layout, reduced excessive padding
 
 ## [1.4.0] - 2026-02-15
 

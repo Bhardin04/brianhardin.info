@@ -1,6 +1,6 @@
 # Dark Mode Functionality Test Report
-**Date:** July 8, 2025  
-**Website:** brianhardin.info (http://127.0.0.1:8000)  
+**Date:** July 8, 2025
+**Website:** brianhardin.info (http://127.0.0.1:8000)
 **Test Duration:** Multiple test runs with various approaches
 
 ## Executive Summary
@@ -91,7 +91,7 @@ const currentTheme = localStorage.getItem('theme') || 'light';
 // Theme switching logic
 themeToggle.addEventListener('click', function() {
     const isDark = document.documentElement.classList.contains('dark');
-    
+
     if (isDark) {
         document.documentElement.classList.remove('dark');
         localStorage.setItem('theme', 'light');

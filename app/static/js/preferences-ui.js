@@ -15,10 +15,10 @@ class PreferencesUI {
      */
     show() {
         if (this.isOpen) return;
-        
+
         this.createModal();
         this.isOpen = true;
-        
+
         // Animate in
         requestAnimationFrame(() => {
             this.modal.style.opacity = '1';
@@ -30,10 +30,10 @@ class PreferencesUI {
      */
     hide() {
         if (!this.isOpen || !this.modal) return;
-        
+
         // Animate out
         this.modal.style.opacity = '0';
-        
+
         setTimeout(() => {
             if (this.modal && this.modal.parentElement) {
                 this.modal.parentElement.removeChild(this.modal);
@@ -51,7 +51,7 @@ class PreferencesUI {
         this.modal.className = 'preferences-modal';
         this.modal.style.opacity = '0';
         this.modal.style.transition = 'opacity 0.3s ease';
-        
+
         this.modal.innerHTML = `
             <div class="preferences-content">
                 <div class="flex items-center justify-between mb-6">
@@ -62,7 +62,7 @@ class PreferencesUI {
                         </svg>
                     </button>
                 </div>
-                
+
                 <div class="space-y-6">
                     ${this.createAppearanceSection()}
                     ${this.createExportSection()}
@@ -71,7 +71,7 @@ class PreferencesUI {
                     ${this.createPrivacySection()}
                     ${this.createDataSection()}
                 </div>
-                
+
                 <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                     <button id="reset-preferences" class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
                         Reset to Defaults
@@ -85,7 +85,7 @@ class PreferencesUI {
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(this.modal);
         this.attachEventListeners();
     }
@@ -96,11 +96,11 @@ class PreferencesUI {
     createAppearanceSection() {
         const theme = this.prefs.getPreference('theme', 'auto');
         const animations = this.prefs.getPreference('chartAnimations', true);
-        
+
         return `
             <div class="preference-section">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Appearance</h3>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Theme</div>
@@ -114,7 +114,7 @@ class PreferencesUI {
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Chart Animations</div>
@@ -136,11 +136,11 @@ class PreferencesUI {
      */
     createExportSection() {
         const exportFormat = this.prefs.getPreference('exportFormat', 'pdf');
-        
+
         return `
             <div class="preference-section">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Export Settings</h3>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Default Export Format</div>
@@ -167,11 +167,11 @@ class PreferencesUI {
         const autoRefresh = this.prefs.getPreference('dashboard.autoRefresh', false);
         const showKPIs = this.prefs.getPreference('dashboard.showKPIs', true);
         const compactMode = this.prefs.getPreference('dashboard.compactMode', false);
-        
+
         return `
             <div class="preference-section">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dashboard</h3>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Default Time Period</div>
@@ -185,7 +185,7 @@ class PreferencesUI {
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Auto Refresh</div>
@@ -198,7 +198,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Show KPIs</div>
@@ -211,7 +211,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Compact Mode</div>
@@ -236,11 +236,11 @@ class PreferencesUI {
         const errors = this.prefs.getPreference('notifications.errors', true);
         const success = this.prefs.getPreference('notifications.success', true);
         const websocket = this.prefs.getPreference('notifications.websocket', false);
-        
+
         return `
             <div class="preference-section">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Notifications</h3>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Export Notifications</div>
@@ -253,7 +253,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Error Notifications</div>
@@ -266,7 +266,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Success Notifications</div>
@@ -279,7 +279,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">WebSocket Notifications</div>
@@ -303,11 +303,11 @@ class PreferencesUI {
         const analytics = this.prefs.getPreference('privacy.analytics', true);
         const errorReporting = this.prefs.getPreference('privacy.errorReporting', true);
         const usageStats = this.prefs.getPreference('privacy.usageStats', true);
-        
+
         return `
             <div class="preference-section">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Privacy</h3>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Analytics</div>
@@ -320,7 +320,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Error Reporting</div>
@@ -333,7 +333,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Usage Statistics</div>
@@ -356,11 +356,11 @@ class PreferencesUI {
     createDataSection() {
         const autoSave = this.prefs.getPreference('autoSave', true);
         const stats = this.prefs.getUsageStats();
-        
+
         return `
             <div class="preference-section">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Data Management</h3>
-                
+
                 <div class="preference-item">
                     <div>
                         <div class="preference-label">Auto-Save Demo State</div>
@@ -373,7 +373,7 @@ class PreferencesUI {
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-4">
                     <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Usage Statistics</h4>
                     <div class="grid grid-cols-2 gap-4 text-sm">
@@ -393,7 +393,7 @@ class PreferencesUI {
                         ` : ''}
                     </div>
                 </div>
-                
+
                 <div class="mt-4 space-y-2">
                     <button id="clear-demo-states" class="w-full text-left px-4 py-2 text-sm bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 rounded hover:bg-yellow-100 dark:hover:bg-yellow-900/30">
                         Clear All Saved Demo States

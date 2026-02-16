@@ -26,7 +26,7 @@ services:
           name: brianhardin-db
           property: connectionString
       - key: USE_DATABASE
-        value: "false"
+        value: "true"
       - key: GITHUB_CLIENT_ID
         sync: false
       - key: GITHUB_CLIENT_SECRET
