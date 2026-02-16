@@ -31,7 +31,7 @@ from app.models.demo import (
 class DemoServiceBase:
     """Base service for all demo implementations"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.sessions: dict[str, DemoSession] = {}
 
     def create_session(self, demo_type: DemoType) -> DemoSession:
@@ -45,8 +45,8 @@ class DemoServiceBase:
         return self.sessions.get(session_id)
 
     def update_session_status(
-        self, session_id: str, status: DemoStatus, data: dict[str, Any] = None
-    ):
+        self, session_id: str, status: DemoStatus, data: dict[str, Any] | None = None
+    ) -> None:
         """Update session status and data"""
         if session := self.sessions.get(session_id):
             session.update_status(status, data or {})
@@ -55,10 +55,10 @@ class DemoServiceBase:
 class PaymentProcessingService(DemoServiceBase):
     """Service for payment processing demo"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.sample_invoices = self._generate_sample_invoices()
-        self.processed_payments = []
+        self.processed_payments: list[dict[str, Any]] = []
 
     def _generate_sample_invoices(self) -> list[Invoice]:
         """Generate realistic sample invoices for demo"""
@@ -246,7 +246,7 @@ class PaymentProcessingService(DemoServiceBase):
 
         return round(confidence, 2)
 
-    def _apply_payment_matches(self, matches: list[PaymentMatch]):
+    def _apply_payment_matches(self, matches: list[PaymentMatch]) -> None:
         """Apply payment matches to invoice balances"""
         for match in matches:
             for invoice in self.sample_invoices:

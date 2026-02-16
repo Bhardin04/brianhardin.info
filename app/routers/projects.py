@@ -840,7 +840,7 @@ PROJECTS_DATA = {
 
 
 @router.get("/", response_class=HTMLResponse)
-async def projects_list(request: Request):
+async def projects_list(request: Request) -> HTMLResponse:
     projects = list(PROJECTS_DATA.values())
     # Sort by featured first, then by creation date
     projects.sort(
@@ -855,7 +855,7 @@ async def projects_list(request: Request):
 
 
 @router.get("/{project_id}", response_class=HTMLResponse)
-async def project_detail(request: Request, project_id: int):
+async def project_detail(request: Request, project_id: int) -> HTMLResponse:
     project = PROJECTS_DATA.get(project_id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")

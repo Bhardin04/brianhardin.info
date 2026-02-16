@@ -33,13 +33,13 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/", response_class=HTMLResponse)
-async def demos_index(request: Request):
+async def demos_index(request: Request) -> HTMLResponse:
     """Demo portal homepage"""
     return templates.TemplateResponse("demos/index.html", {"request": request})
 
 
 @router.get("/payment-processing", response_class=HTMLResponse)
-async def payment_demo_page(request: Request):
+async def payment_demo_page(request: Request) -> HTMLResponse:
     """Payment processing demo page"""
     return templates.TemplateResponse(
         "demos/payment_processing.html", {"request": request}
@@ -47,13 +47,13 @@ async def payment_demo_page(request: Request):
 
 
 @router.get("/data-pipeline", response_class=HTMLResponse)
-async def pipeline_demo_page(request: Request):
+async def pipeline_demo_page(request: Request) -> HTMLResponse:
     """Data pipeline demo page"""
     return templates.TemplateResponse("demos/data_pipeline.html", {"request": request})
 
 
 @router.get("/sales-dashboard", response_class=HTMLResponse)
-async def dashboard_demo_page(request: Request):
+async def dashboard_demo_page(request: Request) -> HTMLResponse:
     """Sales dashboard demo page"""
     return templates.TemplateResponse(
         "demos/sales_dashboard.html", {"request": request}
@@ -61,7 +61,7 @@ async def dashboard_demo_page(request: Request):
 
 
 @router.get("/collections-dashboard", response_class=HTMLResponse)
-async def collections_demo_page(request: Request):
+async def collections_demo_page(request: Request) -> HTMLResponse:
     """Collections dashboard demo page"""
     return templates.TemplateResponse(
         "demos/collections_dashboard.html", {"request": request}
@@ -69,7 +69,7 @@ async def collections_demo_page(request: Request):
 
 
 @router.get("/automation-suite", response_class=HTMLResponse)
-async def automation_demo_page(request: Request):
+async def automation_demo_page(request: Request) -> HTMLResponse:
     """Automation suite demo page"""
     return templates.TemplateResponse(
         "demos/automation_suite.html", {"request": request}
@@ -78,7 +78,7 @@ async def automation_demo_page(request: Request):
 
 # API Endpoints for Payment Processing Demo
 @router.post("/api/payment-processing/session")
-async def create_payment_session():
+async def create_payment_session() -> DemoResponse | JSONResponse:
     """Create a new payment processing demo session"""
     try:
         session = payment_service.create_session(DemoType.PAYMENT_PROCESSING)
@@ -113,7 +113,7 @@ async def create_payment_session():
 
 
 @router.post("/api/payment-processing/process")
-async def process_payment(payment_data: dict[str, Any]):
+async def process_payment(payment_data: dict[str, Any]) -> DemoResponse | JSONResponse:
     """Process a payment entry"""
     try:
         session_id = payment_data.get("session_id")
@@ -147,7 +147,7 @@ async def process_payment(payment_data: dict[str, Any]):
 
 
 @router.get("/api/payment-processing/invoices/{customer_id}")
-async def get_customer_invoices(customer_id: str):
+async def get_customer_invoices(customer_id: str) -> DemoResponse | JSONResponse:
     """Get open invoices for a specific customer"""
     try:
         invoices = payment_service.get_customer_invoices(customer_id)
@@ -173,7 +173,7 @@ async def get_customer_invoices(customer_id: str):
 
 # API Endpoints for Data Pipeline Demo
 @router.post("/api/data-pipeline/session")
-async def create_pipeline_session():
+async def create_pipeline_session() -> DemoResponse | JSONResponse:
     """Create a new data pipeline demo session"""
     try:
         session = pipeline_service.create_session(DemoType.DATA_PIPELINE)
@@ -216,7 +216,9 @@ async def create_pipeline_session():
 
 
 @router.post("/api/data-pipeline/extract")
-async def extract_pipeline_data(extraction_request: dict[str, Any]):
+async def extract_pipeline_data(
+    extraction_request: dict[str, Any],
+) -> DemoResponse | JSONResponse:
     """Extract data from NetSuite"""
     try:
         session_id = extraction_request.get("session_id")
@@ -251,7 +253,7 @@ async def extract_pipeline_data(extraction_request: dict[str, Any]):
 
 # API Endpoints for Dashboard Demo
 @router.post("/api/dashboard/session")
-async def create_dashboard_session():
+async def create_dashboard_session() -> DemoResponse | JSONResponse:
     """Create a new dashboard demo session"""
     try:
         session = dashboard_service.create_session(DemoType.SALES_DASHBOARD)
@@ -283,7 +285,9 @@ async def create_dashboard_session():
 
 
 @router.post("/api/dashboard/data")
-async def get_dashboard_data(request_data: dict[str, Any]):
+async def get_dashboard_data(
+    request_data: dict[str, Any],
+) -> DemoResponse | JSONResponse:
     """Generate dashboard data"""
     try:
         session_id = request_data.get("session_id")
@@ -317,7 +321,7 @@ async def get_dashboard_data(request_data: dict[str, Any]):
 
 # API Endpoints for Collections Demo
 @router.post("/api/collections/session")
-async def create_collections_session():
+async def create_collections_session() -> DemoResponse | JSONResponse:
     """Create a new collections demo session"""
     try:
         session = collections_service.create_session(DemoType.COLLECTIONS_DASHBOARD)
@@ -342,7 +346,9 @@ async def create_collections_session():
 
 
 @router.post("/api/collections/data")
-async def get_collections_data(request_data: dict[str, Any]):
+async def get_collections_data(
+    request_data: dict[str, Any],
+) -> DemoResponse | JSONResponse:
     """Generate collections dashboard data"""
     try:
         session_id = request_data.get("session_id")
@@ -375,7 +381,9 @@ async def get_collections_data(request_data: dict[str, Any]):
 
 # WebSocket Endpoints for Real-time Updates
 @router.websocket("/ws/{demo_type}/{session_id}")
-async def websocket_endpoint(websocket: WebSocket, demo_type: str, session_id: str):
+async def websocket_endpoint(
+    websocket: WebSocket, demo_type: str, session_id: str
+) -> None:
     """WebSocket endpoint for real-time demo updates"""
     import asyncio
     import json

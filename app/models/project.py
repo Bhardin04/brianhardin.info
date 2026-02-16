@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 
 
 class ProjectCategory(str, Enum):
@@ -79,7 +79,7 @@ class Project(BaseModel):
     technologies: list[str]
     category: ProjectCategory = ProjectCategory.WEB_APP
     status: ProjectStatus = ProjectStatus.COMPLETED
-    github_url: HttpUrl | None = None
+    github_url: str | None = None
     demo_url: str | None = None
     image_url: str | None = None
     created_at: datetime | None = None
@@ -108,7 +108,7 @@ class ProjectCreate(BaseModel):
     technologies: list[str]
     category: ProjectCategory = ProjectCategory.WEB_APP
     status: ProjectStatus = ProjectStatus.COMPLETED
-    github_url: HttpUrl | None = None
+    github_url: str | None = None
     demo_url: str | None = None
     image_url: str | None = None
     duration: str | None = None

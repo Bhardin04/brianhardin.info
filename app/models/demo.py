@@ -39,7 +39,9 @@ class DemoSession(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.now)
     data: dict[str, Any] = Field(default_factory=dict)
 
-    def update_status(self, status: DemoStatus, data: dict[str, Any] = None):
+    def update_status(
+        self, status: DemoStatus, data: dict[str, Any] | None = None
+    ) -> None:
         """Update session status and data"""
         self.status = status
         self.updated_at = datetime.now()
