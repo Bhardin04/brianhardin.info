@@ -12,7 +12,7 @@ By default, the contact form operates in development mode when no email credenti
 
 - ✅ Forms submit successfully
 - ✅ Email content is logged to console
-- ✅ Users see success messages  
+- ✅ Users see success messages
 - ✅ No actual emails are sent
 
 This allows full development and testing without email setup.

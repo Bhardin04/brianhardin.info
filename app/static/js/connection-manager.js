@@ -16,7 +16,7 @@ class ConnectionManager {
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 5;
         this.baseRetryDelay = 1000;
-        
+
         this.initialize();
     }
 
@@ -54,7 +54,7 @@ class ConnectionManager {
         console.log('Connection restored');
         this.isOnline = true;
         this.reconnectAttempts = 0;
-        
+
         // Verify actual connectivity
         const isReallyOnline = await this.verifyConnection();
         if (isReallyOnline) {
@@ -91,8 +91,8 @@ class ConnectionManager {
             ];
 
             const results = await Promise.allSettled(
-                testEndpoints.map(endpoint => 
-                    fetch(endpoint, { 
+                testEndpoints.map(endpoint =>
+                    fetch(endpoint, {
                         method: 'HEAD',
                         mode: 'no-cors',
                         cache: 'no-cache',
@@ -129,28 +129,28 @@ class ConnectionManager {
         if (!this.isOnline) return;
 
         const startTime = performance.now();
-        
+
         try {
             const response = await fetch('/api/ping', {
                 method: 'HEAD',
                 cache: 'no-cache',
                 signal: AbortSignal.timeout(10000)
             });
-            
+
             const endTime = performance.now();
             const latency = endTime - startTime;
-            
+
             this.updateConnectionQuality(latency, response.ok);
             this.lastPingTime = latency;
-            
+
             // Track with performance monitor
             if (window.performanceMonitor) {
                 window.performanceMonitor.trackPerformance('connection_latency', latency);
             }
-            
+
         } catch (error) {
             this.updateConnectionQuality(null, false);
-            
+
             // Might be offline
             if (this.isOnline) {
                 const reallyOnline = await this.verifyConnection();
@@ -249,7 +249,7 @@ class ConnectionManager {
 
         // Queue request for later
         this.requestQueue.push(request);
-        
+
         this.showNotification(
             'Request Queued',
             'This request will be processed when connection is restored',
@@ -272,7 +272,7 @@ class ConnectionManager {
         // If it's a network error and we have retries left
         if (this.isNetworkError(error) && request.attempts < 3) {
             const delay = this.baseRetryDelay * Math.pow(2, request.attempts - 1);
-            
+
             this.showNotification(
                 'Retrying Request',
                 `Attempting to reconnect... (${request.attempts}/3)`,
@@ -280,7 +280,7 @@ class ConnectionManager {
             );
 
             await this.delay(delay);
-            
+
             try {
                 return await this.makeRequest(request);
             } catch (retryError) {
@@ -290,7 +290,7 @@ class ConnectionManager {
 
         // All retries failed, queue for offline processing
         this.retryQueue.push(request);
-        
+
         // Check if we have cached data as fallback
         const cachedResponse = this.getCachedResponse(request.url);
         if (cachedResponse) {
@@ -365,13 +365,13 @@ class ConnectionManager {
     enableOfflineMode() {
         // Cache current data
         this.cacheCurrentData();
-        
+
         // Show offline indicator
         this.showOfflineIndicator();
-        
+
         // Disable real-time features
         this.disableRealtimeFeatures();
-        
+
         // Load offline data if available
         this.loadOfflineData();
     }
@@ -444,12 +444,12 @@ class ConnectionManager {
             try {
                 const registration = await navigator.serviceWorker.register('/service-worker.js');
                 console.log('Service Worker registered:', registration);
-                
+
                 // Listen for service worker messages
                 navigator.serviceWorker.addEventListener('message', (event) => {
                     this.handleServiceWorkerMessage(event.data);
                 });
-                
+
             } catch (error) {
                 console.log('Service Worker registration failed:', error);
             }
@@ -486,7 +486,7 @@ class ConnectionManager {
     }
 
     isNetworkError(error) {
-        return error instanceof TypeError || 
+        return error instanceof TypeError ||
                error.message.includes('fetch') ||
                error.message.includes('network') ||
                error.name === 'AbortError';
@@ -521,7 +521,7 @@ class ConnectionManager {
      */
     showConnectionStatus(status) {
         const indicator = this.getConnectionIndicator();
-        
+
         switch (status) {
             case 'online':
                 indicator.className = 'connection-indicator online';
@@ -543,16 +543,16 @@ class ConnectionManager {
 
     updateConnectionIndicator() {
         const indicator = this.getConnectionIndicator();
-        
+
         if (!this.isOnline) return;
-        
+
         const qualityEmojis = {
             excellent: '🟢',
             good: '🟢',
             fair: '🟡',
             poor: '🟠'
         };
-        
+
         const ping = this.lastPingTime ? ` (${Math.round(this.lastPingTime)}ms)` : '';
         indicator.textContent = `${qualityEmojis[this.connectionQuality]} ${this.connectionQuality.charAt(0).toUpperCase() + this.connectionQuality.slice(1)}${ping}`;
         indicator.className = `connection-indicator online ${this.connectionQuality}`;
@@ -564,7 +564,7 @@ class ConnectionManager {
             indicator = document.createElement('div');
             indicator.id = 'connection-indicator';
             indicator.className = 'connection-indicator';
-            
+
             // Add to page header or create floating indicator
             const header = document.querySelector('header') || document.querySelector('.demo-header');
             if (header) {
@@ -591,7 +591,7 @@ class ConnectionManager {
                 </button>
             </div>
         `;
-        
+
         document.body.insertBefore(offlineBar, document.body.firstChild);
     }
 
@@ -607,7 +607,7 @@ class ConnectionManager {
         if (window.demoWebSocket) {
             window.demoWebSocket.disconnectAll();
         }
-        
+
         // Disable real-time buttons
         const realtimeButtons = document.querySelectorAll('[id*="realtime"], [data-realtime]');
         realtimeButtons.forEach(btn => {
@@ -627,7 +627,7 @@ class ConnectionManager {
 
     async retryConnection() {
         this.showConnectionStatus('reconnecting');
-        
+
         const isOnline = await this.verifyConnection();
         if (isOnline) {
             this.handleOnline();
@@ -670,7 +670,7 @@ class ConnectionManager {
             );
 
             const successful = results.filter(r => r.status === 'fulfilled').length;
-            
+
             this.showNotification(
                 'Sync Complete',
                 `${successful}/${offlineData.length} items synchronized`,
@@ -706,7 +706,7 @@ class ConnectionManager {
                 retryQueue: this.retryQueue,
                 timestamp: Date.now()
             };
-            
+
             localStorage.setItem('pending_offline_data', JSON.stringify(pendingData));
         } catch (error) {
             console.error('Failed to save offline data:', error);

@@ -1,7 +1,7 @@
 # Color Scheme Update Documentation
 
-**Date**: 2025-01-08  
-**Update Type**: Major Design System Overhaul  
+**Date**: 2025-01-08
+**Update Type**: Major Design System Overhaul
 **Status**: ✅ Complete
 
 ## Overview
@@ -12,7 +12,7 @@ Updated the website's color scheme from a Python-inspired blue/gold palette to a
 
 ### Primary Colors (Orange-based)
 - **Primary**: `#C85103` - Main buttons, links, key highlights
-- **Primary Light**: `#E0773F` - Hover states, subtle backgrounds, highlights  
+- **Primary Light**: `#E0773F` - Hover states, subtle backgrounds, highlights
 - **Primary Dark**: `#9A3C02` - Active buttons, footer background
 
 ### Secondary Colors (Blue)
@@ -171,6 +171,6 @@ If rollback is needed:
 
 ---
 
-**Updated By**: Claude Code Review  
-**Reviewed By**: [Pending]  
+**Updated By**: Claude Code Review
+**Reviewed By**: [Pending]
 **Approved By**: [Pending]

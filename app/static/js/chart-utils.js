@@ -25,13 +25,13 @@ class AdvancedChartManager {
             drillDownLevels: config.drillDownLevels || [],
             ...config
         });
-        
+
         this.drillDownStacks.set(chartId, []);
         this.filters.set(chartId, {});
-        
+
         // Add event listeners if enabled
         this.setupChartInteractions(chartId, chartInstance);
-        
+
         console.log(`Advanced chart registered: ${chartId}`, config);
     }
 
@@ -40,7 +40,7 @@ class AdvancedChartManager {
      */
     setupChartInteractions(chartId, chart) {
         const config = this.chartConfigs.get(chartId);
-        
+
         // Drill-down on click
         if (config.allowDrillDown) {
             chart.options.onClick = (event, elements) => {
@@ -89,13 +89,13 @@ class AdvancedChartManager {
         const chart = this.charts.get(chartId);
         const config = this.chartConfigs.get(chartId);
         const stack = this.drillDownStacks.get(chartId);
-        
+
         if (!config.allowDrillDown) return;
 
         const dataIndex = element.index;
         const datasetIndex = element.datasetIndex;
         const currentLevel = stack.length;
-        
+
         if (currentLevel >= config.drillDownLevels.length) return;
 
         // Store current state for back navigation
@@ -113,7 +113,7 @@ class AdvancedChartManager {
         try {
             // Get drill-down data
             const drillDownData = await this.fetchDrillDownData(
-                chartId, 
+                chartId,
                 config.drillDownLevels[currentLevel],
                 dataIndex,
                 chart.data.labels[dataIndex]
@@ -121,10 +121,10 @@ class AdvancedChartManager {
 
             // Update chart with new data
             this.updateChartData(chartId, drillDownData);
-            
+
             // Add back button if not present
             this.addBackButton(chartId);
-            
+
             // Trigger drill-down event
             this.triggerChartEvent(chartId, 'drilldown', {
                 level: currentLevel + 1,
@@ -145,12 +145,12 @@ class AdvancedChartManager {
      */
     drillUp(chartId) {
         const stack = this.drillDownStacks.get(chartId);
-        
+
         if (stack.length === 0) return;
 
         const previousState = stack.pop();
         this.updateChartData(chartId, previousState.data, previousState.options);
-        
+
         // Remove back button if at top level
         if (stack.length === 0) {
             this.removeBackButton(chartId);
@@ -168,7 +168,7 @@ class AdvancedChartManager {
     applyFilter(chartId, filterKey, filterValue) {
         const filters = this.filters.get(chartId);
         const chart = this.charts.get(chartId);
-        
+
         if (filterValue === null || filterValue === '') {
             delete filters[filterKey];
         } else {
@@ -178,13 +178,13 @@ class AdvancedChartManager {
         // Get original data (from bottom of drill-down stack or current)
         const stack = this.drillDownStacks.get(chartId);
         const originalData = stack.length > 0 ? stack[0].data : chart.data;
-        
+
         // Apply all active filters
         const filteredData = this.filterChartData(originalData, filters);
-        
+
         // Update chart
         this.updateChartData(chartId, filteredData);
-        
+
         this.triggerChartEvent(chartId, 'filter', {
             appliedFilters: filters,
             filteredData: filteredData
@@ -196,7 +196,7 @@ class AdvancedChartManager {
      */
     filterChartData(data, filters) {
         const filteredData = JSON.parse(JSON.stringify(data)); // Deep copy
-        
+
         if (Object.keys(filters).length === 0) {
             return filteredData;
         }
@@ -204,13 +204,13 @@ class AdvancedChartManager {
         // Apply filters to datasets
         filteredData.datasets = filteredData.datasets.map(dataset => {
             const filteredDataset = { ...dataset };
-            
+
             // Filter data points based on labels and values
             const filteredIndices = [];
-            
+
             data.labels.forEach((label, index) => {
                 let includePoint = true;
-                
+
                 // Apply each filter
                 Object.entries(filters).forEach(([filterKey, filterValue]) => {
                     switch (filterKey) {
@@ -237,7 +237,7 @@ class AdvancedChartManager {
                             break;
                     }
                 });
-                
+
                 if (includePoint) {
                     filteredIndices.push(index);
                 }
@@ -248,7 +248,7 @@ class AdvancedChartManager {
             if (filteredIndices.length < data.labels.length) {
                 filteredData.labels = filteredIndices.map(i => data.labels[i]);
             }
-            
+
             return filteredDataset;
         });
 
@@ -260,15 +260,15 @@ class AdvancedChartManager {
      */
     updateChartData(chartId, newData, newOptions = null) {
         const chart = this.charts.get(chartId);
-        
+
         // Update data
         chart.data = newData;
-        
+
         // Update options if provided
         if (newOptions) {
             chart.options = newOptions;
         }
-        
+
         // Update chart
         chart.update('active');
     }
@@ -279,7 +279,7 @@ class AdvancedChartManager {
     async fetchDrillDownData(chartId, drillLevel, selectedIndex, selectedLabel) {
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
         // Mock drill-down data generation
         return this.generateMockDrillDownData(drillLevel, selectedLabel);
     }
@@ -335,7 +335,7 @@ class AdvancedChartManager {
     async exportChart(chartId, format = 'png', options = {}) {
         const chart = this.charts.get(chartId);
         const config = this.chartConfigs.get(chartId);
-        
+
         if (!config.allowExport) {
             throw new Error('Export not allowed for this chart');
         }
@@ -368,17 +368,17 @@ class AdvancedChartManager {
     async exportChartAsImage(chart, format, options) {
         const canvas = chart.canvas;
         const dataURL = canvas.toDataURL(`image/${format}`, options.quality || 0.9);
-        
+
         // Create download link
         const link = document.createElement('a');
         link.download = `chart_${Date.now()}.${format}`;
         link.href = dataURL;
-        
+
         // Trigger download
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         return dataURL;
     }
 
@@ -388,30 +388,30 @@ class AdvancedChartManager {
     async exportChartAsCSV(chart, options) {
         const data = chart.data;
         let csvContent = "data:text/csv;charset=utf-8,";
-        
+
         // Headers
         const headers = ['Label', ...data.datasets.map(ds => ds.label)];
         csvContent += headers.join(',') + '\n';
-        
+
         // Data rows
         data.labels.forEach((label, index) => {
             const row = [label, ...data.datasets.map(ds => ds.data[index] || 0)];
             csvContent += row.join(',') + '\n';
         });
-        
+
         // Create download link
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');
         link.download = `chart_data_${Date.now()}.csv`;
         link.href = encodedUri;
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         return csvContent;
     }
-    
+
     /**
      * Export chart as PDF
      */
@@ -421,93 +421,93 @@ class AdvancedChartManager {
             // Load jsPDF dynamically if not available
             await this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
         }
-        
+
         const { jsPDF } = window;
         const pdf = new jsPDF({
             orientation: options.orientation || 'landscape',
             unit: 'mm',
             format: options.format || 'a4'
         });
-        
+
         // Get chart image
         const canvas = chart.canvas;
         const imgData = canvas.toDataURL('image/png', 0.9);
-        
+
         // Calculate dimensions
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
         const margin = 20;
         const maxWidth = pageWidth - (margin * 2);
         const maxHeight = pageHeight - (margin * 3) - 20; // Extra space for title
-        
+
         // Calculate aspect ratio
         const imgAspectRatio = canvas.width / canvas.height;
         let imgWidth = maxWidth;
         let imgHeight = imgWidth / imgAspectRatio;
-        
+
         // Adjust if height exceeds page
         if (imgHeight > maxHeight) {
             imgHeight = maxHeight;
             imgWidth = imgHeight * imgAspectRatio;
         }
-        
+
         // Add title
         pdf.setFontSize(16);
         pdf.setFont(undefined, 'bold');
         const title = options.title || 'Chart Export';
         pdf.text(title, margin, margin);
-        
+
         // Add timestamp
         pdf.setFontSize(10);
         pdf.setFont(undefined, 'normal');
         const timestamp = `Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`;
         pdf.text(timestamp, margin, margin + 8);
-        
+
         // Add chart image
         const yPosition = margin + 20;
         pdf.addImage(imgData, 'PNG', margin, yPosition, imgWidth, imgHeight);
-        
+
         // Add data table if requested
         if (options.includeData && chart.data) {
             const tableY = yPosition + imgHeight + 10;
             this.addDataTableToPDF(pdf, chart.data, margin, tableY, maxWidth);
         }
-        
+
         // Add footer
         pdf.setFontSize(8);
         pdf.setFont(undefined, 'normal');
         const footerY = pageHeight - 10;
         pdf.text('Generated by Brian Hardin Interactive Demos', margin, footerY);
-        
+
         // Save PDF
         const filename = options.filename || `chart_export_${Date.now()}.pdf`;
         pdf.save(filename);
-        
+
         return pdf;
     }
-    
+
     /**
      * Add data table to PDF
      */
     addDataTableToPDF(pdf, chartData, x, y, maxWidth) {
         if (!chartData.labels || !chartData.datasets) return;
-        
+
         const rowHeight = 6;
         const colWidth = maxWidth / (chartData.datasets.length + 1);
-        
+
         // Headers
         pdf.setFont(undefined, 'bold');
         pdf.text('Label', x, y);
         chartData.datasets.forEach((dataset, index) => {
             pdf.text(dataset.label || `Dataset ${index + 1}`, x + (colWidth * (index + 1)), y);
         });
-        
+
         // Data rows
         pdf.setFont(undefined, 'normal');
         chartData.labels.forEach((label, rowIndex) => {
             const rowY = y + (rowHeight * (rowIndex + 1));
             pdf.text(String(label), x, rowY);
-            
+
             chartData.datasets.forEach((dataset, colIndex) => {
                 const value = dataset.data[rowIndex] || 0;
                 const formattedValue = typeof value === 'number' ? value.toLocaleString() : String(value);
@@ -515,7 +515,7 @@ class AdvancedChartManager {
             });
         });
     }
-    
+
     /**
      * Export chart as Excel
      */
@@ -524,27 +524,27 @@ class AdvancedChartManager {
         if (!window.XLSX) {
             await this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
         }
-        
+
         const XLSX = window.XLSX;
         const workbook = XLSX.utils.book_new();
-        
+
         // Create data worksheet
         const data = chart.data;
         const worksheetData = [];
-        
+
         // Headers
         const headers = ['Label', ...data.datasets.map(ds => ds.label || 'Data')];
         worksheetData.push(headers);
-        
+
         // Data rows
         data.labels.forEach((label, index) => {
             const row = [label, ...data.datasets.map(ds => ds.data[index] || 0)];
             worksheetData.push(row);
         });
-        
+
         // Create worksheet
         const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-        
+
         // Style headers
         const headerRange = XLSX.utils.decode_range(worksheet['!ref']);
         for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
@@ -556,27 +556,27 @@ class AdvancedChartManager {
                 };
             }
         }
-        
+
         // Set column widths
         const colWidths = headers.map(header => ({ wch: Math.max(header.length, 15) }));
         worksheet['!cols'] = colWidths;
-        
+
         // Add worksheet to workbook
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Chart Data');
-        
+
         // Add metadata worksheet if requested
         if (options.includeMetadata) {
             const metadataSheet = this.createMetadataSheet(chart, options);
             XLSX.utils.book_append_sheet(workbook, metadataSheet, 'Metadata');
         }
-        
+
         // Generate Excel file
         const filename = options.filename || `chart_data_${Date.now()}.xlsx`;
         XLSX.writeFile(workbook, filename);
-        
+
         return workbook;
     }
-    
+
     /**
      * Create metadata worksheet for Excel export
      */
@@ -595,9 +595,9 @@ class AdvancedChartManager {
             [''],
             ['Generated by Brian Hardin Interactive Demos']
         ];
-        
+
         const worksheet = XLSX.utils.aoa_to_sheet(metadata);
-        
+
         // Style the header
         if (worksheet['A1']) {
             worksheet['A1'].s = {
@@ -605,10 +605,10 @@ class AdvancedChartManager {
                 fill: { fgColor: { rgb: 'DDDDDD' } }
             };
         }
-        
+
         return worksheet;
     }
-    
+
     /**
      * Dynamically load external scripts
      */
@@ -619,7 +619,7 @@ class AdvancedChartManager {
                 resolve();
                 return;
             }
-            
+
             const script = document.createElement('script');
             script.src = src;
             script.onload = resolve;
@@ -634,7 +634,7 @@ class AdvancedChartManager {
     showChartLoading(chartId) {
         const chart = this.charts.get(chartId);
         const container = chart.canvas.parentElement;
-        
+
         // Add loading overlay
         const loadingOverlay = document.createElement('div');
         loadingOverlay.className = 'chart-loading-overlay';
@@ -647,7 +647,7 @@ class AdvancedChartManager {
                 <span>Loading...</span>
             </div>
         `;
-        
+
         container.appendChild(loadingOverlay);
     }
 
@@ -658,7 +658,7 @@ class AdvancedChartManager {
         const chart = this.charts.get(chartId);
         const container = chart.canvas.parentElement;
         const overlay = container.querySelector('.chart-loading-overlay');
-        
+
         if (overlay) {
             container.removeChild(overlay);
         }
@@ -669,10 +669,10 @@ class AdvancedChartManager {
      */
     showChartError(chartId, message) {
         this.hideChartLoading(chartId);
-        
+
         const chart = this.charts.get(chartId);
         const container = chart.canvas.parentElement;
-        
+
         const errorOverlay = document.createElement('div');
         errorOverlay.className = 'chart-error-overlay';
         errorOverlay.innerHTML = `
@@ -684,9 +684,9 @@ class AdvancedChartManager {
                 <button onclick="this.parentElement.parentElement.remove()" class="retry-btn">Dismiss</button>
             </div>
         `;
-        
+
         container.appendChild(errorOverlay);
-        
+
         // Auto-remove after 5 seconds
         setTimeout(() => {
             if (errorOverlay.parentElement) {
@@ -701,15 +701,15 @@ class AdvancedChartManager {
     addBackButton(chartId) {
         const chart = this.charts.get(chartId);
         const container = chart.canvas.parentElement;
-        
+
         // Remove existing back button
         this.removeBackButton(chartId);
-        
+
         const backButton = document.createElement('button');
         backButton.className = 'chart-back-button';
         backButton.innerHTML = '← Back';
         backButton.onclick = () => this.drillUp(chartId);
-        
+
         container.appendChild(backButton);
     }
 
@@ -720,7 +720,7 @@ class AdvancedChartManager {
         const chart = this.charts.get(chartId);
         const container = chart.canvas.parentElement;
         const backButton = container.querySelector('.chart-back-button');
-        
+
         if (backButton) {
             container.removeChild(backButton);
         }
@@ -741,11 +741,11 @@ class AdvancedChartManager {
      */
     addToExportQueue(chartId, format) {
         this.exportQueue.push({ chartId, format, timestamp: Date.now() });
-        
+
         // Show export indicator
         const chart = this.charts.get(chartId);
         const container = chart.canvas.parentElement;
-        
+
         let indicator = container.querySelector('.export-indicator');
         if (!indicator) {
             indicator = document.createElement('div');
@@ -759,14 +759,14 @@ class AdvancedChartManager {
         this.exportQueue = this.exportQueue.filter(
             item => !(item.chartId === chartId && item.format === format)
         );
-        
+
         // Hide export indicator if no more exports for this chart
         const hasActiveExports = this.exportQueue.some(item => item.chartId === chartId);
         if (!hasActiveExports) {
             const chart = this.charts.get(chartId);
             const container = chart.canvas.parentElement;
             const indicator = container.querySelector('.export-indicator');
-            
+
             if (indicator) {
                 container.removeChild(indicator);
             }
@@ -780,7 +780,7 @@ class AdvancedChartManager {
         const chart = this.charts.get(chartId);
         const stack = this.drillDownStacks.get(chartId);
         const filters = this.filters.get(chartId);
-        
+
         return {
             totalDataPoints: chart.data.datasets.reduce((sum, ds) => sum + ds.data.length, 0),
             drillDownLevel: stack.length,
@@ -802,11 +802,11 @@ class AdvancedChartManager {
             format: 'a4',
             quality: 0.9
         };
-        
+
         const options = { ...defaultOptions, ...advancedOptions };
         return await this.exportChart(chartId, format, options);
     }
-    
+
     /**
      * Export all charts in a dashboard
      */
@@ -827,7 +827,7 @@ class AdvancedChartManager {
             return exports;
         }
     }
-    
+
     /**
      * Export multiple charts to single PDF
      */
@@ -835,35 +835,35 @@ class AdvancedChartManager {
         if (!window.jsPDF) {
             await this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
         }
-        
+
         const { jsPDF } = window;
         const pdf = new jsPDF({
             orientation: options.orientation || 'landscape',
             unit: 'mm',
             format: options.format || 'a4'
         });
-        
+
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
         const margin = 20;
-        
+
         // Title page
         pdf.setFontSize(20);
         pdf.setFont(undefined, 'bold');
         pdf.text(options.dashboardTitle || 'Dashboard Export', margin, margin + 10);
-        
+
         pdf.setFontSize(12);
         pdf.setFont(undefined, 'normal');
         pdf.text(`Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`, margin, margin + 25);
         pdf.text(`Contains ${chartIds.length} charts`, margin, margin + 35);
-        
+
         // Add each chart on separate page
         for (let i = 0; i < chartIds.length; i++) {
             const chartId = chartIds[i];
             const chart = this.charts.get(chartId);
-            
+
             if (!chart) continue;
-            
+
             // Add new page for each chart (except first)
             if (i > 0) {
                 pdf.addPage();
@@ -871,42 +871,42 @@ class AdvancedChartManager {
                 // Move to next section on title page
                 pdf.addPage();
             }
-            
+
             // Chart title
             pdf.setFontSize(16);
             pdf.setFont(undefined, 'bold');
             const chartTitle = options.chartTitles?.[chartId] || `Chart ${i + 1}`;
             pdf.text(chartTitle, margin, margin);
-            
+
             // Add chart image
             const canvas = chart.canvas;
             const imgData = canvas.toDataURL('image/png', 0.9);
-            
+
             const maxWidth = pageWidth - (margin * 2);
             const maxHeight = (pageHeight - (margin * 3)) * 0.7; // Leave space for data
-            
+
             const imgAspectRatio = canvas.width / canvas.height;
             let imgWidth = maxWidth;
             let imgHeight = imgWidth / imgAspectRatio;
-            
+
             if (imgHeight > maxHeight) {
                 imgHeight = maxHeight;
                 imgWidth = imgHeight * imgAspectRatio;
             }
-            
+
             pdf.addImage(imgData, 'PNG', margin, margin + 15, imgWidth, imgHeight);
-            
+
             // Add summary data
             if (options.includeData && chart.data) {
                 const tableY = margin + 15 + imgHeight + 10;
                 this.addDataTableToPDF(pdf, chart.data, margin, tableY, maxWidth);
             }
         }
-        
+
         // Save dashboard PDF
         const filename = options.filename || `dashboard_export_${Date.now()}.pdf`;
         pdf.save(filename);
-        
+
         return pdf;
     }
 }

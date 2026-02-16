@@ -40,7 +40,7 @@ Since automated browser testing is encountering technical issues, please follow 
   - Subject: "Test Message"
   - Message: "This is a test message from the automated form testing."
 - Click "Send Message"
-- **Expected**: 
+- **Expected**:
   - Loading indicator should appear briefly
   - Success message should appear in green box
   - Form should reset (all fields should be empty)

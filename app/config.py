@@ -14,7 +14,7 @@ class Settings:
 
     # Database settings
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///data/site.db")
-    USE_DATABASE: bool = os.getenv("USE_DATABASE", "false").lower() == "true"
+    USE_DATABASE: bool = os.getenv("USE_DATABASE", "true").lower() == "true"
 
     # GitHub OAuth settings
     GITHUB_CLIENT_ID: str = os.getenv("GITHUB_CLIENT_ID", "")

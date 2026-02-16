@@ -54,14 +54,14 @@ async function testSalesDashboard() {
 
     try {
         console.log('🚀 Starting Sales Dashboard Tests...');
-        
+
         // Test 1: Page loads successfully
         console.log('📄 Testing page load...');
-        await page.goto('http://localhost:8000/demos/sales-dashboard', { 
+        await page.goto('http://localhost:8000/demos/sales-dashboard', {
             waitUntil: 'networkidle2',
-            timeout: 30000 
+            timeout: 30000
         });
-        
+
         results.tests.push({
             name: 'Page Load',
             status: 'PASSED',
@@ -73,9 +73,9 @@ async function testSalesDashboard() {
         // Test 2: Check for critical JavaScript errors
         console.log('🔍 Checking for JavaScript errors...');
         await page.waitForTimeout(3000); // Wait for JS to execute
-        
-        const criticalErrors = errors.filter(err => 
-            err.message.includes('ReferenceError') || 
+
+        const criticalErrors = errors.filter(err =>
+            err.message.includes('ReferenceError') ||
             err.message.includes('TypeError') ||
             err.message.includes('SyntaxError')
         );
@@ -104,7 +104,7 @@ async function testSalesDashboard() {
         const sessionStatus = await page.$('#session-status');
         if (sessionStatus) {
             const statusText = await page.evaluate(el => el.textContent, sessionStatus);
-            
+
             if (statusText.includes('Initializing') || statusText.includes('Connected')) {
                 results.tests.push({
                     name: 'Session Status',
@@ -168,7 +168,7 @@ async function testSalesDashboard() {
         try {
             await page.click('#refresh-btn');
             await page.waitForTimeout(2000);
-            
+
             results.tests.push({
                 name: 'Refresh Button',
                 status: 'PASSED',
@@ -189,7 +189,7 @@ async function testSalesDashboard() {
         // Test 6: Check for chart canvases (Chart.js elements)
         console.log('📈 Testing chart rendering...');
         await page.waitForTimeout(5000); // Wait for charts to load
-        
+
         const chartCanvases = await page.$$('canvas');
         if (chartCanvases.length > 0) {
             results.tests.push({
@@ -286,11 +286,11 @@ async function testSalesDashboard() {
         // Take a screenshot
         console.log('📸 Taking screenshot...');
         const screenshotPath = path.join(__dirname, '../reports/sales-dashboard-screenshot.png');
-        await page.screenshot({ 
-            path: screenshotPath, 
-            fullPage: true 
+        await page.screenshot({
+            path: screenshotPath,
+            fullPage: true
         });
-        
+
         results.screenshotPath = screenshotPath;
 
     } catch (error) {
@@ -306,7 +306,7 @@ async function testSalesDashboard() {
         // Add console messages and errors to results
         results.consoleMessages = consoleMessages;
         results.errors = errors;
-        
+
         await browser.close();
     }
 
@@ -320,7 +320,7 @@ async function testSalesDashboard() {
     console.log(`❌ Failed: ${results.summary.failed}`);
     console.log(`⚠️  Warnings: ${results.summary.warnings}`);
     console.log(`📁 Report saved to: ${reportPath}`);
-    
+
     if (results.screenshotPath) {
         console.log(`📸 Screenshot saved to: ${results.screenshotPath}`);
     }

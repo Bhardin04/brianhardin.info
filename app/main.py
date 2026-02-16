@@ -13,8 +13,11 @@ from slowapi.errors import RateLimitExceeded
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
+from app.config import settings
 from app.database.connection import close_db, init_db
 from app.middleware import limiter
+from app.models.blog import BlogPostSummary
+from app.models.project import Project
 from app.routers import admin, api, auth, blog, demos, pages, projects
 from app.services.blog import blog_service
 from app.services.project import project_service
@@ -99,10 +102,41 @@ async def server_error_handler(request: Request, exc: Exception) -> Response:
         )
 
 
+async def _get_featured_projects(limit: int = 2) -> list[Project]:
+    """Get featured projects from DB or in-memory service."""
+    if settings.USE_DATABASE:
+        from app.database.connection import get_db
+        from app.services.db_adapters import db_project_to_pydantic
+        from app.services.project_db import project_service_db
+
+        async for db in get_db():
+            db_projects = await project_service_db.get_all(db)
+            featured = [db_project_to_pydantic(p) for p in db_projects if p.featured]
+            return featured[:limit]
+        return []
+    return project_service.get_featured(limit=limit)
+
+
+async def _get_featured_posts(limit: int = 2) -> list[BlogPostSummary]:
+    """Get featured blog post summaries from DB or in-memory service."""
+    if settings.USE_DATABASE:
+        from app.database.connection import get_db
+        from app.services.blog_db import blog_service_db
+        from app.services.db_adapters import db_blog_to_summary
+
+        async for db in get_db():
+            db_posts = await blog_service_db.get_all(db, published_only=True)
+            summaries = [db_blog_to_summary(p) for p in db_posts]
+            summaries.sort(key=lambda p: p.published_at or p.created_at, reverse=True)
+            return summaries[:limit]
+        return []
+    return blog_service.get_posts_summary(published_only=True, limit=limit)
+
+
 @app.get("/", response_class=HTMLResponse)
 async def homepage(request: Request) -> Response:
-    featured_projects = project_service.get_featured(limit=2)
-    featured_posts = blog_service.get_posts_summary(published_only=True, limit=2)
+    featured_projects = await _get_featured_projects(limit=2)
+    featured_posts = await _get_featured_posts(limit=2)
     return templates.TemplateResponse(
         request,
         "index.html",
@@ -136,13 +170,31 @@ async def sitemap() -> Response:
     ]
 
     # Project detail pages
-    for pid in [3, 4, 6, 7, 8]:
-        urls.append((f"/projects/{pid}", "monthly", "0.7"))
+    if settings.USE_DATABASE:
+        from app.database.connection import get_db
+        from app.services.project_db import project_service_db
+
+        async for db in get_db():
+            db_projects = await project_service_db.get_all(db)
+            for proj in db_projects:
+                urls.append((f"/projects/{proj.id}", "monthly", "0.7"))
+    else:
+        for pid in [3, 4, 6, 7, 8]:
+            urls.append((f"/projects/{pid}", "monthly", "0.7"))
 
     # Published blog post slugs
-    posts = blog_service.get_all_posts(published_only=True)
-    for post in posts:
-        urls.append((f"/blog/{post.slug}", "monthly", "0.7"))
+    if settings.USE_DATABASE:
+        from app.database.connection import get_db
+        from app.services.blog_db import blog_service_db
+
+        async for db in get_db():
+            db_posts = await blog_service_db.get_all(db, published_only=True)
+            for db_post in db_posts:
+                urls.append((f"/blog/{db_post.slug}", "monthly", "0.7"))
+    else:
+        blog_posts = blog_service.get_all_posts(published_only=True)
+        for bp in blog_posts:
+            urls.append((f"/blog/{bp.slug}", "monthly", "0.7"))
 
     # Demo pages
     demo_pages = [

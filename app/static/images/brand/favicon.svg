@@ -4,22 +4,22 @@
       <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
     </linearGradient>
-    
+
     <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
     </linearGradient>
   </defs>
-  
+
   <!-- Background -->
   <rect width="32" height="32" rx="6" fill="url(#bg)"/>
-  
+
   <!-- Border -->
   <rect x="1" y="1" width="30" height="30" rx="5" fill="none" stroke="url(#accent)" stroke-width="1"/>
-  
+
   <!-- Letters BH -->
   <text x="16" y="22" font-family="Inter, sans-serif" font-size="14" font-weight="800" text-anchor="middle" fill="white">BH</text>
-  
+
   <!-- Accent dots -->
   <circle cx="8" cy="8" r="1" fill="url(#accent)" opacity="0.6"/>
   <circle cx="24" cy="8" r="1" fill="url(#accent)" opacity="0.6"/>

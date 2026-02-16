@@ -59,9 +59,17 @@ A modern, responsive personal website showcasing professional experience, projec
 - ✅ **WebSocket Support** - Real-time data updates for interactive demos
 - ✅ **Email Service** - Async email sending with production/dev modes
 - ✅ **SEO Optimized** - Meta tags, structured data, and canonical URLs
-- ✅ **Testing Suite** - Pytest + Puppeteer for E2E testing
+- ✅ **Testing Suite** - 164 tests with Pytest
 - ✅ **CI/CD Pipeline** - GitHub Actions with linting, testing, and deployment
 - ✅ **Branch Protection** - PR-required workflow with CI checks on main
+
+### 🔐 Admin Panel / CMS
+- ✅ **GitHub OAuth** - Secure admin login via GitHub
+- ✅ **Blog Management** - Create, edit, delete, publish/unpublish blog posts with markdown
+- ✅ **Project Management** - Full CRUD with case study data (problem/solution/outcome/timeline)
+- ✅ **Contact Inbox** - View, archive, and manage contact form submissions
+- ✅ **Site Settings** - Key-value settings management
+- ✅ **Database Storage** - PostgreSQL (production) + SQLite (local dev) via SQLAlchemy async
 
 ## 🎨 Design System
 
@@ -84,12 +92,15 @@ A modern, responsive personal website showcasing professional experience, projec
 
 ## 🏗 Tech Stack
 
-- **Backend**: FastAPI (Python 3.11+)
-- **Frontend**: HTMX + Custom CSS Design System
+- **Backend**: FastAPI (Python 3.12+)
+- **Database**: SQLAlchemy 2.0 async (PostgreSQL + SQLite)
+- **Auth**: GitHub OAuth with session-based admin access
+- **Frontend**: HTMX + Tailwind CSS CDN
 - **Styling**: CSS Custom Properties + Tailwind CSS
 - **Email**: aiosmtplib for async email sending
-- **Testing**: Pytest + Puppeteer for E2E testing
-- **Deployment**: Docker + Docker Compose ready
+- **Testing**: Pytest (164 tests)
+- **Quality**: ruff, mypy, bandit, pre-commit hooks
+- **Deployment**: Docker on Render with PostgreSQL
 
 ## 📁 Project Structure
 
@@ -98,6 +109,12 @@ brianhardin.info/
 ├── app/
 │   ├── main.py              # FastAPI application
 │   ├── config.py            # Configuration settings
+│   ├── middleware.py         # Rate limiting & CSRF protection
+│   ├── admin/               # Admin panel
+│   │   └── dependencies.py  # require_admin auth dependency
+│   ├── database/            # Database layer
+│   │   ├── connection.py    # Async engine, session factory, init_db()
+│   │   └── models.py        # SQLAlchemy ORM models
 │   ├── models/              # Pydantic models
 │   │   ├── contact.py       # Contact form validation
 │   │   ├── project.py       # Project & case study models
@@ -108,41 +125,37 @@ brianhardin.info/
 │   │   ├── projects.py      # Project portfolio & detail routes
 │   │   ├── demos.py         # Demo API & WebSocket endpoints
 │   │   ├── api.py           # Contact form & utility APIs
-│   │   └── blog.py          # Blog routes
+│   │   ├── blog.py          # Blog routes
+│   │   ├── auth.py          # GitHub OAuth login/callback/logout
+│   │   └── admin.py         # Admin CRUD routes
 │   ├── services/            # Business logic
 │   │   ├── email.py         # Async email with XSS protection
-│   │   ├── project.py       # Centralized project data service
+│   │   ├── project.py       # In-memory project data (fallback)
+│   │   ├── project_db.py    # Database-backed project CRUD
+│   │   ├── blog.py          # In-memory blog service (fallback)
+│   │   ├── blog_db.py       # Database-backed blog CRUD
+│   │   ├── contact_db.py    # Contact message service
+│   │   ├── settings_db.py   # Site settings service
+│   │   ├── db_adapters.py   # SQLAlchemy to Pydantic converters
 │   │   ├── demo.py          # Demo data & processing services
-│   │   ├── websocket.py     # WebSocket connection management
-│   │   └── blog.py          # Blog service
-│   ├── static/
-│   │   ├── css/styles.css   # Design system (2,500+ lines)
-│   │   ├── js/              # Client-side JavaScript
-│   │   │   ├── chart-utils.js
-│   │   │   ├── connection-manager.js
-│   │   │   ├── error-handler.js
-│   │   │   ├── analytics-*.js
-│   │   │   ├── websocket-client.js
-│   │   │   └── user-preferences.js
-│   │   └── images/          # SVG brand assets & project images
+│   │   └── websocket.py     # WebSocket connection management
+│   ├── scripts/
+│   │   └── seed.py          # Database seeding script
+│   ├── static/              # CSS, JS, images
 │   └── templates/           # Jinja2 templates
-│       ├── base.html        # Base template with responsive nav
-│       ├── index.html       # Homepage with hero section
-│       ├── projects.html    # Project showcase with filtering
-│       ├── project_detail.html  # Case study detail pages
+│       ├── base.html        # Public base template
+│       ├── admin/           # Admin panel templates
+│       │   ├── base.html    # Admin layout with sidebar
+│       │   ├── dashboard.html
+│       │   ├── blog/        # Blog CRUD forms
+│       │   ├── projects/    # Project CRUD forms
+│       │   ├── messages/    # Contact inbox
+│       │   └── settings.html
+│       ├── blog/            # Public blog templates
 │       ├── demos/           # Interactive demo templates
-│       │   ├── index.html
-│       │   ├── sales_dashboard.html
-│       │   ├── collections_dashboard.html
-│       │   ├── payment_processing.html
-│       │   └── data_pipeline.html
-│       ├── blog/            # Blog system templates
-│       ├── resume.html      # Professional resume page
-│       ├── about.html       # About page
-│       └── contact.html     # Contact form
+│       └── errors/          # 404, 500 error pages
+├── tests/                   # 164 Pytest tests
 ├── docs/                    # Documentation
-├── tests/                   # Pytest test suite
-├── testing/                 # E2E testing with Puppeteer
 └── .github/workflows/       # CI/CD pipeline
 ```
 
@@ -174,31 +187,30 @@ brianhardin.info/
 ### Troubleshooting
 - [Template Debugging](TEMPLATE_DEBUGGING.md) - Project detail template issues and solutions
 
-## 📊 Development Status
+## 🔧 Admin Panel Setup
 
-### ✅ Completed Features
-- **Design System**: Professional CSS architecture with 150+ design tokens
-- **Component Library**: Reusable components (cards, buttons, forms, badges)
-- **Responsive Design**: Mobile-first with desktop enhancements
-- **Contact Form**: Production-ready with comprehensive testing
-- **Dark Mode**: Complete light/dark theme system
-- **Page Templates**: All pages updated with consistent design
-- **Performance**: Optimized CSS and loading states with SVG compression (4.3KB saved)
-- **SEO**: Meta tags, structured data, canonical URLs
-- **Project Portfolio**: High-quality project screenshots and enhanced showcase
-- **Hero Sections**: Compelling CTAs and engaging project descriptions
-- **Image Optimization**: Comprehensive SVG optimization for better performance
-- **Professional Resume**: Complete resume page with brand integration and navigation
+The admin panel requires a GitHub OAuth App for authentication.
 
-### 🔄 Current Focus
-- **Content Enhancement**: Adding more projects and blog content
-- **Performance Optimization**: Analytics and performance tracking refinements
+### 1. Create a GitHub OAuth App
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Set the callback URL to `https://your-domain.com/admin/callback`
+4. Note the Client ID and Client Secret
 
-### 🚀 Upcoming Features
-- **Blog CMS**: Admin interface for content management
-- **Portfolio Expansion**: Additional project showcases
-- **Custom 404 Pages**: Branded error pages
-- **Sitemap Generation**: XML sitemap for search engines
+### 2. Set Environment Variables
+```bash
+GITHUB_CLIENT_ID=your-client-id
+GITHUB_CLIENT_SECRET=your-client-secret
+ADMIN_GITHUB_USERNAME=your-github-username
+```
+
+### 3. Seed the Database
+```bash
+python -m app.scripts.seed
+```
+
+### 4. Access the Admin Panel
+Navigate to `/admin/login` and sign in with GitHub.
 
 ## 🛠 Quick Commands
 
@@ -206,21 +218,22 @@ brianhardin.info/
 # Development
 uv run fastapi dev app/main.py --port 8000
 
+# Seed database (run once after fresh setup)
+uv run python -m app.scripts.seed
+
 # Testing
 uv run pytest tests/ -v
 
-# E2E Testing
-cd testing && npm test
+# Code Quality
+uv run ruff check
+uv run mypy app/
+uv run pre-commit run --all-files
 
 # Docker
 docker-compose up --build
 
 # Dependencies
 uv sync
-
-# Code Quality
-uv run ruff check
-uv run mypy app/
 ```
 
 ## 🎨 Design System Usage
