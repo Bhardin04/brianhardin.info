@@ -85,7 +85,9 @@ async def seed_blog_posts_from_files(
     directory: str = "content/blog",
 ) -> int:
     """Seed blog posts from markdown files with frontmatter."""
-    posts_dir = Path(directory)
+    # Resolve relative to project root (parent of app/)
+    project_root = Path(__file__).resolve().parent.parent.parent
+    posts_dir = project_root / directory
     if not posts_dir.exists():
         logger.info("  No content/blog directory found, skipping file-based seeding")
         return 0
