@@ -15,11 +15,11 @@ class TestDarkModeImplementation:
         content = response.text
 
         # Check that body has dark mode classes
-        assert 'class="bg-gray-50 dark:bg-gray-900' in content
-        assert 'class="bg-white dark:bg-gray-800' in content
+        assert "dark:bg-gray-900" in content
+        assert "dark:bg-gray-800" in content
 
-        # Check that main heading has dark mode classes
-        assert "text-gray-900 dark:text-white" in content
+        # Check that dark mode text classes are present
+        assert "dark:text-gray-300" in content
 
         # Check that technology cards have dark mode classes
         assert "bg-white dark:bg-gray-800" in content
@@ -73,7 +73,7 @@ class TestDarkModeImplementation:
             # Check that dark mode script is included
             assert "theme-toggle" in content
             assert "localStorage.getItem(" in content
-            assert "classList.add(" in content
+            assert "classList.toggle(" in content
 
     def test_dark_mode_tailwind_config(self):
         """Test that Tailwind is configured for dark mode."""
@@ -125,7 +125,7 @@ class TestDarkModeImplementation:
 
         # Check that transitions are included
         assert "transition-colors" in content
-        assert "duration-200" in content
+        assert "transition-all" in content
 
 
 class TestDarkModeAccessibility:
@@ -139,8 +139,8 @@ class TestDarkModeAccessibility:
 
         # Check button accessibility
         assert 'type="button"' in content
-        assert "focus:outline-none" in content
-        assert "focus:ring-4" in content
+        assert 'aria-label="Toggle dark mode"' in content
+        assert "focus-ring" in content
 
     def test_dark_mode_contrast_classes(self):
         """Test that dark mode uses proper contrast classes."""

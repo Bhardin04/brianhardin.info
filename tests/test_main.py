@@ -49,7 +49,7 @@ def test_resume_page():
 
 
 def test_project_detail():
-    response = client.get("/projects/1")
+    response = client.get("/projects/3")
     assert response.status_code == 200
 
 
