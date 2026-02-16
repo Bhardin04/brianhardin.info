@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Custom Error Pages** - Styled 404 and 500 error pages extending base template with navigation back to site
+- **XML Sitemap** - `/sitemap.xml` endpoint with static pages, project details, blog posts, and demo pages
+- **RSS Feed** - `/blog/feed.xml` endpoint with RSS 2.0 format and atom:link self-reference
+- **Scroll-to-Top Button** - Fixed-position button with smooth scroll, `requestAnimationFrame` debounce, and `prefers-reduced-motion` support
+- **Demos Router Registration** - Fixed bug where demos router was not included in the app, preventing `/demos/` from loading
+
+### Changed
+- **Pre-commit Hooks** - Removed redundant `black` and `isort` (handled by ruff); updated ruff to v0.12.2, pre-commit-hooks to v5.0.0, mypy to v1.14.1, bandit to 1.8.3
+
 ### Fixed
 - **Suggestion-level UX improvements** - Dynamic Tailwind class fix (CDN-safe object mapping), debounced search inputs, Google Fonts loaded via `<link>`, scoped connection monitoring to demo pages, reduced motion support (scroll-behavior, transform suppression), print styles, flex-wrap on demo headers, empty state messages for filtered tables, SEO meta tag propagation from page variables, improved CTA copy, mobile menu transition
 
@@ -287,6 +297,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-**Maintained by**: Development Team  
+**Maintained by**: Development Team
 **Last Updated**: 2026-02-15
 **Next Review**: 2026-03-01

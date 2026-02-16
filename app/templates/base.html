@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Primary Meta Tags -->
     <title>{% block title %}{% if page_title %}{{ page_title }} | Brian Hardin{% else %}Brian Hardin - Python Developer & Software Engineer{% endif %}{% endblock %}</title>
     <meta name="title" content="{% block meta_title %}{% if page_title %}{{ page_title }} | Brian Hardin{% else %}Brian Hardin - Python Developer & Software Engineer{% endif %}{% endblock %}">
@@ -11,7 +11,7 @@
     <meta name="keywords" content="{% block meta_keywords %}Python, FastAPI, Software Engineer, Web Development, Backend Development, Portfolio{% endblock %}">
     <meta name="author" content="Brian Hardin">
     <meta name="robots" content="index, follow">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:url" content="{% block og_url %}https://brianhardin.info{% endblock %}">
@@ -19,45 +19,48 @@
     <meta property="og:description" content="{% block og_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
     <meta property="og:image" content="{% block og_image %}https://brianhardin.info/static/images/og-image.jpg{% endblock %}">
     <meta property="og:site_name" content="Brian Hardin">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{% block twitter_url %}https://brianhardin.info{% endblock %}">
     <meta property="twitter:title" content="{% block twitter_title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}">
     <meta property="twitter:description" content="{% block twitter_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
     <meta property="twitter:image" content="{% block twitter_image %}https://brianhardin.info/static/images/og-image.jpg{% endblock %}">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="{% block canonical %}https://brianhardin.info{% endblock %}">
-    
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Brian Hardin - Blog" href="https://brianhardin.info/blog/feed.xml">
+
     <!-- Brand Favicon -->
     <link rel="icon" type="image/svg+xml" href="/static/images/brand/favicon.svg">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/favicon.ico') }}">
-    
+
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="/static/images/brand/logo.svg">
-    
+
     <!-- Theme Color -->
     <meta name="theme-color" content="#1e293b">
     <meta name="msapplication-TileColor" content="#1e293b">
-    
+
     <!-- Additional SEO Meta Tags -->
     <meta name="language" content="en">
     <meta name="geo.region" content="US">
     <meta name="distribution" content="global">
     <meta name="rating" content="general">
     <meta name="referrer" content="origin-when-cross-origin">
-    
+
     <!-- Performance and Security -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
-    
+
     <!-- PWA Support -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Brian Hardin">
-    
+
     <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,7 +140,7 @@
         }
     }
     </script>
-    
+
     <!-- Website Organization Schema -->
     <script type="application/ld+json">
     {
@@ -158,7 +161,7 @@
         }
     }
     </script>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -278,6 +281,15 @@
         </div>
     </footer>
 
+    <!-- Scroll to top button -->
+    <button id="scroll-to-top" type="button"
+            aria-label="Scroll to top"
+            class="fixed bottom-6 right-6 z-40 hidden w-12 h-12 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-opacity duration-200 opacity-0">
+        <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
     <!-- Dark mode toggle script -->
     <script>
         document.getElementById('copyright-year').textContent = new Date().getFullYear();
@@ -359,6 +371,40 @@
                 closeMobileMenu();
             }
         });
+
+        // Scroll to top
+        (function() {
+            const btn = document.getElementById('scroll-to-top');
+            let ticking = false;
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        if (window.scrollY > 300) {
+                            btn.classList.remove('hidden');
+                            btn.classList.remove('opacity-0');
+                            btn.classList.add('opacity-100');
+                        } else {
+                            btn.classList.add('opacity-0');
+                            btn.classList.remove('opacity-100');
+                            btn.addEventListener('transitionend', function handler() {
+                                if (btn.classList.contains('opacity-0')) {
+                                    btn.classList.add('hidden');
+                                }
+                                btn.removeEventListener('transitionend', handler);
+                            });
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            btn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+            });
+        })();
     </script>
 </body>
 </html>

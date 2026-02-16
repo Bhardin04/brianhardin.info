@@ -77,7 +77,7 @@ async def automation_demo_page(request: Request) -> HTMLResponse:
 
 
 # API Endpoints for Payment Processing Demo
-@router.post("/api/payment-processing/session")
+@router.post("/api/payment-processing/session", response_model=None)
 async def create_payment_session() -> DemoResponse | JSONResponse:
     """Create a new payment processing demo session"""
     try:
@@ -112,7 +112,7 @@ async def create_payment_session() -> DemoResponse | JSONResponse:
         )
 
 
-@router.post("/api/payment-processing/process")
+@router.post("/api/payment-processing/process", response_model=None)
 async def process_payment(payment_data: dict[str, Any]) -> DemoResponse | JSONResponse:
     """Process a payment entry"""
     try:
@@ -146,7 +146,7 @@ async def process_payment(payment_data: dict[str, Any]) -> DemoResponse | JSONRe
         )
 
 
-@router.get("/api/payment-processing/invoices/{customer_id}")
+@router.get("/api/payment-processing/invoices/{customer_id}", response_model=None)
 async def get_customer_invoices(customer_id: str) -> DemoResponse | JSONResponse:
     """Get open invoices for a specific customer"""
     try:
@@ -172,7 +172,7 @@ async def get_customer_invoices(customer_id: str) -> DemoResponse | JSONResponse
 
 
 # API Endpoints for Data Pipeline Demo
-@router.post("/api/data-pipeline/session")
+@router.post("/api/data-pipeline/session", response_model=None)
 async def create_pipeline_session() -> DemoResponse | JSONResponse:
     """Create a new data pipeline demo session"""
     try:
@@ -215,7 +215,7 @@ async def create_pipeline_session() -> DemoResponse | JSONResponse:
         )
 
 
-@router.post("/api/data-pipeline/extract")
+@router.post("/api/data-pipeline/extract", response_model=None)
 async def extract_pipeline_data(
     extraction_request: dict[str, Any],
 ) -> DemoResponse | JSONResponse:
@@ -252,7 +252,7 @@ async def extract_pipeline_data(
 
 
 # API Endpoints for Dashboard Demo
-@router.post("/api/dashboard/session")
+@router.post("/api/dashboard/session", response_model=None)
 async def create_dashboard_session() -> DemoResponse | JSONResponse:
     """Create a new dashboard demo session"""
     try:
@@ -284,7 +284,7 @@ async def create_dashboard_session() -> DemoResponse | JSONResponse:
         )
 
 
-@router.post("/api/dashboard/data")
+@router.post("/api/dashboard/data", response_model=None)
 async def get_dashboard_data(
     request_data: dict[str, Any],
 ) -> DemoResponse | JSONResponse:
@@ -320,7 +320,7 @@ async def get_dashboard_data(
 
 
 # API Endpoints for Collections Demo
-@router.post("/api/collections/session")
+@router.post("/api/collections/session", response_model=None)
 async def create_collections_session() -> DemoResponse | JSONResponse:
     """Create a new collections demo session"""
     try:
@@ -345,7 +345,7 @@ async def create_collections_session() -> DemoResponse | JSONResponse:
         )
 
 
-@router.post("/api/collections/data")
+@router.post("/api/collections/data", response_model=None)
 async def get_collections_data(
     request_data: dict[str, Any],
 ) -> DemoResponse | JSONResponse:
