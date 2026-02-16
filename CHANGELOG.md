@@ -17,24 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **RSS Feed** - `/blog/feed.xml` endpoint with RSS 2.0 format and atom:link self-reference
 - **Scroll-to-Top Button** - Fixed-position button with smooth scroll, `requestAnimationFrame` debounce, and `prefers-reduced-motion` support
 - **Demos Router Registration** - Fixed bug where demos router was not included in the app, preventing `/demos/` from loading
-- **Demo Test Suite** - 38 new tests covering demo API endpoints, WebSocket connections, and service business logic (payment processing, data pipeline, dashboard, collections)
-- **ProjectService** - Single source of truth for project data consumed by both API and HTML routers, replacing duplicate/inconsistent data definitions
-- **Tailwind Production Build** - Replaced 300KB+ Tailwind CDN script with ~48KB minified production CSS via Tailwind CLI
-- **Demo Session Limits** - TTL-based session expiration (1 hour) and maximum session count (100) to prevent unbounded memory growth
-- **WebSocket Connection Limits** - Maximum 200 total connections and 5 per session to prevent resource exhaustion
 
 ### Changed
 - **Pre-commit Hooks** - Removed redundant `black` and `isort` (handled by ruff); updated ruff to v0.12.2, pre-commit-hooks to v5.0.0, mypy to v1.14.1, bandit to 1.8.3
-- **Pydantic V2 Migration** - Replaced all deprecated `.dict()` calls with `.model_dump()` and `class Config` with `model_config = ConfigDict()`
-- **Starlette TemplateResponse** - Updated all `TemplateResponse` calls to new positional signature `TemplateResponse(request, name, context={})`
-- **500 Error Handler** - Fixed incorrect type annotation from `StarletteHTTPException` to `Exception`
 
 ### Fixed
-- **Email Subject Injection** - Sanitize newline characters from contact form subject to prevent SMTP header injection
 - **Suggestion-level UX improvements** - Dynamic Tailwind class fix (CDN-safe object mapping), debounced search inputs, Google Fonts loaded via `<link>`, scoped connection monitoring to demo pages, reduced motion support (scroll-behavior, transform suppression), print styles, flex-wrap on demo headers, empty state messages for filtered tables, SEO meta tag propagation from page variables, improved CTA copy, mobile menu transition
 - **Dark mode blog sidebar** - Added missing `dark:bg-gray-800` to "About This Blog" card on blog index, fixing invisible text on white background in dark mode
 - **Footer whitespace** - Added sticky footer layout (`flex-col` + `flex-1`), reduced excessive padding on demos page (hero, grid, CTA), tightened contact page bottom padding, defined missing CSS spacing variables (`--space-4`, `--space-16`, `--space-24`, `--space-32`) used by section and container classes
-- **WebSocket Pipeline Cap** - Capped `total_records` parameter to 1000 to prevent excessive simulation duration
 
 ## [1.4.0] - 2026-02-15
 

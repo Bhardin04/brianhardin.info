@@ -13,7 +13,7 @@ templates = Jinja2Templates(directory="app/templates")
 @router.get("/about", response_class=HTMLResponse)
 async def about(request: Request) -> Response:
     return templates.TemplateResponse(
-        request, "about.html", context={"current_page": "about"}
+        "about.html", {"request": request, "current_page": "about"}
     )
 
 
@@ -21,9 +21,8 @@ async def about(request: Request) -> Response:
 async def contact(request: Request) -> Response:
     csrf_token = generate_csrf_token()
     response = templates.TemplateResponse(
-        request,
         "contact.html",
-        context={"current_page": "contact", "csrf_token": csrf_token},
+        {"request": request, "current_page": "contact", "csrf_token": csrf_token},
     )
     response.set_cookie(
         key=CSRF_COOKIE_NAME,
@@ -38,5 +37,5 @@ async def contact(request: Request) -> Response:
 @router.get("/resume", response_class=HTMLResponse)
 async def resume(request: Request) -> Response:
     return templates.TemplateResponse(
-        request, "resume.html", context={"current_page": "resume"}
+        "resume.html", {"request": request, "current_page": "resume"}
     )
