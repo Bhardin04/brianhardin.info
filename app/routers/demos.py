@@ -9,6 +9,7 @@ from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
+from app.middleware import limiter
 from app.models.demo import (
     DataExtractionParams,
     DemoError,
@@ -78,7 +79,8 @@ async def automation_demo_page(request: Request) -> HTMLResponse:
 
 # API Endpoints for Payment Processing Demo
 @router.post("/api/payment-processing/session", response_model=None)
-async def create_payment_session() -> DemoResponse | JSONResponse:
+@limiter.limit("10/minute")  # type: ignore[misc]
+async def create_payment_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new payment processing demo session"""
     try:
         session = payment_service.create_session(DemoType.PAYMENT_PROCESSING)
@@ -113,7 +115,10 @@ async def create_payment_session() -> DemoResponse | JSONResponse:
 
 
 @router.post("/api/payment-processing/process", response_model=None)
-async def process_payment(payment_data: dict[str, Any]) -> DemoResponse | JSONResponse:
+@limiter.limit("20/minute")  # type: ignore[misc]
+async def process_payment(
+    request: Request, payment_data: dict[str, Any]
+) -> DemoResponse | JSONResponse:
     """Process a payment entry"""
     try:
         session_id = payment_data.get("session_id")
@@ -173,7 +178,8 @@ async def get_customer_invoices(customer_id: str) -> DemoResponse | JSONResponse
 
 # API Endpoints for Data Pipeline Demo
 @router.post("/api/data-pipeline/session", response_model=None)
-async def create_pipeline_session() -> DemoResponse | JSONResponse:
+@limiter.limit("10/minute")  # type: ignore[misc]
+async def create_pipeline_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new data pipeline demo session"""
     try:
         session = pipeline_service.create_session(DemoType.DATA_PIPELINE)
@@ -216,8 +222,9 @@ async def create_pipeline_session() -> DemoResponse | JSONResponse:
 
 
 @router.post("/api/data-pipeline/extract", response_model=None)
+@limiter.limit("20/minute")  # type: ignore[misc]
 async def extract_pipeline_data(
-    extraction_request: dict[str, Any],
+    request: Request, extraction_request: dict[str, Any]
 ) -> DemoResponse | JSONResponse:
     """Extract data from NetSuite"""
     try:
@@ -253,7 +260,8 @@ async def extract_pipeline_data(
 
 # API Endpoints for Dashboard Demo
 @router.post("/api/dashboard/session", response_model=None)
-async def create_dashboard_session() -> DemoResponse | JSONResponse:
+@limiter.limit("10/minute")  # type: ignore[misc]
+async def create_dashboard_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new dashboard demo session"""
     try:
         session = dashboard_service.create_session(DemoType.SALES_DASHBOARD)
@@ -285,8 +293,9 @@ async def create_dashboard_session() -> DemoResponse | JSONResponse:
 
 
 @router.post("/api/dashboard/data", response_model=None)
+@limiter.limit("20/minute")  # type: ignore[misc]
 async def get_dashboard_data(
-    request_data: dict[str, Any],
+    request: Request, request_data: dict[str, Any]
 ) -> DemoResponse | JSONResponse:
     """Generate dashboard data"""
     try:
@@ -321,7 +330,8 @@ async def get_dashboard_data(
 
 # API Endpoints for Collections Demo
 @router.post("/api/collections/session", response_model=None)
-async def create_collections_session() -> DemoResponse | JSONResponse:
+@limiter.limit("10/minute")  # type: ignore[misc]
+async def create_collections_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new collections demo session"""
     try:
         session = collections_service.create_session(DemoType.COLLECTIONS_DASHBOARD)
@@ -346,8 +356,9 @@ async def create_collections_session() -> DemoResponse | JSONResponse:
 
 
 @router.post("/api/collections/data", response_model=None)
+@limiter.limit("20/minute")  # type: ignore[misc]
 async def get_collections_data(
-    request_data: dict[str, Any],
+    request: Request, request_data: dict[str, Any]
 ) -> DemoResponse | JSONResponse:
     """Generate collections dashboard data"""
     try:

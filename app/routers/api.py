@@ -1,8 +1,9 @@
 import logging
 
-from fastapi import APIRouter, Form, HTTPException
+from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
 
+from app.middleware import limiter, verify_csrf_token
 from app.models.contact import ContactForm
 from app.models.project import Project
 from app.services.email import email_service
@@ -121,12 +122,16 @@ async def get_project(project_id: int) -> Project:
 
 
 @router.post("/contact", response_class=HTMLResponse)
+@limiter.limit("1/minute")  # type: ignore[misc]
+@limiter.limit("3/hour")  # type: ignore[misc]
 async def submit_contact_form(
+    request: Request,
     name: str = Form(...),
     email: str = Form(...),
     subject: str = Form(...),
     message: str = Form(...),
     company: str = Form(None),
+    _csrf: None = Depends(verify_csrf_token),
 ) -> str:
     try:
         # Create contact form data
@@ -173,14 +178,16 @@ async def submit_contact_form(
 
 
 @router.post("/analytics")
-async def track_analytics(data: dict[str, str]) -> dict[str, str]:
+@limiter.limit("30/minute")  # type: ignore[misc]
+async def track_analytics(request: Request, data: dict[str, str]) -> dict[str, str]:
     """Analytics tracking endpoint - accepts analytics data but doesn't store it"""
     logger.info(f"Analytics tracked: {data}")
     return {"status": "tracked"}
 
 
 @router.post("/error-report")
-async def report_error(error_data: dict[str, str]) -> dict[str, str]:
+@limiter.limit("10/minute")  # type: ignore[misc]
+async def report_error(request: Request, error_data: dict[str, str]) -> dict[str, str]:
     """Error reporting endpoint - logs errors for debugging"""
     logger.error(f"Client error reported: {error_data}")
     return {"status": "reported"}

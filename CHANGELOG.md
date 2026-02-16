@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Rate Limiting** - Per-route rate limits using `slowapi` on contact form (1/min, 3/hr), analytics (30/min), error reporting (10/min), demo sessions (10/min), and demo data endpoints (20/min)
+- **CSRF Protection** - Double Submit Cookie pattern on contact form with HMAC-signed tokens, 1-hour expiry, and `httponly`/`samesite=strict` cookie
+- **Security Tests** - Comprehensive test suite for CSRF token generation/validation, protection flow, and rate limiting behavior
 - **Breadcrumb Navigation** - Consistent breadcrumb nav (`Home > Section > Page`) on project detail and all demo pages, replacing simple back-links with semantic `<nav aria-label="Breadcrumb">` markup for improved wayfinding and SEO
 - **Custom Error Pages** - Styled 404 and 500 error pages extending base template with navigation back to site
 - **XML Sitemap** - `/sitemap.xml` endpoint with static pages, project details, blog posts, and demo pages

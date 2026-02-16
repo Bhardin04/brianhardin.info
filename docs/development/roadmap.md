@@ -120,8 +120,8 @@
 - [ ] Create development environment setup scripts
 
 ### Security & Reliability
-- [ ] Add rate limiting for contact form and API endpoints
-- [ ] Implement CSRF protection
+- [x] Add rate limiting for contact form and API endpoints
+- [x] Implement CSRF protection
 - [x] Add input validation and sanitization
 - [ ] Set up error monitoring (Sentry or similar)
 - [x] Add health check endpoints
