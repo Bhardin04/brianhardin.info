@@ -809,11 +809,13 @@ if (!document.querySelector('#connection-manager-styles')) {
     document.head.appendChild(styleSheet);
 }
 
+// Save original fetch before overriding
+const originalFetch = window.fetch;
+
 // Global connection manager instance
 window.connectionManager = new ConnectionManager();
 
 // Replace global fetch with connection-aware version
-const originalFetch = window.fetch;
 window.fetch = (url, options) => {
     return window.connectionManager.fetch(url, options);
 };
