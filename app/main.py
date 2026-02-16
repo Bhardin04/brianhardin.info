@@ -6,9 +6,12 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
+from app.middleware import limiter
 from app.models.project import Project
 from app.routers import api, blog, demos, pages, projects
 from app.services.blog import blog_service
@@ -21,6 +24,10 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Rate limiting
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
+
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
 
@@ -29,6 +36,17 @@ app.include_router(projects.router, prefix="/projects")
 app.include_router(api.router, prefix="/api")
 app.include_router(blog.router)
 app.include_router(demos.router, prefix="/demos")
+
+
+@app.exception_handler(403)
+async def forbidden_handler(request: Request, exc: StarletteHTTPException) -> Response:
+    detail = getattr(exc, "detail", "")
+    if "CSRF" in str(detail):
+        html_content = """<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+<strong>Session expired.</strong> Please reload the page and try again.
+</div>"""
+        return HTMLResponse(content=html_content, status_code=403)
+    return Response(content="Forbidden", status_code=403, media_type="text/plain")
 
 
 @app.exception_handler(404)

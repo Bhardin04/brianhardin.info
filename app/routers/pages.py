@@ -3,6 +3,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.responses import Response
 
+from app.config import settings
+from app.middleware import CSRF_COOKIE_NAME, generate_csrf_token
+
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
@@ -16,9 +19,19 @@ async def about(request: Request) -> Response:
 
 @router.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request) -> Response:
-    return templates.TemplateResponse(
-        "contact.html", {"request": request, "current_page": "contact"}
+    csrf_token = generate_csrf_token()
+    response = templates.TemplateResponse(
+        "contact.html",
+        {"request": request, "current_page": "contact", "csrf_token": csrf_token},
     )
+    response.set_cookie(
+        key=CSRF_COOKIE_NAME,
+        value=csrf_token,
+        httponly=True,
+        samesite="strict",
+        secure=not settings.DEBUG,
+    )
+    return response
 
 
 @router.get("/resume", response_class=HTMLResponse)

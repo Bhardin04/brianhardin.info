@@ -28,6 +28,7 @@
 
             <form hx-post="/api/contact" hx-target="#form-message" hx-swap="innerHTML"
                   hx-on::after-request="this.reset()" class="space-y-6" id="contact-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name *</label>
                     <input type="text" id="name" name="name" required

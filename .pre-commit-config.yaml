@@ -20,7 +20,7 @@ repos:
     rev: v1.14.1
     hooks:
       - id: mypy
-        additional_dependencies: [pydantic, fastapi, types-PyYAML, types-Markdown]
+        additional_dependencies: [pydantic, fastapi, slowapi, types-PyYAML, types-Markdown]
         args: [--ignore-missing-imports]
         files: ^app/
 
