@@ -111,6 +111,7 @@ brianhardin.info/
 │   │   └── blog.py          # Blog routes
 │   ├── services/            # Business logic
 │   │   ├── email.py         # Async email with XSS protection
+│   │   ├── project.py       # Centralized project data service
 │   │   ├── demo.py          # Demo data & processing services
 │   │   ├── websocket.py     # WebSocket connection management
 │   │   └── blog.py          # Blog service
@@ -191,7 +192,6 @@ brianhardin.info/
 
 ### 🔄 Current Focus
 - **Content Enhancement**: Adding more projects and blog content
-- **Test Coverage**: Expanding test coverage for demo backend
 - **Performance Optimization**: Analytics and performance tracking refinements
 
 ### 🚀 Upcoming Features
@@ -271,8 +271,8 @@ Personal project - All rights reserved
 
 ---
 
-**Author**: Brian Hardin  
-**Contact**: Available through the website contact form  
-**Portfolio**: https://brianhardin.info  
+**Author**: Brian Hardin
+**Contact**: Available through the website contact form
+**Portfolio**: https://brianhardin.info
 
 Built with ❤️ using FastAPI, HTMX, and a custom CSS design system

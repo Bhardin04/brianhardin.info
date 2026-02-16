@@ -7,6 +7,7 @@ from app.middleware import limiter, verify_csrf_token
 from app.models.contact import ContactForm
 from app.models.project import Project
 from app.services.email import email_service
+from app.services.project import project_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -14,111 +15,15 @@ router = APIRouter()
 
 @router.get("/projects")
 async def get_projects() -> list[Project]:
-    return [
-        Project(
-            id=1,
-            title="Personal Brand Website",
-            description="Modern responsive website built with FastAPI, featuring HTMX-powered contact forms, comprehensive testing with Puppeteer, and mobile-first design. Includes email integration and professional portfolio showcase.",
-            technologies=[
-                "Python",
-                "FastAPI",
-                "HTMX",
-                "Tailwind CSS",
-                "Puppeteer",
-                "Docker",
-            ],
-            github_url="https://github.com/Bhardin04/brianhardin.info",
-            demo_url="https://brianhardin.info",
-        ),
-        Project(
-            id=2,
-            title="API Documentation System",
-            description="Automated API documentation generator for FastAPI applications with interactive testing capabilities, OpenAPI integration, and team collaboration features.",
-            technologies=["Python", "FastAPI", "OpenAPI", "Pydantic", "PostgreSQL"],
-            github_url="https://github.com/Bhardin04/api-docs-generator",
-            demo_url="https://api-docs.brianhardin.info",
-        ),
-        Project(
-            id=3,
-            title="Data Pipeline Orchestrator",
-            description="Scalable data processing pipeline built with async Python, featuring real-time monitoring, error handling, and integration with cloud storage services.",
-            technologies=[
-                "Python",
-                "Asyncio",
-                "Redis",
-                "PostgreSQL",
-                "Docker",
-                "AWS S3",
-            ],
-            github_url="https://github.com/Bhardin04/data-pipeline",
-            demo_url=None,
-        ),
-        Project(
-            id=4,
-            title="Microservices Auth System",
-            description="JWT-based authentication microservice with role-based access control, rate limiting, and integration with multiple client applications.",
-            technologies=["Python", "FastAPI", "JWT", "Redis", "PostgreSQL", "Docker"],
-            github_url="https://github.com/Bhardin04/auth-microservice",
-            demo_url=None,
-        ),
-    ]
+    return project_service.get_all()
 
 
 @router.get("/projects/{project_id}")
 async def get_project(project_id: int) -> Project:
-    projects = {
-        1: Project(
-            id=1,
-            title="Personal Brand Website",
-            description="Modern responsive website built with FastAPI, featuring HTMX-powered contact forms, comprehensive testing with Puppeteer, and mobile-first design. Includes email integration and professional portfolio showcase.",
-            technologies=[
-                "Python",
-                "FastAPI",
-                "HTMX",
-                "Tailwind CSS",
-                "Puppeteer",
-                "Docker",
-            ],
-            github_url="https://github.com/Bhardin04/brianhardin.info",
-            demo_url="https://brianhardin.info",
-        ),
-        2: Project(
-            id=2,
-            title="API Documentation System",
-            description="Automated API documentation generator for FastAPI applications with interactive testing capabilities, OpenAPI integration, and team collaboration features.",
-            technologies=["Python", "FastAPI", "OpenAPI", "Pydantic", "PostgreSQL"],
-            github_url="https://github.com/Bhardin04/api-docs-generator",
-            demo_url="https://api-docs.brianhardin.info",
-        ),
-        3: Project(
-            id=3,
-            title="Data Pipeline Orchestrator",
-            description="Scalable data processing pipeline built with async Python, featuring real-time monitoring, error handling, and integration with cloud storage services.",
-            technologies=[
-                "Python",
-                "Asyncio",
-                "Redis",
-                "PostgreSQL",
-                "Docker",
-                "AWS S3",
-            ],
-            github_url="https://github.com/Bhardin04/data-pipeline",
-            demo_url=None,
-        ),
-        4: Project(
-            id=4,
-            title="Microservices Auth System",
-            description="JWT-based authentication microservice with role-based access control, rate limiting, and integration with multiple client applications.",
-            technologies=["Python", "FastAPI", "JWT", "Redis", "PostgreSQL", "Docker"],
-            github_url="https://github.com/Bhardin04/auth-microservice",
-            demo_url=None,
-        ),
-    }
-
-    if project_id not in projects:
+    project = project_service.get_by_id(project_id)
+    if not project:
         raise HTTPException(status_code=404, detail="Project not found")
-
-    return projects[project_id]
+    return project
 
 
 @router.post("/contact", response_class=HTMLResponse)
