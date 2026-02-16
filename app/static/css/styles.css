@@ -1261,6 +1261,20 @@ textarea {
     border-color: rgba(107, 114, 128, 0.25);
 }
 
+/* Card accent borders (used on expertise/project cards for visual differentiation) */
+.card-accent-blue {
+    border-top: 3px solid var(--color-primary);
+}
+.card-accent-emerald {
+    border-top: 3px solid #059669;
+}
+.card-accent-purple {
+    border-top: 3px solid #7c3aed;
+}
+.card-accent-orange {
+    border-top: 3px solid var(--color-accent);
+}
+
 /* Technology cards */
 .tech-card {
     background: white;
@@ -1346,7 +1360,7 @@ textarea {
 }
 
 .dark .text-gradient-primary {
-    color: var(--color-gray-100);
+    color: var(--color-gray-900);
 }
 
 /* Skip to content link */
