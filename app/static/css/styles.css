@@ -350,7 +350,7 @@
 }
 
 .dark .body-large {
-  color: var(--color-gray-300);
+  color: var(--color-gray-700);
 }
 
 .body-text {
@@ -361,7 +361,7 @@
 }
 
 .dark .body-text {
-  color: var(--color-gray-400);
+  color: var(--color-gray-600);
 }
 
 .body-small {
@@ -407,7 +407,7 @@
 }
 
 .dark .list-styled li {
-  color: var(--color-gray-400);
+  color: var(--color-gray-600);
 }
 
 .list-styled li::before {
@@ -798,7 +798,7 @@ body {
 }
 
 .dark .quote {
-    color: var(--color-gray-400);
+    color: var(--color-gray-600);
 }
 
 /* Elegant Headlines with Serif Font */
@@ -812,7 +812,7 @@ body {
 }
 
 .dark .headline-elegant {
-    color: var(--color-gray-100);
+    color: var(--color-gray-900);
 }
 
 .subheadline-elegant {
@@ -825,7 +825,7 @@ body {
 }
 
 .dark .subheadline-elegant {
-    color: var(--color-gray-300);
+    color: var(--color-gray-700);
 }
 
 /* Color Utilities */
@@ -837,7 +837,7 @@ body {
 
 .dark .text-primary { color: var(--color-primary-400); }
 .dark .text-secondary { color: var(--color-secondary-400); }
-.dark .text-muted { color: var(--color-gray-400); }
+.dark .text-muted { color: var(--color-gray-600); }
 .dark .text-subtle { color: var(--color-gray-500); }
 .dark .text-inverse { color: var(--color-gray-900); }
 
@@ -935,7 +935,7 @@ textarea {
 }
 
 .dark .form-label {
-    color: var(--color-gray-300);
+    color: var(--color-gray-700);
 }
 
 .form-help {
@@ -1434,7 +1434,7 @@ textarea {
 }
 
 .dark .prose {
-    color: var(--color-gray-300);
+    color: var(--color-gray-700);
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
@@ -1766,7 +1766,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-    color: var(--color-gray-100);
+    color: var(--color-gray-900);
 }
 
 p {
@@ -1775,7 +1775,7 @@ p {
 }
 
 .dark p {
-    color: var(--color-gray-300);
+    color: var(--color-gray-700);
 }
 
 /* Professional link styling (Brand Guide: Copper default, Copper Light hover) */
