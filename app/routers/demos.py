@@ -24,7 +24,6 @@ from app.services.demo import (
 from app.services.websocket import (
     connection_manager,
     realtime_simulator,
-    websocket_service,
 )
 
 logger = logging.getLogger(__name__)

@@ -5,7 +5,7 @@ Provides live data streaming and interactive updates for demos.
 import asyncio
 import json
 import logging
-from typing import Any, Dict, Set
+from typing import Any
 from uuid import uuid4
 
 from fastapi import WebSocket
@@ -18,9 +18,9 @@ class ConnectionManager:
 
     def __init__(self):
         # Active connections by session ID
-        self.active_connections: Dict[str, Set[WebSocket]] = {}
+        self.active_connections: dict[str, set[WebSocket]] = {}
         # Connection metadata
-        self.connection_data: Dict[WebSocket, Dict[str, Any]] = {}
+        self.connection_data: dict[WebSocket, dict[str, Any]] = {}
 
     async def connect(self, websocket: WebSocket, session_id: str, demo_type: str):
         """Accept a new WebSocket connection"""
@@ -70,7 +70,7 @@ class ConnectionManager:
 
             logger.info(f"WebSocket disconnected: session={session_id}")
 
-    async def send_to_connection(self, websocket: WebSocket, data: Dict[str, Any]):
+    async def send_to_connection(self, websocket: WebSocket, data: dict[str, Any]):
         """Send data to a specific connection"""
         try:
             await websocket.send_text(json.dumps(data))
@@ -78,7 +78,7 @@ class ConnectionManager:
             logger.error(f"Error sending WebSocket message: {e}")
             self.disconnect(websocket)
 
-    async def send_to_session(self, session_id: str, data: Dict[str, Any]):
+    async def send_to_session(self, session_id: str, data: dict[str, Any]):
         """Send data to all connections in a session"""
         if session_id in self.active_connections:
             connections = self.active_connections[session_id].copy()
@@ -86,13 +86,13 @@ class ConnectionManager:
             for websocket in connections:
                 await self.send_to_connection(websocket, data)
 
-    async def broadcast_to_demo_type(self, demo_type: str, data: Dict[str, Any]):
+    async def broadcast_to_demo_type(self, demo_type: str, data: dict[str, Any]):
         """Broadcast data to all connections of a specific demo type"""
         for websocket, metadata in self.connection_data.items():
             if metadata["demo_type"] == demo_type:
                 await self.send_to_connection(websocket, data)
 
-    async def broadcast_to_all(self, data: Dict[str, Any]):
+    async def broadcast_to_all(self, data: dict[str, Any]):
         """Broadcast data to all active connections"""
         for websocket in self.connection_data.keys():
             await self.send_to_connection(websocket, data)
@@ -112,7 +112,7 @@ class DemoWebSocketService:
     def __init__(self, connection_manager: ConnectionManager):
         self.manager = connection_manager
 
-    async def send_payment_processing_update(self, session_id: str, update_type: str, data: Dict[str, Any]):
+    async def send_payment_processing_update(self, session_id: str, update_type: str, data: dict[str, Any]):
         """Send payment processing real-time updates"""
         message = {
             "type": "payment_processing_update",
@@ -122,7 +122,7 @@ class DemoWebSocketService:
         }
         await self.manager.send_to_session(session_id, message)
 
-    async def send_pipeline_progress_update(self, session_id: str, step: str, progress: float, status: str, details: Dict[str, Any] = None):
+    async def send_pipeline_progress_update(self, session_id: str, step: str, progress: float, status: str, details: dict[str, Any] = None):
         """Send data pipeline progress updates"""
         message = {
             "type": "pipeline_progress",
@@ -134,7 +134,7 @@ class DemoWebSocketService:
         }
         await self.manager.send_to_session(session_id, message)
 
-    async def send_dashboard_data_update(self, session_id: str, chart_type: str, data: Dict[str, Any]):
+    async def send_dashboard_data_update(self, session_id: str, chart_type: str, data: dict[str, Any]):
         """Send dashboard real-time data updates"""
         message = {
             "type": "dashboard_update",
@@ -144,7 +144,7 @@ class DemoWebSocketService:
         }
         await self.manager.send_to_session(session_id, message)
 
-    async def send_collections_metrics_update(self, session_id: str, metric_type: str, data: Dict[str, Any]):
+    async def send_collections_metrics_update(self, session_id: str, metric_type: str, data: dict[str, Any]):
         """Send collections dashboard metrics updates"""
         message = {
             "type": "collections_update",
@@ -154,7 +154,7 @@ class DemoWebSocketService:
         }
         await self.manager.send_to_session(session_id, message)
 
-    async def send_error_notification(self, session_id: str, error_type: str, message: str, details: Dict[str, Any] = None):
+    async def send_error_notification(self, session_id: str, error_type: str, message: str, details: dict[str, Any] = None):
         """Send error notifications to session"""
         error_message = {
             "type": "error_notification",
@@ -182,7 +182,7 @@ class RealtimeDataSimulator:
 
     def __init__(self, websocket_service: DemoWebSocketService):
         self.websocket_service = websocket_service
-        self.active_simulations: Dict[str, asyncio.Task] = {}
+        self.active_simulations: dict[str, asyncio.Task] = {}
 
     async def start_payment_processing_simulation(self, session_id: str):
         """Start real-time payment processing simulation"""
@@ -270,7 +270,7 @@ class RealtimeDataSimulator:
             for stage, description, percentage in stages:
                 stage_records = int((percentage / 100) * total_records)
 
-                for i in range(stage_records):
+                for _i in range(stage_records):
                     processed_records += 1
                     progress = (processed_records / total_records) * 100
 

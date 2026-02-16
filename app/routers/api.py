@@ -177,7 +177,7 @@ async def track_analytics(data: dict):
     logger.info(f"Analytics tracked: {data}")
     return {"status": "tracked"}
 
-@router.post("/error-report") 
+@router.post("/error-report")
 async def report_error(error_data: dict):
     """Error reporting endpoint - logs errors for debugging"""
     logger.error(f"Client error reported: {error_data}")

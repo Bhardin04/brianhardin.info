@@ -71,6 +71,6 @@ self.addEventListener('activate', function(event) {
     event.waitUntil(self.clients.claim());
 });
     """.strip()
-    
+
     from fastapi.responses import Response
     return Response(content=content, media_type="application/javascript")
