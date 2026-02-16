@@ -25,9 +25,7 @@ class EmailService:
         try:
             # Create message
             message = MIMEMultipart("alternative")
-            # Sanitize subject to prevent SMTP header injection
-            safe_subject = contact_data.subject.replace("\r", "").replace("\n", "")
-            message["Subject"] = f"Contact Form: {safe_subject}"
+            message["Subject"] = f"Contact Form: {contact_data.subject}"
             message["From"] = self.from_email
             message["To"] = self.to_email
             message["Reply-To"] = contact_data.email

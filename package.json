@@ -1,12 +1,5 @@
 {
   "dependencies": {
     "puppeteer": "^24.12.1"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.19"
-  },
-  "scripts": {
-    "build:css": "tailwindcss -i app/static/css/tailwind.css -o app/static/css/tailwind.out.css --minify",
-    "watch:css": "tailwindcss -i app/static/css/tailwind.css -o app/static/css/tailwind.out.css --watch"
   }
 }
