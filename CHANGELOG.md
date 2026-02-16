@@ -56,6 +56,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Naive Datetime Handling** - Normalized to naive UTC (`datetime.now(UTC).replace(tzinfo=None)`) for cross-database compatibility
 - **Dark mode blog sidebar** - Added missing `dark:bg-gray-800` to "About This Blog" card
 - **Footer whitespace** - Added sticky footer layout, reduced excessive padding
+- **Brand alignment** - Replaced all undefined `primary-*`/`secondary-*` Tailwind classes with `brand-*` across all public templates
+- **Dark mode h1 titles** - Fixed `.text-gradient-primary` using wrong gray token in dark mode (was invisible dark text on dark bg)
+- **Missing card accent CSS** - Added `card-accent-blue/emerald/purple/orange` definitions (used in resume and homepage but had no CSS)
+- **Demos page brand alignment** - Replaced off-brand `slate-*`/`blue-*` hero gradient, CTA buttons, and card backgrounds
+- **Font-size override** - Narrowed global `font-size: 16px` rule from `body, p, div, span, a, button` to `input, textarea, select` only
+- **Link specificity** - Scoped `a:visited` color with `:not()` selectors to prevent overriding button/nav link classes
 
 ## [1.4.0] - 2026-02-15
 

@@ -12,14 +12,14 @@
 
 {% block content %}
 <!-- Project Hero Section -->
-<section class="section-sm bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+<section class="section-sm bg-gradient-to-br from-brand-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
     <div class="container">
         <!-- Breadcrumb -->
         <div class="mb-8">
             <nav class="flex justify-start" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
-                        <a href="/" class="text-subtle hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        <a href="/" class="text-subtle hover:text-brand-500 dark:hover:text-brand-400 transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                             </svg>
@@ -31,7 +31,7 @@
                             <svg class="w-4 h-4 text-subtle" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <a href="/projects" class="ml-1 text-subtle hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Projects</a>
+                            <a href="/projects" class="ml-1 text-subtle hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Projects</a>
                         </div>
                     </li>
                     <li aria-current="page">
@@ -49,7 +49,7 @@
         <!-- Project Header -->
         <div class="text-center mb-12">
             {% if project.category %}
-            <div class="inline-flex items-center px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium mb-4">
+            <div class="inline-flex items-center px-4 py-2 bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full text-sm font-medium mb-4">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                 </svg>
@@ -101,7 +101,7 @@
                 <!-- Project Image -->
                 {% if project.image_url %}
                 <div class="card p-0 mb-8 overflow-hidden">
-                    <div class="relative h-64 md:h-80 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-800 dark:to-gray-900">
+                    <div class="relative h-64 md:h-80 bg-gradient-to-br from-brand-50 to-brand-100 dark:from-gray-800 dark:to-gray-900">
                         <img src="{{ project.image_url }}" alt="{{ project.title }} Preview" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4">
@@ -117,7 +117,7 @@
                                     </span>
                                     {% endif %}
                                     {% if project.featured %}
-                                    <span class="px-3 py-1 bg-secondary-500/80 backdrop-blur-sm text-white text-sm rounded-full">
+                                    <span class="px-3 py-1 bg-amber-500/80 backdrop-blur-sm text-white text-sm rounded-full">
                                         Featured
                                     </span>
                                     {% endif %}
@@ -168,8 +168,8 @@
                         <ul class="space-y-2">
                             {% for user in project.problem.target_users %}
                             <li class="flex items-start space-x-3">
-                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
-                                    <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+                                <div class="w-5 h-5 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                    <div class="w-2 h-2 rounded-full bg-brand-500"></div>
                                 </div>
                                 <span class="text-gray-600 dark:text-gray-300">{{ user }}</span>
                             </li>
@@ -219,8 +219,8 @@
                         <ul class="space-y-3">
                             {% for highlight in project.solution.implementation_highlights %}
                             <li class="flex items-start space-x-3">
-                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mt-0.5">
-                                    <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+                                <div class="w-5 h-5 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 rounded-full bg-brand-500"></div>
                                 </div>
                                 <span class="text-gray-600 dark:text-gray-300">{{ highlight }}</span>
                             </li>
@@ -241,7 +241,7 @@
                 <!-- Outcome Section -->
                 {% if project.outcome %}
                 <div class="card mb-8">
-                    <h2 class="text-2xl font-bold mb-6 text-primary-600 dark:text-primary-400">Results & Impact</h2>
+                    <h2 class="text-2xl font-bold mb-6 text-brand-500 dark:text-brand-400">Results & Impact</h2>
 
                     <div class="mb-6">
                         <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ project.outcome.summary }}</p>
@@ -251,13 +251,13 @@
                     {% if project.outcome.metrics %}
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                         {% if project.outcome.metrics.performance_improvement %}
-                        <div class="bg-primary-500 p-4 rounded-lg text-white">
+                        <div class="bg-brand-500 p-4 rounded-lg text-white">
                             <h4 class="font-semibold text-sm mb-2">Performance</h4>
                             <p class="text-sm">{{ project.outcome.metrics.performance_improvement }}</p>
                         </div>
                         {% endif %}
                         {% if project.outcome.metrics.user_engagement %}
-                        <div class="bg-secondary-500 p-4 rounded-lg text-white">
+                        <div class="bg-amber-500 p-4 rounded-lg text-white">
                             <h4 class="font-semibold text-sm mb-2">User Engagement</h4>
                             <p class="text-sm">{{ project.outcome.metrics.user_engagement }}</p>
                         </div>
@@ -314,7 +314,7 @@
                         <h4 class="font-semibold text-gray-900 dark:text-white mb-3">User Feedback</h4>
                         <div class="space-y-4">
                             {% for feedback in project.outcome.user_feedback %}
-                            <blockquote class="border-l-4 border-primary-500 pl-4 italic text-gray-600 dark:text-gray-300">
+                            <blockquote class="border-l-4 border-brand-500 pl-4 italic text-gray-600 dark:text-gray-300">
                                 "{{ feedback }}"
                             </blockquote>
                             {% endfor %}
@@ -324,15 +324,15 @@
 
                     <!-- Lessons Learned -->
                     {% if project.outcome.lessons_learned %}
-                    <div class="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
-                        <h4 class="font-semibold text-primary-800 dark:text-primary-200 mb-3">Lessons Learned</h4>
+                    <div class="p-4 bg-brand-50 dark:bg-brand-900/20 rounded-lg">
+                        <h4 class="font-semibold text-brand-800 dark:text-brand-200 mb-3">Lessons Learned</h4>
                         <ul class="space-y-2">
                             {% for lesson in project.outcome.lessons_learned %}
                             <li class="flex items-start space-x-3">
-                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mt-0.5">
-                                    <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+                                <div class="w-5 h-5 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 rounded-full bg-brand-500"></div>
                                 </div>
-                                <span class="text-primary-700 dark:text-primary-300">{{ lesson }}</span>
+                                <span class="text-brand-700 dark:text-brand-300">{{ lesson }}</span>
                             </li>
                             {% endfor %}
                         </ul>
@@ -448,7 +448,7 @@
                     <h3 class="text-xl font-bold mb-4">Project Timeline</h3>
                     <div class="space-y-4">
                         {% for phase in project.timeline %}
-                        <div class="border-l-2 border-primary-200 dark:border-primary-800 pl-4">
+                        <div class="border-l-2 border-brand-200 dark:border-brand-800 pl-4">
                             <h4 class="font-semibold text-gray-900 dark:text-white">{{ phase.phase }}</h4>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{{ phase.duration }}</p>
                             {% if phase.activities %}
@@ -465,9 +465,9 @@
                 {% endif %}
 
                 <!-- Call to Action -->
-                <div class="card bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800">
-                    <h3 class="text-xl font-bold mb-4 text-primary-900 dark:text-primary-100">Interested in Similar Work?</h3>
-                    <p class="text-primary-700 dark:text-primary-300 mb-4">Let's discuss how I can help with your next project.</p>
+                <div class="card bg-brand-50 dark:bg-brand-900/20 border-brand-200 dark:border-brand-800">
+                    <h3 class="text-xl font-bold mb-4 text-brand-900 dark:text-brand-100">Interested in Similar Work?</h3>
+                    <p class="text-brand-700 dark:text-brand-300 mb-4">Let's discuss how I can help with your next project.</p>
                     <a href="/contact" class="btn-primary w-full text-center">Get in Touch</a>
                 </div>
             </div>

@@ -12,10 +12,10 @@
 
 {% block content %}
 <!-- Projects Hero Section -->
-<section class="section-sm bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+<section class="section-sm bg-gradient-to-br from-brand-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
     <div class="container">
         <div class="text-center mb-16 slide-up">
-            <div class="inline-flex items-center px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium mb-4">
+            <div class="inline-flex items-center px-4 py-2 bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full text-sm font-medium mb-4">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                 </svg>
@@ -38,7 +38,7 @@
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Browse Projects</h2>
             <div class="flex items-center space-x-4">
                 <label for="categoryFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by category:</label>
-                <select id="categoryFilter" class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <select id="categoryFilter" class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
                     <option value="all">All Projects</option>
                     <option value="web_app">Web Applications</option>
                     <option value="api">APIs</option>
@@ -60,7 +60,7 @@
             <article class="group relative card p-0 overflow-hidden hover-lift project-card slide-up" data-category="{{ project.category.value }}" style="animation-delay: {{ loop.index0 * 100 }}ms;">
                 <!-- Project Image -->
                 {% if project.image_url %}
-                <div class="relative h-48 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
+                <div class="relative h-48 bg-gradient-to-br from-brand-50 to-brand-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
                     <img src="{{ project.image_url }}" alt="{{ project.title }} Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                 </div>
@@ -69,14 +69,14 @@
                 <!-- Project Header with Icon -->
                 <div class="p-6 pb-4">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center shadow-lg">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                             </svg>
                         </div>
                         <div class="flex flex-col items-end space-y-2">
                             {% if project.featured %}
-                            <span class="px-2 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-700 dark:text-secondary-300 text-xs font-medium rounded-full">
+                            <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-medium rounded-full">
                                 Featured
                             </span>
                             {% endif %}
@@ -92,15 +92,15 @@
                                 {% if project.demo_url %}
                                     {% if project.demo_url.startswith('/demos/') %}
                                 <a href="{{ project.demo_url }}" aria-label="View {{ project.title }} demo"
-                                   class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center hover:from-blue-600 hover:to-purple-600 hover-glow transition-all duration-200 shadow-lg">
+                                   class="w-10 h-10 bg-gradient-to-r from-brand-500 to-brand-600 rounded-lg flex items-center justify-center hover:from-brand-600 hover:to-brand-700 hover-glow transition-all duration-200 shadow-lg">
                                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
                                 </a>
                                     {% else %}
                                 <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer" aria-label="View {{ project.title }} demo"
-                                   class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center hover:bg-primary-200 dark:hover:bg-primary-800/50 hover-glow transition-colors">
-                                    <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                   class="w-10 h-10 bg-brand-100 dark:bg-brand-900/30 rounded-lg flex items-center justify-center hover:bg-brand-200 dark:hover:bg-brand-800/50 hover-glow transition-colors">
+                                    <svg class="w-4 h-4 text-brand-500 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                                     </svg>
                                 </a>
@@ -110,7 +110,7 @@
                         </div>
                     </div>
 
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors">
                         {{ project.title }}
                     </h3>
 
@@ -125,7 +125,7 @@
                         <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Built with:</h4>
                         <div class="flex flex-wrap gap-2">
                             {% for tech in project.technologies %}
-                            <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-xs font-medium rounded-full">
+                            <span class="px-3 py-1 bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 text-xs font-medium rounded-full">
                                 {{ tech }}
                             </span>
                             {% endfor %}
@@ -145,7 +145,7 @@
                         {% if project.demo_url %}
                             {% if project.demo_url.startswith('/demos/') %}
                         <a href="{{ project.demo_url }}"
-                           class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm py-2 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 hover:shadow-lg flex items-center justify-center">
+                           class="flex-1 bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm py-2 px-4 rounded-lg font-medium hover:from-brand-600 hover:to-brand-700 transition-all duration-200 hover:shadow-lg flex items-center justify-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
@@ -165,7 +165,7 @@
                 </div>
 
                 <!-- Hover Effect Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </article>
             {% endfor %}
         </div>
