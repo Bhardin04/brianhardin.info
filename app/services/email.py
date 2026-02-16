@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 class EmailService:
-    def __init__(self):
+    def __init__(self) -> None:
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
         self.smtp_username = os.getenv("SMTP_USERNAME")
         self.smtp_password = os.getenv("SMTP_PASSWORD")
-        self.from_email = os.getenv("FROM_EMAIL", self.smtp_username)
+        self.from_email = os.getenv("FROM_EMAIL") or self.smtp_username or ""
         self.to_email = os.getenv("TO_EMAIL", "brian.hardin@icloud.com")
 
     async def send_contact_email(self, contact_data: ContactForm) -> bool:
@@ -51,14 +51,18 @@ class EmailService:
                     username=self.smtp_username,
                     password=self.smtp_password,
                 )
-                logger.info(f"Email sent successfully from {contact_data.email} with subject: {contact_data.subject}")
+                logger.info(
+                    f"Email sent successfully from {contact_data.email} with subject: {contact_data.subject}"
+                )
                 return True
             else:
                 # In development, just log the email
                 logger.info("=== EMAIL (Development Mode) ===")
                 logger.info(f"From: {contact_data.email}")
                 logger.info(f"Subject: {contact_data.subject}")
-                logger.info(f"Message: {contact_data.message[:100]}...")  # Only log first 100 chars for security
+                logger.info(
+                    f"Message: {contact_data.message[:100]}..."
+                )  # Only log first 100 chars for security
                 logger.info("================================")
                 return True
 
@@ -68,7 +72,9 @@ class EmailService:
 
     def _create_text_content(self, contact_data: ContactForm) -> str:
         """Create plain text email content"""
-        company_info = f"\nCompany: {contact_data.company}" if contact_data.company else ""
+        company_info = (
+            f"\nCompany: {contact_data.company}" if contact_data.company else ""
+        )
 
         return f"""
 New contact form submission from brianhardin.info
@@ -91,14 +97,18 @@ This message was sent from the contact form on brianhardin.info
         email = html.escape(contact_data.email)
         subject = html.escape(contact_data.subject)
         # Escape message and convert newlines to <br> tags safely
-        message = html.escape(contact_data.message).replace('\n', '<br>')
+        message = html.escape(contact_data.message).replace("\n", "<br>")
 
-        company_row = f"""
+        company_row = (
+            f"""
         <tr>
             <td style="padding: 8px 0; font-weight: bold;">Company:</td>
             <td style="padding: 8px 0;">{html.escape(contact_data.company)}</td>
         </tr>
-        """ if contact_data.company else ""
+        """
+            if contact_data.company
+            else ""
+        )
 
         return f"""
         <!DOCTYPE html>
@@ -147,6 +157,7 @@ This message was sent from the contact form on brianhardin.info
         </body>
         </html>
         """
+
 
 # Create global email service instance
 email_service = EmailService()

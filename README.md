@@ -45,12 +45,23 @@ A modern, responsive personal website showcasing professional experience, projec
 - ✅ **Blog System** - Professional blog layout with tagging and filtering
 - ✅ **Performance Optimized** - Fast loading with optimized CSS, animations, and SVG compression
 
+### 🎮 Interactive Project Demos
+- ✅ **Payment Processing Demo** - Automated payment application workflow
+- ✅ **Data Pipeline Demo** - NetSuite to SAP data integration showcase
+- ✅ **Sales Dashboard Demo** - Revenue analytics with interactive charts
+- ✅ **Collections Dashboard Demo** - DSO tracking and collector performance
+- ✅ **WebSocket Real-time Updates** - Live data streaming for demos
+- ✅ **Demo Analytics** - Performance monitoring and user interaction tracking
+
 ### 🛠 Technical Features
 - ✅ **FastAPI Backend** - Modern Python web framework
 - ✅ **HTMX Integration** - Dynamic interactions without JavaScript frameworks
+- ✅ **WebSocket Support** - Real-time data updates for interactive demos
 - ✅ **Email Service** - Async email sending with production/dev modes
 - ✅ **SEO Optimized** - Meta tags, structured data, and canonical URLs
 - ✅ **Testing Suite** - Pytest + Puppeteer for E2E testing
+- ✅ **CI/CD Pipeline** - GitHub Actions with linting, testing, and deployment
+- ✅ **Branch Protection** - PR-required workflow with CI checks on main
 
 ## 🎨 Design System
 
@@ -86,22 +97,52 @@ A modern, responsive personal website showcasing professional experience, projec
 brianhardin.info/
 ├── app/
 │   ├── main.py              # FastAPI application
+│   ├── config.py            # Configuration settings
+│   ├── models/              # Pydantic models
+│   │   ├── contact.py       # Contact form validation
+│   │   ├── project.py       # Project & case study models
+│   │   ├── demo.py          # Interactive demo models
+│   │   └── blog.py          # Blog post models
 │   ├── routers/             # API routes
+│   │   ├── pages.py         # Main page routes
+│   │   ├── projects.py      # Project portfolio & detail routes
+│   │   ├── demos.py         # Demo API & WebSocket endpoints
+│   │   ├── api.py           # Contact form & utility APIs
+│   │   └── blog.py          # Blog routes
 │   ├── services/            # Business logic
+│   │   ├── email.py         # Async email with XSS protection
+│   │   ├── demo.py          # Demo data & processing services
+│   │   ├── websocket.py     # WebSocket connection management
+│   │   └── blog.py          # Blog service
 │   ├── static/
-│   │   └── css/
-│   │       └── styles.css   # Design system & components
+│   │   ├── css/styles.css   # Design system (2,500+ lines)
+│   │   ├── js/              # Client-side JavaScript
+│   │   │   ├── chart-utils.js
+│   │   │   ├── connection-manager.js
+│   │   │   ├── error-handler.js
+│   │   │   ├── analytics-*.js
+│   │   │   ├── websocket-client.js
+│   │   │   └── user-preferences.js
+│   │   └── images/          # SVG brand assets & project images
 │   └── templates/           # Jinja2 templates
-│       ├── base.html        # Base template with design system
+│       ├── base.html        # Base template with responsive nav
 │       ├── index.html       # Homepage with hero section
-│       ├── about.html       # Professional about page
-│       ├── projects.html    # Enhanced project showcase
+│       ├── projects.html    # Project showcase with filtering
+│       ├── project_detail.html  # Case study detail pages
+│       ├── demos/           # Interactive demo templates
+│       │   ├── index.html
+│       │   ├── sales_dashboard.html
+│       │   ├── collections_dashboard.html
+│       │   ├── payment_processing.html
+│       │   └── data_pipeline.html
+│       ├── blog/            # Blog system templates
 │       ├── resume.html      # Professional resume page
-│       ├── contact.html     # Professional contact form
-│       └── blog/            # Blog system templates
+│       ├── about.html       # About page
+│       └── contact.html     # Contact form
 ├── docs/                    # Documentation
-├── tests/                   # Test suite
-└── testing/                 # E2E testing with Puppeteer
+├── tests/                   # Pytest test suite
+├── testing/                 # E2E testing with Puppeteer
+└── .github/workflows/       # CI/CD pipeline
 ```
 
 ## 🎯 Documentation
@@ -149,17 +190,15 @@ brianhardin.info/
 - **Professional Resume**: Complete resume page with brand integration and navigation
 
 ### 🔄 Current Focus
-- **Template Debugging**: Resolving complex project detail template issues
 - **Content Enhancement**: Adding more projects and blog content
-- **Advanced Animations**: Additional micro-interactions
-- **Performance Monitoring**: Analytics and performance tracking
+- **Test Coverage**: Expanding test coverage for demo backend
+- **Performance Optimization**: Analytics and performance tracking refinements
 
 ### 🚀 Upcoming Features
-- **Interactive Project Demos**: Hands-on experiences with live data manipulation and real-time results
-- **Complex Project Details**: Full case study templates with comprehensive project data
 - **Blog CMS**: Admin interface for content management
 - **Portfolio Expansion**: Additional project showcases
-- **Interactive Elements**: Enhanced user engagement features
+- **Custom 404 Pages**: Branded error pages
+- **Sitemap Generation**: XML sitemap for search engines
 
 ## 🛠 Quick Commands
 

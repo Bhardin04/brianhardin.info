@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 
 
 class ProjectCategory(str, Enum):
@@ -22,6 +22,7 @@ class ProjectStatus(str, Enum):
 
 class ProjectMetrics(BaseModel):
     """Business and technical metrics for project impact"""
+
     performance_improvement: str | None = None
     user_engagement: str | None = None
     cost_savings: str | None = None
@@ -34,6 +35,7 @@ class ProjectMetrics(BaseModel):
 
 class ProjectProblem(BaseModel):
     """Problem statement and context"""
+
     title: str
     description: str
     pain_points: list[str]
@@ -43,6 +45,7 @@ class ProjectProblem(BaseModel):
 
 class ProjectSolution(BaseModel):
     """Solution approach and implementation"""
+
     approach: str
     key_decisions: list[str]
     architecture: str
@@ -51,6 +54,7 @@ class ProjectSolution(BaseModel):
 
 class ProjectOutcome(BaseModel):
     """Results and business impact"""
+
     summary: str
     achievements: list[str]
     metrics: ProjectMetrics
@@ -60,6 +64,7 @@ class ProjectOutcome(BaseModel):
 
 class ProjectTimeline(BaseModel):
     """Project development timeline"""
+
     phase: str
     duration: str
     activities: list[str]
@@ -74,7 +79,7 @@ class Project(BaseModel):
     technologies: list[str]
     category: ProjectCategory = ProjectCategory.WEB_APP
     status: ProjectStatus = ProjectStatus.COMPLETED
-    github_url: HttpUrl | None = None
+    github_url: str | None = None
     demo_url: str | None = None
     image_url: str | None = None
     created_at: datetime | None = None
@@ -103,7 +108,7 @@ class ProjectCreate(BaseModel):
     technologies: list[str]
     category: ProjectCategory = ProjectCategory.WEB_APP
     status: ProjectStatus = ProjectStatus.COMPLETED
-    github_url: HttpUrl | None = None
+    github_url: str | None = None
     demo_url: str | None = None
     image_url: str | None = None
     duration: str | None = None

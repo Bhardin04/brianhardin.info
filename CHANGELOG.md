@@ -7,24 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-02-15
+
 ### Added
-- ✅ **Interactive Project Demos Documentation** - Comprehensive planning for 5 hands-on project demonstrations
-- ✅ **Featured Financial Demos** - Automated Payment Application System, NetSuite to SAP Data Pipeline, Sales & Revenue Dashboard, Collections Management Dashboard
-- ✅ **Automation Suite Playground** - Workflow automation with visual process builder
-- ✅ **Collections Management Dashboard** - DSO analytics, collector performance, MTD tracking, past due balances, customer target lists, communication activity tracking
-- ✅ **Sales & Revenue Dashboard** - KPIs, growth metrics, churn analysis, EBITDA measures with interactive visualizations
-- ✅ **Technical Implementation Specifications** - Detailed frontend/backend architecture, sample data structures, demo workflows
-- ✅ **Interactive Demo Strategy** - Transform static project descriptions into engaging, hands-on experiences
+- ✅ **Interactive Demo Backend** - FastAPI router, services, and Pydantic models for demo API endpoints
+- ✅ **WebSocket Support** - Real-time data streaming with connection management and demo simulation
+- ✅ **Demo Templates** - Payment processing, data pipeline, sales dashboard, collections dashboard, and demo index page
+- ✅ **Client-side JavaScript** - Analytics dashboard, analytics tracker, performance monitor, user preferences, preferences UI, WebSocket client
+- ✅ **Project Case Studies** - Expanded project model with problem/solution/outcome framework, metrics, timelines
+- ✅ **Project Detail Pages** - Full case study layout with hero, sidebar, metrics grid, and CTA sections
+- ✅ **Project Portfolio Filtering** - Category filtering, featured badges, and interactive demo buttons
+- ✅ **CSS Design System** - Comprehensive 2,500+ line design system with tokens, components, and dark mode
+- ✅ **Brand Assets** - SVG favicon, logo, pattern, and Python icon
+- ✅ **Service Worker Stub** - PWA-ready service worker endpoint
+- ✅ **Branch Protection** - PR-required workflow with CI status checks on main
+
+### Fixed
+- ✅ **Connection Manager Bug** - Fixed infinite recursion in fetch retry logic
+- ✅ **Sales Dashboard JS Errors** - Fixed runtime errors from missing `advancedChartManager`
+- ✅ **Mobile Navigation** - Restored hamburger menu for responsive design
+- ✅ **Skip-to-Content Link** - Restored accessibility skip navigation
+- ✅ **Ruff Lint Errors** - Fixed all 20 linting issues (trailing whitespace, deprecated typing imports, unused imports)
+- ✅ **Test Failures** - Updated tests to match new templates and project data
+
+### Security
+- ✅ **Cryptographic SECRET_KEY** - Replaced hardcoded key with `secrets.token_urlsafe(32)`
+- ✅ **Input Validation** - Added field length limits on contact form with Pydantic validators
+- ✅ **XSS Prevention** - Added `html.escape()` to email service HTML generation
+- ✅ **Error Info Hiding** - Removed raw error details from user-facing API responses
+- ✅ **Logging Improvements** - Replaced print statements with structured logging, truncated sensitive data
 
 ### Changed
-- ✅ **Roadmap Prioritization** - Updated Phase 2 Enhancement to prioritize interactive demos over static improvements
-- ✅ **Demo Focus** - Streamlined to 5 core demos focused on financial systems and automation capabilities
-- ✅ **Implementation Order** - Prioritized payment processing, data integration, and financial analytics demonstrations
+- ✅ **Base Template** - Enhanced SEO structured data, PWA meta tags, brand logo in nav, system dark mode detection
+- ✅ **Navigation** - Added Demos and Resume links, sticky nav with backdrop blur
+- ✅ **Footer** - Redesigned with SVG social icons and brand pattern
+- ✅ **Removed Backup Files** - Cleaned up .svg.backup and .html.backup files, added `*.backup` to .gitignore
 
 ### Documentation
-- ✅ **Interactive Demos Documentation** - Created comprehensive `/docs/features/interactive-demos.md` with detailed specifications
-- ✅ **Roadmap Updates** - Updated development roadmap with interactive demo priorities and implementation timeline
-- ✅ **README Updates** - Added interactive demos to upcoming features section
+- ✅ **README** - Updated project structure, features list, and development status
+- ✅ **CHANGELOG** - Comprehensive v1.4.0 release notes
+- ✅ **Roadmap** - Updated completed items and current priorities
+- ✅ **Development Docs** - Added navigation investigation, phase 1 report, and performance fixes docs
 
 ## [1.3.0] - 2025-01-10 (Phase 1 Complete)
 
@@ -262,5 +285,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 **Maintained by**: Development Team  
-**Last Updated**: 2025-01-08  
-**Next Review**: 2025-01-15
+**Last Updated**: 2026-02-15
+**Next Review**: 2026-03-01

@@ -1,6 +1,7 @@
 """
 Demo models for interactive project demonstrations.
 """
+
 from datetime import datetime
 from enum import Enum
 from typing import Any
@@ -11,6 +12,7 @@ from pydantic import BaseModel, Field
 
 class DemoStatus(str, Enum):
     """Demo execution status"""
+
     IDLE = "idle"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -19,6 +21,7 @@ class DemoStatus(str, Enum):
 
 class DemoType(str, Enum):
     """Types of interactive demos"""
+
     PAYMENT_PROCESSING = "payment_processing"
     DATA_PIPELINE = "data_pipeline"
     SALES_DASHBOARD = "sales_dashboard"
@@ -28,6 +31,7 @@ class DemoType(str, Enum):
 
 class DemoSession(BaseModel):
     """Demo session tracking"""
+
     session_id: str = Field(default_factory=lambda: str(uuid4()))
     demo_type: DemoType
     status: DemoStatus = DemoStatus.IDLE
@@ -35,7 +39,9 @@ class DemoSession(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.now)
     data: dict[str, Any] = Field(default_factory=dict)
 
-    def update_status(self, status: DemoStatus, data: dict[str, Any] = None):
+    def update_status(
+        self, status: DemoStatus, data: dict[str, Any] | None = None
+    ) -> None:
         """Update session status and data"""
         self.status = status
         self.updated_at = datetime.now()
@@ -52,6 +58,7 @@ class PaymentMethod(str, Enum):
 
 class PaymentEntry(BaseModel):
     """Payment entry form data"""
+
     customer_id: str
     amount: float = Field(gt=0, description="Payment amount must be positive")
     payment_method: PaymentMethod
@@ -62,6 +69,7 @@ class PaymentEntry(BaseModel):
 
 class Invoice(BaseModel):
     """Open invoice in AR ledger"""
+
     invoice_id: str
     invoice_number: str
     customer_id: str
@@ -87,6 +95,7 @@ class Invoice(BaseModel):
 
 class PaymentMatch(BaseModel):
     """Payment to invoice matching result"""
+
     payment_id: str
     invoice_id: str
     amount_applied: float
@@ -96,6 +105,7 @@ class PaymentMatch(BaseModel):
 
 class PaymentProcessingResult(BaseModel):
     """Result of payment processing"""
+
     payment_id: str
     status: str  # "matched", "partial", "exception"
     matches: list[PaymentMatch]
@@ -118,6 +128,7 @@ class OutputFormat(str, Enum):
 
 class DataExtractionParams(BaseModel):
     """Parameters for data extraction"""
+
     source: DataSource
     start_date: datetime
     end_date: datetime
@@ -129,6 +140,7 @@ class DataExtractionParams(BaseModel):
 
 class DataRecord(BaseModel):
     """Generic data record structure"""
+
     record_id: str
     source_id: str
     record_type: str
@@ -140,6 +152,7 @@ class DataRecord(BaseModel):
 
 class TransformationRule(BaseModel):
     """Data transformation rule"""
+
     source_field: str
     target_field: str
     transformation: str  # "direct", "format_date", "currency_format", etc.
@@ -148,6 +161,7 @@ class TransformationRule(BaseModel):
 
 class PipelineResult(BaseModel):
     """Data pipeline processing result"""
+
     batch_id: str
     total_records: int
     processed_records: int
@@ -160,6 +174,7 @@ class PipelineResult(BaseModel):
 # Dashboard Demo Models
 class KPIMetric(BaseModel):
     """Key Performance Indicator metric"""
+
     name: str
     value: float
     unit: str = ""
@@ -170,6 +185,7 @@ class KPIMetric(BaseModel):
 
 class RevenueRecord(BaseModel):
     """Customer revenue record"""
+
     customer_id: str
     customer_name: str
     current_month: float
@@ -181,6 +197,7 @@ class RevenueRecord(BaseModel):
 
 class DashboardData(BaseModel):
     """Dashboard visualization data"""
+
     kpis: list[KPIMetric]
     revenue_by_customer: list[RevenueRecord]
     chart_data: dict[str, Any]
@@ -191,6 +208,7 @@ class DashboardData(BaseModel):
 # Collections Demo Models
 class CollectorMetric(BaseModel):
     """Individual collector performance metrics"""
+
     collector_id: str
     collector_name: str
     collections_mtd: float
@@ -205,6 +223,7 @@ class CollectorMetric(BaseModel):
 
 class AgingBucket(BaseModel):
     """Aging analysis bucket"""
+
     bucket_name: str
     days_range: str
     amount: float
@@ -214,6 +233,7 @@ class AgingBucket(BaseModel):
 
 class CustomerTarget(BaseModel):
     """Customer in collections target list"""
+
     customer_id: str
     customer_name: str
     total_outstanding: float
@@ -229,6 +249,7 @@ class CustomerTarget(BaseModel):
 # Demo Response Models
 class DemoResponse(BaseModel):
     """Generic demo API response"""
+
     success: bool
     data: Any = None
     message: str = ""
@@ -238,6 +259,7 @@ class DemoResponse(BaseModel):
 
 class DemoError(BaseModel):
     """Demo error response"""
+
     error_type: str
     message: str
     details: dict[str, Any] | None = None
