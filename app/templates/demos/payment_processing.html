@@ -15,9 +15,9 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <div id="session-status" class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                        <div class="h-2 w-2 bg-yellow-400 rounded-full mr-2"></div>
-                        Initializing...
+                    <div id="session-status" class="flex items-center text-sm text-gray-600 dark:text-gray-300" role="status" aria-live="polite">
+                        <div class="h-2 w-2 bg-yellow-400 rounded-full mr-2" aria-hidden="true"></div>
+                        <span>Initializing...</span>
                     </div>
                     <div class="flex gap-4">
                         <a href="/projects/6" class="text-sm text-green-600 hover:text-green-500 dark:text-green-400">
@@ -128,7 +128,7 @@
                 <div id="processing-status" class="mt-6 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hidden">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Processing Status</h3>
-                        <div id="status-content">
+                        <div id="status-content" role="status" aria-live="polite">
                             <!-- Dynamic status content -->
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                     <div class="p-6">
                         <!-- Customer Filter -->
                         <div class="mb-4">
-                            <input type="text" id="ledger-filter" 
+                            <input type="text" id="ledger-filter" aria-label="Search invoices"
                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
                                    placeholder="Search invoices by customer, invoice number, or amount...">
                         </div>
@@ -330,10 +330,10 @@ function getAgingBucket(days) {
 
 function getAgingColor(bucket) {
     switch (bucket) {
-        case 'Current': return 'bg-green-100 text-green-800';
-        case '30 Days': return 'bg-yellow-100 text-yellow-800';
-        case '60 Days': return 'bg-orange-100 text-orange-800';
-        default: return 'bg-red-100 text-red-800';
+        case 'Current': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+        case '30 Days': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+        case '60 Days': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300';
+        default: return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
     }
 }
 
@@ -451,6 +451,7 @@ document.getElementById('payment-form').addEventListener('submit', async functio
         
         if (result.success) {
             displayProcessingResult(result.data);
+            document.getElementById('payment-form').reset();
             // Refresh invoices to show updated balances
             setTimeout(() => {
                 fetch('/demos/api/payment-processing/session', { method: 'POST' })
