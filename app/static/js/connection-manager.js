@@ -576,9 +576,11 @@ class ConnectionManager {
         const offlineBar = document.createElement('div');
         offlineBar.id = 'offline-bar';
         offlineBar.className = 'offline-indicator';
+        offlineBar.setAttribute('role', 'alert');
+        offlineBar.setAttribute('aria-live', 'assertive');
         offlineBar.innerHTML = `
             <div class="offline-content">
-                <span class="offline-icon">📶</span>
+                <span class="offline-icon" aria-hidden="true">📶</span>
                 <span class="offline-text">You're offline. Some features may be limited.</span>
                 <button class="retry-connection-btn" onclick="window.connectionManager.retryConnection()">
                     Retry Connection
