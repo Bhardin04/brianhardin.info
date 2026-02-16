@@ -15,7 +15,7 @@ from starlette.responses import Response
 
 from app.database.connection import close_db, init_db
 from app.middleware import limiter
-from app.routers import api, auth, blog, demos, pages, projects
+from app.routers import admin, api, auth, blog, demos, pages, projects
 from app.services.blog import blog_service
 from app.services.project import project_service
 
@@ -49,6 +49,7 @@ app.include_router(api.router, prefix="/api")
 app.include_router(blog.router)
 app.include_router(demos.router, prefix="/demos")
 app.include_router(auth.router)
+app.include_router(admin.router)
 
 
 @app.exception_handler(401)
