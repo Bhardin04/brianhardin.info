@@ -11,42 +11,258 @@
 {% block canonical %}https://brianhardin.info/projects{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white">My Projects</h1>
-        <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">A showcase of my Python development work</p>
-        <div class="section-divider mt-6 max-w-xs mx-auto"></div>
+<!-- Projects Hero Section -->
+<section class="section-sm bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div class="container">
+        <div class="text-center mb-16 slide-up">
+            <div class="inline-flex items-center px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium mb-4">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+                Portfolio Showcase
+            </div>
+            <h1 class="text-responsive-3xl font-extrabold text-gradient-primary mb-6">
+                My Projects
+            </h1>
+            <p class="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
+                A curated collection of my Python development work, featuring modern web applications, APIs, and innovative software solutions.
+            </p>
+        </div>
     </div>
+</section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% set accent_colors = ['card-accent-blue', 'card-accent-emerald', 'card-accent-purple', 'card-accent-orange'] %}
-        {% for project in projects %}
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all hover-lift reveal {{ accent_colors[loop.index0 % 4] }}">
-            <div class="p-6">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ project.title }}</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-4">{{ project.description }}</p>
-
-                <div class="flex flex-wrap gap-2 mb-4">
-                    {% for tech in project.technologies %}
-                    <span class="px-2.5 py-1 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 text-xs font-medium rounded-full">{{ tech }}</span>
-                    {% endfor %}
-                </div>
-
-                <div class="flex space-x-4">
-                    {% if project.github_url %}
-                    <a href="{{ project.github_url }}" class="text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 text-sm font-medium transition-colors">
-                        GitHub &rarr;
-                    </a>
-                    {% endif %}
-                    {% if project.demo_url %}
-                    <a href="{{ project.demo_url }}" class="text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 text-sm font-medium transition-colors">
-                        Live Demo &rarr;
-                    </a>
-                    {% endif %}
-                </div>
+<!-- Project Filtering Section -->
+<section class="section-sm bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+    <div class="container">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Browse Projects</h2>
+            <div class="flex items-center space-x-4">
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by category:</label>
+                <select id="categoryFilter" class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                    <option value="all">All Projects</option>
+                    <option value="web_app">Web Applications</option>
+                    <option value="api">APIs</option>
+                    <option value="data_science">Data Science</option>
+                    <option value="automation">Automation</option>
+                    <option value="personal">Personal</option>
+                    <option value="open_source">Open Source</option>
+                </select>
             </div>
         </div>
-        {% endfor %}
     </div>
-</div>
+</section>
+
+<!-- Projects Grid Section -->
+<section class="section-sm">
+    <div class="container">
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <article class="group relative card p-0 overflow-hidden hover-lift project-card slide-up" data-category="{{ project.category.value }}" style="animation-delay: {{ loop.index0 * 100 }}ms;">
+                <!-- Project Image -->
+                {% if project.image_url %}
+                <div class="relative h-48 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
+                    <img src="{{ project.image_url }}" alt="{{ project.title }} Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                </div>
+                {% endif %}
+                
+                <!-- Project Header with Icon -->
+                <div class="p-6 pb-4">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                            </svg>
+                        </div>
+                        <div class="flex flex-col items-end space-y-2">
+                            {% if project.featured %}
+                            <span class="px-2 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-700 dark:text-secondary-300 text-xs font-medium rounded-full">
+                                Featured
+                            </span>
+                            {% endif %}
+                            <div class="flex space-x-2">
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" 
+                                   class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 hover-lift transition-colors">
+                                    <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                                {% if project.demo_url %}
+                                    {% if project.demo_url.startswith('/demos/') %}
+                                <a href="{{ project.demo_url }}" 
+                                   class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center hover:from-blue-600 hover:to-purple-600 hover-glow transition-all duration-200 shadow-lg">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </a>
+                                    {% else %}
+                                <a href="{{ project.demo_url }}" target="_blank" 
+                                   class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center hover:bg-primary-200 dark:hover:bg-primary-800/50 hover-glow transition-colors">
+                                    <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                    </svg>
+                                </a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                        {{ project.title }}
+                    </h3>
+                    
+                    <p class="text-muted leading-relaxed mb-6">
+                        {{ project.description }}
+                    </p>
+                </div>
+                
+                <!-- Technologies Stack -->
+                <div class="px-6 pb-6">
+                    <div class="mb-6">
+                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Built with:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            {% for tech in project.technologies %}
+                            <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-xs font-medium rounded-full">
+                                {{ tech }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-3">
+                        <a href="/projects/{{ project.id }}" 
+                           class="flex-1 btn btn-secondary text-sm py-2 px-4 justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            View Details
+                        </a>
+                        {% if project.demo_url %}
+                            {% if project.demo_url.startswith('/demos/') %}
+                        <a href="{{ project.demo_url }}" 
+                           class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm py-2 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 hover:shadow-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Interactive Demo
+                        </a>
+                            {% else %}
+                        <a href="{{ project.demo_url }}" target="_blank" 
+                           class="flex-1 btn-primary text-sm py-2 px-4 justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            Live Demo
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Hover Effect Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        <!-- Empty State Message -->
+        {% if not projects %}
+        <div class="text-center py-16">
+            <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No Projects Yet</h3>
+            <p class="text-muted mb-6">Check back soon for updates on my latest work!</p>
+            <a href="/contact" class="btn-primary inline-flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                Get In Touch
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- JavaScript for Category Filtering -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryFilter = document.getElementById('categoryFilter');
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        categoryFilter.addEventListener('change', function() {
+            const selectedCategory = this.value;
+            
+            projectCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                
+                if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                    card.style.display = 'block';
+                    card.classList.add('fade-in');
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('fade-in');
+                }
+            });
+            
+            // Update grid layout after filtering
+            const visibleCards = document.querySelectorAll('.project-card[style="display: block"], .project-card:not([style])');
+            if (visibleCards.length === 0) {
+                showNoResultsMessage();
+            } else {
+                hideNoResultsMessage();
+            }
+        });
+        
+        function showNoResultsMessage() {
+            const grid = document.getElementById('projectsGrid');
+            if (!document.getElementById('noResultsMessage')) {
+                const message = document.createElement('div');
+                message.id = 'noResultsMessage';
+                message.className = 'col-span-full text-center py-16';
+                message.innerHTML = `
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No Projects Found</h3>
+                    <p class="text-muted mb-6">Try selecting a different category or view all projects.</p>
+                    <button onclick="document.getElementById('categoryFilter').value='all'; document.getElementById('categoryFilter').dispatchEvent(new Event('change'));" class="btn-primary inline-flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        Show All Projects
+                    </button>
+                `;
+                grid.appendChild(message);
+            }
+        }
+        
+        function hideNoResultsMessage() {
+            const message = document.getElementById('noResultsMessage');
+            if (message) {
+                message.remove();
+            }
+        }
+    });
+</script>
+
+<style>
+    .fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
 {% endblock %}

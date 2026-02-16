@@ -1,37 +1,455 @@
 {% extends "base.html" %}
 
 {% block title %}{{ project.title }} - Brian Hardin{% endblock %}
+{% block meta_title %}{{ project.title }} - Brian Hardin{% endblock %}
+{% block meta_description %}{{ project.description }}{% if project.technologies %} - Built with {{ project.technologies[:3] | join(', ') }}{% if project.technologies | length > 3 %} and more{% endif %}{% endif %}.{% endblock %}
+{% block meta_keywords %}{% if project.technologies %}{{ project.technologies | join(', ') }}, {% endif %}Brian Hardin, Python Developer{% endblock %}
+
+{% block og_title %}{{ project.title }} - Brian Hardin{% endblock %}
+{% block og_description %}{{ project.description }}{% endblock %}
+{% block og_url %}https://brianhardin.info/projects/{{ project.id }}{% endblock %}
+{% block canonical %}https://brianhardin.info/projects/{{ project.id }}{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">{{ project.title }}</h1>
-    <p class="text-gray-600 mb-4">{{ project.description }}</p>
-    
-    {% if project.technologies %}
-    <div class="mb-4">
-        <h3 class="text-lg font-semibold mb-2">Technologies:</h3>
-        <div class="flex flex-wrap gap-2">
-            {% for tech in project.technologies %}
-            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">{{ tech }}</span>
-            {% endfor %}
+<!-- Project Hero Section -->
+<section class="section-sm bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div class="container">
+        <!-- Back to Projects -->
+        <div class="mb-8">
+            <a href="/projects" class="inline-flex items-center text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Projects
+            </a>
+        </div>
+
+        <!-- Project Header -->
+        <div class="text-center mb-12">
+            {% if project.category %}
+            <div class="inline-flex items-center px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium mb-4">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                </svg>
+                {% if project.category.value %}
+                {{ project.category.value.replace('_', ' ').title() }}
+                {% else %}
+                {{ project.category.replace('_', ' ').title() }}
+                {% endif %}
+            </div>
+            {% endif %}
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                {{ project.title }}
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                {{ project.description }}
+            </p>
+            
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank" 
+                   class="btn-secondary inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    View Source Code
+                </a>
+                {% endif %}
+                {% if project.demo_url %}
+                <a href="{{ project.demo_url }}" target="_blank" 
+                   class="btn-primary inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                    Live Demo
+                </a>
+                {% endif %}
+            </div>
         </div>
     </div>
-    {% endif %}
-    
-    {% if project.github_url %}
-    <a href="{{ project.github_url }}" target="_blank" class="inline-block bg-gray-800 text-white px-4 py-2 rounded mr-2 mb-4">
-        View on GitHub
-    </a>
-    {% endif %}
-    
-    {% if project.demo_url %}
-    <a href="{{ project.demo_url }}" target="_blank" class="inline-block bg-blue-600 text-white px-4 py-2 rounded mb-4">
-        Live Demo
-    </a>
-    {% endif %}
-    
-    <div class="mt-8">
-        <a href="/projects" class="text-blue-600 hover:text-blue-800">← Back to Projects</a>
+</section>
+
+<!-- Project Content -->
+<section class="section-sm">
+    <div class="container">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <!-- Project Image -->
+                {% if project.image_url %}
+                <div class="card p-0 mb-8 overflow-hidden">
+                    <div class="relative h-64 md:h-80 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-800 dark:to-gray-900">
+                        <img src="{{ project.image_url }}" alt="{{ project.title }} Preview" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    {% if project.category %}
+                                    <span class="px-3 py-1 bg-black/50 backdrop-blur-sm text-white text-sm rounded-full">
+                                        {% if project.category.value %}
+                                        {{ project.category.value.replace('_', ' ').title() }}
+                                        {% else %}
+                                        {{ project.category.replace('_', ' ').title() }}
+                                        {% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if project.featured %}
+                                    <span class="px-3 py-1 bg-secondary-500/80 backdrop-blur-sm text-white text-sm rounded-full">
+                                        Featured
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Long Description -->
+                {% if project.long_description %}
+                <div class="card mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Project Overview</h2>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ project.long_description }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Problem Section -->
+                {% if project.problem %}
+                <div class="card mb-8">
+                    <h2 class="text-2xl font-bold mb-6 text-error-600 dark:text-error-400">The Problem</h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold mb-3">{{ project.problem.title }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ project.problem.description }}</p>
+                    </div>
+                    
+                    {% if project.problem.pain_points %}
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Key Pain Points</h4>
+                        <ul class="space-y-2">
+                            {% for pain_point in project.problem.pain_points %}
+                            <li class="flex items-start space-x-3">
+                                <div class="w-5 h-5 rounded-full bg-error-100 dark:bg-error-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                    <div class="w-2 h-2 rounded-full bg-error-500"></div>
+                                </div>
+                                <span class="text-gray-600 dark:text-gray-300">{{ pain_point }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if project.problem.target_users %}
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Target Users</h4>
+                        <ul class="space-y-2">
+                            {% for user in project.problem.target_users %}
+                            <li class="flex items-start space-x-3">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                    <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+                                </div>
+                                <span class="text-gray-600 dark:text-gray-300">{{ user }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if project.problem.business_impact %}
+                    <div class="p-4 bg-error-50 dark:bg-error-900/20 rounded-lg">
+                        <h4 class="font-semibold text-error-800 dark:text-error-200 mb-2">Business Impact</h4>
+                        <p class="text-error-700 dark:text-error-300">{{ project.problem.business_impact }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Solution Section -->
+                {% if project.solution %}
+                <div class="card mb-8">
+                    <h2 class="text-2xl font-bold mb-6 text-success-600 dark:text-success-400">The Solution</h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold mb-3">Approach</h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ project.solution.approach }}</p>
+                    </div>
+                    
+                    {% if project.solution.key_decisions %}
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Key Technical Decisions</h4>
+                        <ul class="space-y-3">
+                            {% for decision in project.solution.key_decisions %}
+                            <li class="flex items-start space-x-3">
+                                <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 rounded-full bg-success-500"></div>
+                                </div>
+                                <span class="text-gray-600 dark:text-gray-300">{{ decision }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if project.solution.implementation_highlights %}
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Implementation Highlights</h4>
+                        <ul class="space-y-3">
+                            {% for highlight in project.solution.implementation_highlights %}
+                            <li class="flex items-start space-x-3">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+                                </div>
+                                <span class="text-gray-600 dark:text-gray-300">{{ highlight }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if project.solution.architecture %}
+                    <div class="p-4 bg-success-50 dark:bg-success-900/20 rounded-lg">
+                        <h4 class="font-semibold text-success-800 dark:text-success-200 mb-2">Architecture Overview</h4>
+                        <p class="text-success-700 dark:text-success-300">{{ project.solution.architecture }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Outcome Section -->
+                {% if project.outcome %}
+                <div class="card mb-8">
+                    <h2 class="text-2xl font-bold mb-6 text-primary-600 dark:text-primary-400">Results & Impact</h2>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ project.outcome.summary }}</p>
+                    </div>
+                    
+                    <!-- Metrics Grid -->
+                    {% if project.outcome.metrics %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        {% if project.outcome.metrics.performance_improvement %}
+                        <div class="bg-primary-500 p-4 rounded-lg text-white">
+                            <h4 class="font-semibold text-sm mb-2">Performance</h4>
+                            <p class="text-sm">{{ project.outcome.metrics.performance_improvement }}</p>
+                        </div>
+                        {% endif %}
+                        {% if project.outcome.metrics.user_engagement %}
+                        <div class="bg-secondary-500 p-4 rounded-lg text-white">
+                            <h4 class="font-semibold text-sm mb-2">User Engagement</h4>
+                            <p class="text-sm">{{ project.outcome.metrics.user_engagement }}</p>
+                        </div>
+                        {% endif %}
+                        {% if project.outcome.metrics.scalability %}
+                        <div class="bg-accent-500 p-4 rounded-lg text-white">
+                            <h4 class="font-semibold text-sm mb-2">Scalability</h4>
+                            <p class="text-sm">{{ project.outcome.metrics.scalability }}</p>
+                        </div>
+                        {% endif %}
+                        {% if project.outcome.metrics.uptime %}
+                        <div class="bg-success-500 p-4 rounded-lg text-white">
+                            <h4 class="font-semibold text-sm mb-2">Uptime</h4>
+                            <p class="text-sm">{{ project.outcome.metrics.uptime }}</p>
+                        </div>
+                        {% endif %}
+                        {% if project.outcome.metrics.response_time %}
+                        <div class="bg-warning-500 p-4 rounded-lg text-white">
+                            <h4 class="font-semibold text-sm mb-2">Response Time</h4>
+                            <p class="text-sm">{{ project.outcome.metrics.response_time }}</p>
+                        </div>
+                        {% endif %}
+                        {% if project.outcome.metrics.user_satisfaction %}
+                        <div class="bg-premium-500 p-4 rounded-lg text-white">
+                            <h4 class="font-semibold text-sm mb-2">User Satisfaction</h4>
+                            <p class="text-sm">{{ project.outcome.metrics.user_satisfaction }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Achievements -->
+                    {% if project.outcome.achievements %}
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Key Achievements</h4>
+                        <ul class="space-y-3">
+                            {% for achievement in project.outcome.achievements %}
+                            <li class="flex items-start space-x-3">
+                                <div class="w-5 h-5 rounded-full bg-premium-100 dark:bg-premium-900/30 flex items-center justify-center mt-0.5">
+                                    <svg class="w-3 h-3 text-premium-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-600 dark:text-gray-300">{{ achievement }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <!-- User Feedback -->
+                    {% if project.outcome.user_feedback %}
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-3">User Feedback</h4>
+                        <div class="space-y-4">
+                            {% for feedback in project.outcome.user_feedback %}
+                            <blockquote class="border-l-4 border-primary-500 pl-4 italic text-gray-600 dark:text-gray-300">
+                                "{{ feedback }}"
+                            </blockquote>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Lessons Learned -->
+                    {% if project.outcome.lessons_learned %}
+                    <div class="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                        <h4 class="font-semibold text-primary-800 dark:text-primary-200 mb-3">Lessons Learned</h4>
+                        <ul class="space-y-2">
+                            {% for lesson in project.outcome.lessons_learned %}
+                            <li class="flex items-start space-x-3">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+                                </div>
+                                <span class="text-primary-700 dark:text-primary-300">{{ lesson }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Features Section -->
+                {% if project.features %}
+                <div class="card mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Key Features</h2>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {% for feature in project.features %}
+                        <li class="flex items-start space-x-3">
+                            <div class="w-5 h-5 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center mt-0.5">
+                                <svg class="w-3 h-3 text-success-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-gray-600 dark:text-gray-300">{{ feature }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Challenges Section -->
+                {% if project.challenges %}
+                <div class="card mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Technical Challenges</h2>
+                    <ul class="space-y-3">
+                        {% for challenge in project.challenges %}
+                        <li class="flex items-start space-x-3">
+                            <div class="w-5 h-5 rounded-full bg-warning-100 dark:bg-warning-900/30 flex items-center justify-center mt-0.5">
+                                <div class="w-2 h-2 rounded-full bg-warning-500"></div>
+                            </div>
+                            <span class="text-gray-600 dark:text-gray-300">{{ challenge }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Project Details -->
+                <div class="card mb-8">
+                    <h3 class="text-xl font-bold mb-4">Project Details</h3>
+                    
+                    {% if project.status %}
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Status</h4>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm 
+                            {% set status_val = project.status.value if project.status.value else project.status %}
+                            {% if status_val == 'COMPLETED' %}bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-300
+                            {% elif status_val == 'IN_PROGRESS' %}bg-warning-100 text-warning-800 dark:bg-warning-900/30 dark:text-warning-300
+                            {% else %}bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300{% endif %}">
+                            {% if project.status.value %}
+                            {{ project.status.value.replace('_', ' ').title() }}
+                            {% else %}
+                            {{ project.status.replace('_', ' ').title() }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+
+                    {% if project.duration %}
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Duration</h4>
+                        <p class="text-gray-600 dark:text-gray-300">{{ project.duration }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if project.role %}
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Role</h4>
+                        <p class="text-gray-600 dark:text-gray-300">{{ project.role }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if project.team_size %}
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Team Size</h4>
+                        <p class="text-gray-600 dark:text-gray-300">{{ project.team_size }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if project.client_type %}
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Client Type</h4>
+                        <p class="text-gray-600 dark:text-gray-300">{{ project.client_type }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Technologies -->
+                {% if project.technologies %}
+                <div class="card mb-8">
+                    <h3 class="text-xl font-bold mb-4">Technologies Used</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for tech in project.technologies %}
+                        <span class="badge badge-primary">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Timeline -->
+                {% if project.timeline %}
+                <div class="card mb-8">
+                    <h3 class="text-xl font-bold mb-4">Project Timeline</h3>
+                    <div class="space-y-4">
+                        {% for phase in project.timeline %}
+                        <div class="border-l-2 border-primary-200 dark:border-primary-800 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">{{ phase.phase }}</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{{ phase.duration }}</p>
+                            {% if phase.activities %}
+                            <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                {% for activity in phase.activities %}
+                                <li>• {{ activity }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Call to Action -->
+                <div class="card bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800">
+                    <h3 class="text-xl font-bold mb-4 text-primary-900 dark:text-primary-100">Interested in Similar Work?</h3>
+                    <p class="text-primary-700 dark:text-primary-300 mb-4">Let's discuss how I can help with your next project.</p>
+                    <a href="/contact" class="btn-primary w-full text-center">Get in Touch</a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}

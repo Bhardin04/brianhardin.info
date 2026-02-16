@@ -22,9 +22,14 @@
                     <button id="refresh-btn" class="bg-orange-600 text-white px-3 py-1 rounded-md hover:bg-orange-700 transition-colors text-sm">
                         Refresh Data
                     </button>
-                    <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
-                        ← Back to Demos
-                    </a>
+                    <div class="flex gap-4">
+                        <a href="/projects/8" class="text-sm text-orange-600 hover:text-orange-500 dark:text-orange-400">
+                            📋 Project Details
+                        </a>
+                        <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
+                            ← Back to Demos
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -331,7 +336,7 @@ async function initializeDemo() {
             
             // Apply user preferences if available
             if (window.userPreferences) {
-                window.userPreferences.initialize('collections_dashboard');
+                window.userPreferences.applyTheme();
             }
             
             await loadCollectionsData();
@@ -342,6 +347,7 @@ async function initializeDemo() {
     } catch (error) {
         updateSessionStatus('Error', 'red');
         console.error('Error initializing demo:', error);
+        console.error('Error details:', error.message, error.stack);
         
         // Use error handler for recovery
         if (window.errorHandler) {

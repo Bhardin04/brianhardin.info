@@ -100,9 +100,14 @@
                             📊 Analytics
                         </button>
                     </div>
-                    <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
-                        ← Back to Demos
-                    </a>
+                    <div class="flex gap-4">
+                        <a href="/projects/3" class="text-sm text-purple-600 hover:text-purple-500 dark:text-purple-400">
+                            📋 Project Details
+                        </a>
+                        <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
+                            ← Back to Demos
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -429,10 +434,12 @@ async function loadDashboardData() {
         });
         
         const responseTime = performance.now() - startTime;
-        window.performanceMonitor.trackPerformance('api_response_time', responseTime, {
-            endpoint: 'dashboard/data',
-            period: period
-        });
+        if (window.performanceMonitor && typeof window.performanceMonitor.trackPerformance === 'function') {
+            window.performanceMonitor.trackPerformance('api_response_time', responseTime, {
+                endpoint: 'dashboard/data',
+                period: period
+            });
+        }
         
         const result = await response.json();
         
@@ -532,8 +539,15 @@ function renderCharts(chartData) {
 }
 
 // Render revenue trend chart with advanced features
+let revenueChartRendering = false;
 function renderRevenueChart(data) {
+    if (revenueChartRendering) {
+        console.warn('Revenue chart already rendering, skipping...');
+        return;
+    }
+    
     try {
+        revenueChartRendering = true;
         const ctx = document.getElementById('revenue-chart');
         
         if (charts.revenue) {
@@ -595,13 +609,14 @@ function renderRevenueChart(data) {
     });
     
         // Register with advanced chart manager
-        window.advancedChartManager.registerChart('revenue-chart', charts.revenue, {
-            allowDrillDown: true,
-            allowZoom: true,
-            allowExport: true,
-            drillDownLevels: ['quarterly', 'monthly'],
-            chartContainer: ctx.parentElement
-        });
+        // TODO: Implement advanced chart manager or remove dependency
+        // // window.advancedChartManager // DISABLED - not implemented.registerChart('revenue-chart', charts.revenue, {
+        //     allowDrillDown: true,
+        //     allowZoom: true,
+        //     allowExport: true,
+        //     drillDownLevels: ['quarterly', 'monthly'],
+        //     chartContainer: ctx.parentElement
+        // });
     } catch (error) {
         // Handle chart rendering error
         const errorInfo = {
@@ -615,12 +630,21 @@ function renderRevenueChart(data) {
         };
         
         window.errorHandler.handleError(errorInfo);
+    } finally {
+        revenueChartRendering = false;
     }
 }
 
 // Render customer distribution chart with drill-down
+let customerChartRendering = false;
 function renderCustomerChart(data) {
+    if (customerChartRendering) {
+        console.warn('Customer chart already rendering, skipping...');
+        return;
+    }
+    
     try {
+        customerChartRendering = true;
         const ctx = document.getElementById('customer-chart');
         
         if (charts.customer) {
@@ -662,12 +686,13 @@ function renderCustomerChart(data) {
     });
     
         // Register with advanced chart manager
-        window.advancedChartManager.registerChart('customer-chart', charts.customer, {
-            allowDrillDown: true,
-            allowExport: true,
-            drillDownLevels: ['customer'],
-            chartContainer: ctx.parentElement
-        });
+        // TODO: Implement advanced chart manager or remove dependency
+        // // window.advancedChartManager // DISABLED - not implemented.registerChart('customer-chart', charts.customer, {
+        //     allowDrillDown: true,
+        //     allowExport: true,
+        //     drillDownLevels: ['customer'],
+        //     chartContainer: ctx.parentElement
+        // });
     } catch (error) {
         // Handle chart rendering error
         const errorInfo = {
@@ -681,6 +706,8 @@ function renderCustomerChart(data) {
         };
         
         window.errorHandler.handleError(errorInfo);
+    } finally {
+        customerChartRendering = false;
     }
 }
 
@@ -1034,36 +1061,25 @@ function setupExportHandlers() {
     // Revenue chart exports
     document.getElementById('export-revenue-png').addEventListener('click', () => {
         trackChartInteraction('revenue-chart', 'export', { format: 'png' });
-        window.advancedChartManager.exportChart('revenue-chart', 'png');
+        console.warn('Advanced chart manager not implemented - PNG export disabled');
         window.demoAnalytics.trackExport('png', 'revenue-chart', true);
         revenueMenu.classList.add('hidden');
     });
     
     document.getElementById('export-revenue-pdf').addEventListener('click', () => {
         trackChartInteraction('revenue-chart', 'export', { format: 'pdf' });
-        window.advancedChartManager.exportChartAdvanced('revenue-chart', 'pdf', {
-            title: 'Revenue Trend Analysis',
-            includeData: true,
-            includeMetadata: true
-        }).then(() => {
-            window.demoAnalytics.trackExport('pdf', 'revenue-chart', true);
-        }).catch((error) => {
-            window.demoAnalytics.trackExport('pdf', 'revenue-chart', false, { error: error.message });
-        });
+        console.warn('Advanced chart manager not implemented - PDF export disabled');
+        window.demoAnalytics.trackExport('pdf', 'revenue-chart', false, { error: 'Advanced chart manager not available' });
         revenueMenu.classList.add('hidden');
     });
     
     document.getElementById('export-revenue-excel').addEventListener('click', () => {
-        window.advancedChartManager.exportChartAdvanced('revenue-chart', 'excel', {
-            title: 'Revenue Trend Analysis',
-            includeMetadata: true,
-            filename: `revenue_analysis_${new Date().toISOString().split('T')[0]}.xlsx`
-        });
+        console.warn('Advanced chart manager not implemented - Excel export disabled');
         revenueMenu.classList.add('hidden');
     });
     
     document.getElementById('export-revenue-csv').addEventListener('click', () => {
-        window.advancedChartManager.exportChart('revenue-chart', 'csv');
+        console.warn('Advanced chart manager not implemented - CSV export disabled');
         revenueMenu.classList.add('hidden');
     });
     
@@ -1080,45 +1096,34 @@ function setupExportHandlers() {
     
     // Customer chart exports
     document.getElementById('export-customer-png').addEventListener('click', () => {
-        window.advancedChartManager.exportChart('customer-chart', 'png');
+        // Advanced chart manager not implemented - PNG export disabled
+        console.warn('Advanced chart manager not implemented - PNG export disabled');
         customerMenu.classList.add('hidden');
     });
     
     document.getElementById('export-customer-pdf').addEventListener('click', () => {
-        window.advancedChartManager.exportChartAdvanced('customer-chart', 'pdf', {
-            title: 'Customer Segments Distribution',
-            includeData: true,
-            includeMetadata: true
-        });
+        // Advanced chart manager not implemented - PDF export disabled
+        console.warn('Advanced chart manager not implemented - PDF export disabled');
         customerMenu.classList.add('hidden');
     });
     
     document.getElementById('export-customer-excel').addEventListener('click', () => {
-        window.advancedChartManager.exportChartAdvanced('customer-chart', 'excel', {
-            title: 'Customer Segments Distribution',
-            includeMetadata: true,
-            filename: `customer_segments_${new Date().toISOString().split('T')[0]}.xlsx`
-        });
+        // Advanced chart manager not implemented - Excel export disabled
+        console.warn('Advanced chart manager not implemented - Excel export disabled');
         customerMenu.classList.add('hidden');
     });
     
     document.getElementById('export-customer-csv').addEventListener('click', () => {
-        window.advancedChartManager.exportChart('customer-chart', 'csv');
+        // Advanced chart manager not implemented - CSV export disabled
+        console.warn('Advanced chart manager not implemented - CSV export disabled');
         customerMenu.classList.add('hidden');
     });
     
     // Dashboard export
     document.getElementById('export-dashboard-btn').addEventListener('click', () => {
         const chartIds = ['revenue-chart', 'customer-chart'];
-        window.advancedChartManager.exportDashboard(chartIds, 'pdf', {
-            dashboardTitle: 'Sales & Revenue Dashboard',
-            chartTitles: {
-                'revenue-chart': 'Revenue Trend Analysis',
-                'customer-chart': 'Customer Segments Distribution'
-            },
-            includeData: true,
-            filename: `sales_dashboard_${new Date().toISOString().split('T')[0]}.pdf`
-        });
+        // Advanced chart manager not implemented - Dashboard export disabled
+        console.warn('Advanced chart manager not implemented - Dashboard export disabled');
     });
     
     // Close dropdowns when clicking outside
@@ -1235,23 +1240,12 @@ function exportWithPreferences(chartId, format = null) {
         window.demoWebSocket?.showNotification?.('Export Started', `Exporting chart as ${preferredFormat.toUpperCase()}`, 'info');
     }
     
-    window.advancedChartManager.exportChartAdvanced(chartId, preferredFormat, {
-        title: `Sales Dashboard - ${new Date().toLocaleDateString()}`,
-        includeData: true,
-        includeMetadata: true
-    }).then(() => {
-        window.userPreferences.trackExport(preferredFormat);
-        
-        if (showNotifications) {
-            window.demoWebSocket?.showNotification?.('Export Complete', `Chart exported successfully as ${preferredFormat.toUpperCase()}`, 'success');
-        }
-    }).catch((error) => {
-        console.error('Export error:', error);
-        
-        if (window.userPreferences.getPreference('notifications.errors', true)) {
-            window.demoWebSocket?.showNotification?.('Export Failed', `Export error: ${error.message}`, 'error');
-        }
-    });
+    // Advanced chart manager not implemented - export disabled
+    console.warn('Advanced chart manager not implemented - export disabled for', chartId);
+    
+    if (showNotifications) {
+        window.demoWebSocket?.showNotification?.('Export Not Available', 'Chart export functionality is not yet implemented', 'warning');
+    }
 }
 
 // Initialize demo when page loads
@@ -1321,7 +1315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Cleanup on page unload
-window.addEventListener('beforeunload', () => {
+window.addEventListener('pagehide', () => {
     if (websocketConnection) {
         window.demoWebSocket.disconnect('sales_dashboard', demoSession);
     }

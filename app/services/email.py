@@ -1,3 +1,5 @@
+import html
+import logging
 import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -6,16 +8,16 @@ import aiosmtplib
 
 from app.models.contact import ContactForm
 
+logger = logging.getLogger(__name__)
+
 
 class EmailService:
-    def __init__(self) -> None:
+    def __init__(self):
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
         self.smtp_username = os.getenv("SMTP_USERNAME")
         self.smtp_password = os.getenv("SMTP_PASSWORD")
-        self.from_email: str = (
-            os.getenv("FROM_EMAIL") or os.getenv("SMTP_USERNAME") or ""
-        )
+        self.from_email = os.getenv("FROM_EMAIL", self.smtp_username)
         self.to_email = os.getenv("TO_EMAIL", "brian.hardin@icloud.com")
 
     async def send_contact_email(self, contact_data: ContactForm) -> bool:
@@ -49,25 +51,24 @@ class EmailService:
                     username=self.smtp_username,
                     password=self.smtp_password,
                 )
+                logger.info(f"Email sent successfully from {contact_data.email} with subject: {contact_data.subject}")
                 return True
             else:
                 # In development, just log the email
-                print("=== EMAIL (Development Mode) ===")
-                print(f"From: {contact_data.email}")
-                print(f"Subject: {contact_data.subject}")
-                print(f"Message: {contact_data.message}")
-                print("================================")
+                logger.info("=== EMAIL (Development Mode) ===")
+                logger.info(f"From: {contact_data.email}")
+                logger.info(f"Subject: {contact_data.subject}")
+                logger.info(f"Message: {contact_data.message[:100]}...")  # Only log first 100 chars for security
+                logger.info("================================")
                 return True
 
         except Exception as e:
-            print(f"Failed to send email: {str(e)}")
+            logger.error(f"Failed to send email: {str(e)}")
             return False
 
     def _create_text_content(self, contact_data: ContactForm) -> str:
         """Create plain text email content"""
-        company_info = (
-            f"\nCompany: {contact_data.company}" if contact_data.company else ""
-        )
+        company_info = f"\nCompany: {contact_data.company}" if contact_data.company else ""
 
         return f"""
 New contact form submission from brianhardin.info
@@ -84,17 +85,20 @@ This message was sent from the contact form on brianhardin.info
         """.strip()
 
     def _create_html_content(self, contact_data: ContactForm) -> str:
-        """Create HTML email content"""
-        company_row = (
-            f"""
+        """Create HTML email content with proper HTML escaping"""
+        # Escape all user input to prevent XSS
+        name = html.escape(contact_data.name)
+        email = html.escape(contact_data.email)
+        subject = html.escape(contact_data.subject)
+        # Escape message and convert newlines to <br> tags safely
+        message = html.escape(contact_data.message).replace('\n', '<br>')
+
+        company_row = f"""
         <tr>
             <td style="padding: 8px 0; font-weight: bold;">Company:</td>
-            <td style="padding: 8px 0;">{contact_data.company}</td>
+            <td style="padding: 8px 0;">{html.escape(contact_data.company)}</td>
         </tr>
-        """
-            if contact_data.company
-            else ""
-        )
+        """ if contact_data.company else ""
 
         return f"""
         <!DOCTYPE html>
@@ -112,25 +116,25 @@ This message was sent from the contact form on brianhardin.info
                 <table style="width: 100%; margin: 20px 0;">
                     <tr>
                         <td style="padding: 8px 0; font-weight: bold;">Name:</td>
-                        <td style="padding: 8px 0;">{contact_data.name}</td>
+                        <td style="padding: 8px 0;">{name}</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; font-weight: bold;">Email:</td>
                         <td style="padding: 8px 0;">
-                            <a href="mailto:{contact_data.email}">{contact_data.email}</a>
+                            <a href="mailto:{email}">{email}</a>
                         </td>
                     </tr>
                     {company_row}
                     <tr>
                         <td style="padding: 8px 0; font-weight: bold;">Subject:</td>
-                        <td style="padding: 8px 0;">{contact_data.subject}</td>
+                        <td style="padding: 8px 0;">{subject}</td>
                     </tr>
                 </table>
 
                 <div style="margin: 20px 0;">
                     <h3 style="color: #374151;">Message:</h3>
                     <div style="background: #f9fafb; padding: 15px; border-left: 4px solid #2563eb; margin: 10px 0;">
-                        {contact_data.message.replace(chr(10), "<br>")}
+                        {message}
                     </div>
                 </div>
 
@@ -143,7 +147,6 @@ This message was sent from the contact form on brianhardin.info
         </body>
         </html>
         """
-
 
 # Create global email service instance
 email_service = EmailService()

@@ -1,0 +1,205 @@
+{
+  "timestamp": "2025-07-10T20:51:00.233Z",
+  "testName": "Sales Dashboard Test",
+  "url": "http://localhost:8000/demos/sales-dashboard",
+  "tests": [
+    {
+      "name": "Page Load",
+      "status": "PASSED",
+      "message": "Dashboard page loaded successfully",
+      "duration": 0
+    },
+    {
+      "name": "JavaScript Errors",
+      "status": "PASSED",
+      "message": "No critical JavaScript errors found",
+      "duration": 0
+    },
+    {
+      "name": "Session Status",
+      "status": "PASSED",
+      "message": "Session status: Initializing...",
+      "duration": 0
+    },
+    {
+      "name": "Element: KPI Section",
+      "status": "PASSED",
+      "message": "KPI Section element found",
+      "duration": 0
+    },
+    {
+      "name": "Element: Revenue Chart",
+      "status": "PASSED",
+      "message": "Revenue Chart element found",
+      "duration": 0
+    },
+    {
+      "name": "Element: Customer Chart",
+      "status": "PASSED",
+      "message": "Customer Chart element found",
+      "duration": 0
+    },
+    {
+      "name": "Element: Revenue Table",
+      "status": "PASSED",
+      "message": "Revenue Table element found",
+      "duration": 0
+    },
+    {
+      "name": "Element: Margin Chart",
+      "status": "PASSED",
+      "message": "Margin Chart element found",
+      "duration": 0
+    },
+    {
+      "name": "Refresh Button",
+      "status": "FAILED",
+      "message": "Refresh button interaction failed: Node is either not clickable or not an Element",
+      "duration": 0
+    },
+    {
+      "name": "Chart Canvases",
+      "status": "PASSED",
+      "message": "Found 2 chart canvas elements",
+      "duration": 0
+    },
+    {
+      "name": "Page Performance",
+      "status": "PASSED",
+      "message": "Page loaded in 343.70ms",
+      "details": {
+        "loadTime": 0,
+        "domContentLoaded": 1.699999988079071,
+        "totalTime": 343.69999998807907
+      },
+      "duration": 0
+    },
+    {
+      "name": "Memory Usage",
+      "status": "PASSED",
+      "message": "Memory usage: 0.43%",
+      "details": {
+        "used": 16100000,
+        "total": 23100000,
+        "limit": 3760000000,
+        "usagePercentage": 0.4281914893617021
+      },
+      "duration": 0
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "failed": 1,
+    "warnings": 0
+  },
+  "screenshotPath": "/Users/brianhardin/Library/Mobile Documents/com~apple~CloudDocs/Python - Mac/brianhardin.info/testing/reports/sales-dashboard-screenshot.png",
+  "consoleMessages": [
+    {
+      "type": "warning",
+      "text": "cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation",
+      "timestamp": "2025-07-10T20:51:00.355Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.521Z"
+    },
+    {
+      "type": "log",
+      "text": "Performance monitoring started",
+      "timestamp": "2025-07-10T20:51:00.523Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.531Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.531Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.531Z"
+    },
+    {
+      "type": "log",
+      "text": "Error recovered: javascript_error JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.531Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.531Z"
+    },
+    {
+      "type": "log",
+      "text": "Cleared 0 old demo states",
+      "timestamp": "2025-07-10T20:51:00.543Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.550Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.582Z"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker registered: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.585Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.585Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:00.639Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:01.583Z"
+    },
+    {
+      "type": "warning",
+      "text": "Deprecated API for given entry type.",
+      "timestamp": "2025-07-10T20:51:01.584Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:01.584Z"
+    },
+    {
+      "type": "log",
+      "text": "Initial performance metrics: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:01.584Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:05.545Z"
+    },
+    {
+      "type": "log",
+      "text": "Analytics Event: JSHandle@object",
+      "timestamp": "2025-07-10T20:51:09.160Z"
+    }
+  ],
+  "errors": [
+    {
+      "message": "Unexpected token ':'",
+      "stack": "SyntaxError: Unexpected token ':'",
+      "timestamp": "2025-07-10T20:51:00.535Z"
+    }
+  ]
+}

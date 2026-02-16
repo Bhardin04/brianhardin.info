@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Form, HTTPException
 from fastapi.responses import HTMLResponse
 
@@ -5,6 +7,7 @@ from app.models.contact import ContactForm
 from app.models.project import Project
 from app.services.email import email_service
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -152,14 +155,42 @@ async def submit_contact_form(
             """
 
     except ValueError as e:
-        return f"""
+        # Log the actual error for debugging but don't expose details to user
+        logger.warning(f"Contact form validation error: {str(e)}")
+        return """
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-            <strong>Error!</strong> {str(e)}
+            <strong>Error!</strong> Please check your input and try again.
         </div>
         """
-    except Exception:
+    except Exception as e:
+        # Log the actual error for debugging but don't expose details to user
+        logger.error(f"Unexpected error in contact form: {str(e)}")
         return """
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             <strong>Error!</strong> An unexpected error occurred. Please try again later.
         </div>
         """
+
+@router.post("/analytics")
+async def track_analytics(data: dict):
+    """Analytics tracking endpoint - accepts analytics data but doesn't store it"""
+    logger.info(f"Analytics tracked: {data}")
+    return {"status": "tracked"}
+
+@router.post("/error-report") 
+async def report_error(error_data: dict):
+    """Error reporting endpoint - logs errors for debugging"""
+    logger.error(f"Client error reported: {error_data}")
+    return {"status": "reported"}
+
+@router.head("/ping")
+@router.get("/ping")
+async def ping():
+    """Health check ping endpoint"""
+    return {"status": "pong"}
+
+@router.head("/health")
+@router.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "healthy"}
