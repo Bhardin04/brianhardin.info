@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+
 class Settings:
     # Application settings
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
@@ -20,7 +21,10 @@ class Settings:
 
     # Social media
     GITHUB_URL: str = os.getenv("GITHUB_URL", "https://github.com/Bhardin04")
-    LINKEDIN_URL: str = os.getenv("LINKEDIN_URL", "https://www.linkedin.com/in/brian-hardin-csw-css-a71b0ba/")
+    LINKEDIN_URL: str = os.getenv(
+        "LINKEDIN_URL", "https://www.linkedin.com/in/brian-hardin-csw-css-a71b0ba/"
+    )
     TWITTER_URL: str = os.getenv("TWITTER_URL", "https://twitter.com/@BrianHardi16691")
+
 
 settings = Settings()

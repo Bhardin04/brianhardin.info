@@ -8,12 +8,14 @@ from app.models.contact import ContactForm
 
 
 class EmailService:
-    def __init__(self):
+    def __init__(self) -> None:
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
         self.smtp_username = os.getenv("SMTP_USERNAME")
         self.smtp_password = os.getenv("SMTP_PASSWORD")
-        self.from_email = os.getenv("FROM_EMAIL", self.smtp_username)
+        self.from_email: str = (
+            os.getenv("FROM_EMAIL") or os.getenv("SMTP_USERNAME") or ""
+        )
         self.to_email = os.getenv("TO_EMAIL", "brian.hardin@icloud.com")
 
     async def send_contact_email(self, contact_data: ContactForm) -> bool:
@@ -63,7 +65,9 @@ class EmailService:
 
     def _create_text_content(self, contact_data: ContactForm) -> str:
         """Create plain text email content"""
-        company_info = f"\nCompany: {contact_data.company}" if contact_data.company else ""
+        company_info = (
+            f"\nCompany: {contact_data.company}" if contact_data.company else ""
+        )
 
         return f"""
 New contact form submission from brianhardin.info
@@ -81,12 +85,16 @@ This message was sent from the contact form on brianhardin.info
 
     def _create_html_content(self, contact_data: ContactForm) -> str:
         """Create HTML email content"""
-        company_row = f"""
+        company_row = (
+            f"""
         <tr>
             <td style="padding: 8px 0; font-weight: bold;">Company:</td>
             <td style="padding: 8px 0;">{contact_data.company}</td>
         </tr>
-        """ if contact_data.company else ""
+        """
+            if contact_data.company
+            else ""
+        )
 
         return f"""
         <!DOCTYPE html>
@@ -122,7 +130,7 @@ This message was sent from the contact form on brianhardin.info
                 <div style="margin: 20px 0;">
                     <h3 style="color: #374151;">Message:</h3>
                     <div style="background: #f9fafb; padding: 15px; border-left: 4px solid #2563eb; margin: 10px 0;">
-                        {contact_data.message.replace(chr(10), '<br>')}
+                        {contact_data.message.replace(chr(10), "<br>")}
                     </div>
                 </div>
 
@@ -135,6 +143,7 @@ This message was sent from the contact form on brianhardin.info
         </body>
         </html>
         """
+
 
 # Create global email service instance
 email_service = EmailService()

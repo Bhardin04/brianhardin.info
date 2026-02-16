@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: brianhardin-info
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    repo: https://github.com/Bhardin04/brianhardin.info
+    branch: main
+    region: oregon
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: DEBUG
+        value: "false"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SMTP_SERVER
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: FROM_EMAIL
+        sync: false
+      - key: TO_EMAIL
+        sync: false
+      - key: GITHUB_URL
+        value: "https://github.com/Bhardin04"
+      - key: LINKEDIN_URL
+        value: "https://www.linkedin.com/in/brian-hardin-csw-css-a71b0ba/"
+      - key: TWITTER_URL
+        value: "https://twitter.com/@BrianHardi16691"
+      - key: GOOGLE_ANALYTICS_ID
+        sync: false

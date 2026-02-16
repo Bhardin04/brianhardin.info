@@ -1,4 +1,3 @@
-
 from pydantic import BaseModel, EmailStr
 
 
@@ -8,6 +7,7 @@ class ContactForm(BaseModel):
     subject: str
     message: str
     company: str | None = None
+
 
 class ContactResponse(BaseModel):
     success: bool

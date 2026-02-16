@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import frontmatter
-import markdown
+import markdown  # type: ignore[import-untyped]
 
 from app.models.blog import BlogPost, BlogPostSummary
 
@@ -17,42 +17,31 @@ class BlogService:
 
         # Configure markdown with extensions
         self.md = markdown.Markdown(
-            extensions=[
-                'codehilite',
-                'toc',
-                'tables',
-                'fenced_code',
-                'attr_list'
-            ],
+            extensions=["codehilite", "toc", "tables", "fenced_code", "attr_list"],
             extension_configs={
-                'codehilite': {
-                    'css_class': 'highlight',
-                    'use_pygments': True
-                },
-                'toc': {
-                    'permalink': True
-                }
-            }
+                "codehilite": {"css_class": "highlight", "use_pygments": True},
+                "toc": {"permalink": True},
+            },
         )
 
     def _calculate_reading_time(self, content: str) -> int:
         """Calculate estimated reading time in minutes."""
         # Remove markdown syntax and count words
-        text = re.sub(r'[#*`_\[\](){}]', '', content)
+        text = re.sub(r"[#*`_\[\](){}]", "", content)
         words = len(text.split())
         # Average reading speed: 200 words per minute
         return max(1, round(words / 200))
 
     def _generate_slug(self, title: str) -> str:
         """Generate URL-friendly slug from title."""
-        slug = re.sub(r'[^\w\s-]', '', title.lower())
-        slug = re.sub(r'[-\s]+', '-', slug)
-        return slug.strip('-')
+        slug = re.sub(r"[^\w\s-]", "", title.lower())
+        slug = re.sub(r"[-\s]+", "-", slug)
+        return slug.strip("-")
 
     def _load_post_from_file(self, file_path: Path) -> BlogPost | None:
         """Load a blog post from a markdown file with frontmatter."""
         try:
-            with open(file_path, encoding='utf-8') as f:
+            with open(file_path, encoding="utf-8") as f:
                 post = frontmatter.load(f)
 
             # Extract frontmatter metadata
@@ -63,38 +52,38 @@ class BlogService:
             content_html = self.md.convert(content)
 
             # Generate values if not provided
-            slug = metadata.get('slug') or self._generate_slug(metadata['title'])
+            slug = metadata.get("slug") or self._generate_slug(metadata["title"])
             reading_time = self._calculate_reading_time(content)
 
             # Parse dates
-            created_at = metadata.get('created_at')
+            created_at = metadata.get("created_at")
             if isinstance(created_at, str):
                 created_at = datetime.fromisoformat(created_at)
             elif not created_at:
                 created_at = datetime.fromtimestamp(file_path.stat().st_mtime)
 
-            published_at = metadata.get('published_at')
+            published_at = metadata.get("published_at")
             if isinstance(published_at, str):
                 published_at = datetime.fromisoformat(published_at)
-            elif metadata.get('published', False) and not published_at:
+            elif metadata.get("published", False) and not published_at:
                 published_at = created_at
 
             return BlogPost(
-                id=metadata.get('id', hash(slug) % 10000),
-                title=metadata['title'],
+                id=metadata.get("id", hash(slug) % 10000),
+                title=metadata["title"],
                 slug=slug,
-                excerpt=metadata.get('excerpt', ''),
+                excerpt=metadata.get("excerpt", ""),
                 content=content,
                 content_html=content_html,
-                tags=metadata.get('tags', []),
-                published=metadata.get('published', False),
-                featured=metadata.get('featured', False),
+                tags=metadata.get("tags", []),
+                published=metadata.get("published", False),
+                featured=metadata.get("featured", False),
                 created_at=created_at,
                 published_at=published_at,
                 reading_time_minutes=reading_time,
-                author=metadata.get('author', 'Brian Hardin'),
-                meta_description=metadata.get('meta_description'),
-                og_image=metadata.get('og_image')
+                author=metadata.get("author", "Brian Hardin"),
+                meta_description=metadata.get("meta_description"),
+                og_image=metadata.get("og_image"),
             )
         except Exception as e:
             print(f"Error loading post from {file_path}: {e}")
@@ -102,7 +91,6 @@ class BlogService:
 
     def get_all_posts(self, published_only: bool = True) -> list[BlogPost]:
         """Get all blog posts, optionally filtered by published status."""
-
         # For now, return sample posts since we don't have markdown files yet
         sample_posts = self._get_sample_posts()
 
@@ -110,7 +98,9 @@ class BlogService:
             return [post for post in sample_posts if post.published]
         return sample_posts
 
-    def get_posts_summary(self, published_only: bool = True, limit: int | None = None) -> list[BlogPostSummary]:
+    def get_posts_summary(
+        self, published_only: bool = True, limit: int | None = None
+    ) -> list[BlogPostSummary]:
         """Get blog post summaries for listing pages."""
         posts = self.get_all_posts(published_only)
 
@@ -132,7 +122,7 @@ class BlogService:
                 created_at=post.created_at,
                 published_at=post.published_at,
                 reading_time_minutes=post.reading_time_minutes,
-                author=post.author
+                author=post.author,
             )
             for post in posts
         ]
@@ -223,7 +213,7 @@ This creates a seamless user experience without page reloads.""",
                 reading_time_minutes=8,
                 author="Brian Hardin",
                 meta_description="Learn how to build modern web applications using FastAPI and HTMX for interactive, fast, and SEO-friendly websites.",
-                og_image="/static/images/blog/fastapi-htmx-cover.jpg"
+                og_image="/static/images/blog/fastapi-htmx-cover.jpg",
             ),
             BlogPost(
                 id=2,
@@ -273,7 +263,7 @@ When building production applications, consider these patterns:
                 reading_time_minutes=12,
                 author="Brian Hardin",
                 meta_description="Master asynchronous Python programming with practical examples and production-ready patterns for scalable applications.",
-                og_image="/static/images/blog/async-python-cover.jpg"
+                og_image="/static/images/blog/async-python-cover.jpg",
             ),
             BlogPost(
                 id=3,
@@ -318,7 +308,7 @@ CMD ["python", "app.py"]
                 reading_time_minutes=6,
                 author="Brian Hardin",
                 meta_description="Essential Docker best practices for Python applications including security, optimization, and production deployment strategies.",
-                og_image="/static/images/blog/docker-python-cover.jpg"
+                og_image="/static/images/blog/docker-python-cover.jpg",
             ),
             BlogPost(
                 id=4,
@@ -381,8 +371,8 @@ Test your API endpoints thoroughly:
                 reading_time_minutes=10,
                 author="Brian Hardin",
                 meta_description="Comprehensive guide to testing FastAPI applications with practical examples and best practices for robust, reliable code.",
-                og_image="/static/images/blog/testing-fastapi-cover.jpg"
-            )
+                og_image="/static/images/blog/testing-fastapi-cover.jpg",
+            ),
         ]
 
 

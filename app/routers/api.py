@@ -7,16 +7,24 @@ from app.services.email import email_service
 
 router = APIRouter()
 
+
 @router.get("/projects")
-async def get_projects():
+async def get_projects() -> list[Project]:
     return [
         Project(
             id=1,
             title="Personal Brand Website",
             description="Modern responsive website built with FastAPI, featuring HTMX-powered contact forms, comprehensive testing with Puppeteer, and mobile-first design. Includes email integration and professional portfolio showcase.",
-            technologies=["Python", "FastAPI", "HTMX", "Tailwind CSS", "Puppeteer", "Docker"],
+            technologies=[
+                "Python",
+                "FastAPI",
+                "HTMX",
+                "Tailwind CSS",
+                "Puppeteer",
+                "Docker",
+            ],
             github_url="https://github.com/Bhardin04/brianhardin.info",
-            demo_url="https://brianhardin.info"
+            demo_url="https://brianhardin.info",
         ),
         Project(
             id=2,
@@ -24,15 +32,22 @@ async def get_projects():
             description="Automated API documentation generator for FastAPI applications with interactive testing capabilities, OpenAPI integration, and team collaboration features.",
             technologies=["Python", "FastAPI", "OpenAPI", "Pydantic", "PostgreSQL"],
             github_url="https://github.com/Bhardin04/api-docs-generator",
-            demo_url="https://api-docs.brianhardin.info"
+            demo_url="https://api-docs.brianhardin.info",
         ),
         Project(
             id=3,
             title="Data Pipeline Orchestrator",
             description="Scalable data processing pipeline built with async Python, featuring real-time monitoring, error handling, and integration with cloud storage services.",
-            technologies=["Python", "Asyncio", "Redis", "PostgreSQL", "Docker", "AWS S3"],
+            technologies=[
+                "Python",
+                "Asyncio",
+                "Redis",
+                "PostgreSQL",
+                "Docker",
+                "AWS S3",
+            ],
             github_url="https://github.com/Bhardin04/data-pipeline",
-            demo_url=None
+            demo_url=None,
         ),
         Project(
             id=4,
@@ -40,20 +55,28 @@ async def get_projects():
             description="JWT-based authentication microservice with role-based access control, rate limiting, and integration with multiple client applications.",
             technologies=["Python", "FastAPI", "JWT", "Redis", "PostgreSQL", "Docker"],
             github_url="https://github.com/Bhardin04/auth-microservice",
-            demo_url=None
-        )
+            demo_url=None,
+        ),
     ]
 
+
 @router.get("/projects/{project_id}")
-async def get_project(project_id: int):
+async def get_project(project_id: int) -> Project:
     projects = {
         1: Project(
             id=1,
             title="Personal Brand Website",
             description="Modern responsive website built with FastAPI, featuring HTMX-powered contact forms, comprehensive testing with Puppeteer, and mobile-first design. Includes email integration and professional portfolio showcase.",
-            technologies=["Python", "FastAPI", "HTMX", "Tailwind CSS", "Puppeteer", "Docker"],
+            technologies=[
+                "Python",
+                "FastAPI",
+                "HTMX",
+                "Tailwind CSS",
+                "Puppeteer",
+                "Docker",
+            ],
             github_url="https://github.com/Bhardin04/brianhardin.info",
-            demo_url="https://brianhardin.info"
+            demo_url="https://brianhardin.info",
         ),
         2: Project(
             id=2,
@@ -61,15 +84,22 @@ async def get_project(project_id: int):
             description="Automated API documentation generator for FastAPI applications with interactive testing capabilities, OpenAPI integration, and team collaboration features.",
             technologies=["Python", "FastAPI", "OpenAPI", "Pydantic", "PostgreSQL"],
             github_url="https://github.com/Bhardin04/api-docs-generator",
-            demo_url="https://api-docs.brianhardin.info"
+            demo_url="https://api-docs.brianhardin.info",
         ),
         3: Project(
             id=3,
             title="Data Pipeline Orchestrator",
             description="Scalable data processing pipeline built with async Python, featuring real-time monitoring, error handling, and integration with cloud storage services.",
-            technologies=["Python", "Asyncio", "Redis", "PostgreSQL", "Docker", "AWS S3"],
+            technologies=[
+                "Python",
+                "Asyncio",
+                "Redis",
+                "PostgreSQL",
+                "Docker",
+                "AWS S3",
+            ],
             github_url="https://github.com/Bhardin04/data-pipeline",
-            demo_url=None
+            demo_url=None,
         ),
         4: Project(
             id=4,
@@ -77,8 +107,8 @@ async def get_project(project_id: int):
             description="JWT-based authentication microservice with role-based access control, rate limiting, and integration with multiple client applications.",
             technologies=["Python", "FastAPI", "JWT", "Redis", "PostgreSQL", "Docker"],
             github_url="https://github.com/Bhardin04/auth-microservice",
-            demo_url=None
-        )
+            demo_url=None,
+        ),
     }
 
     if project_id not in projects:
@@ -86,14 +116,15 @@ async def get_project(project_id: int):
 
     return projects[project_id]
 
+
 @router.post("/contact", response_class=HTMLResponse)
 async def submit_contact_form(
     name: str = Form(...),
     email: str = Form(...),
     subject: str = Form(...),
     message: str = Form(...),
-    company: str = Form(None)
-):
+    company: str = Form(None),
+) -> str:
     try:
         # Create contact form data
         contact_data = ContactForm(
@@ -101,7 +132,7 @@ async def submit_contact_form(
             email=email,
             subject=subject,
             message=message,
-            company=company if company else None
+            company=company if company else None,
         )
 
         # Send email
