@@ -171,3 +171,7 @@ testing/node_modules/
 !app/static/images/*.jpg
 !app/static/images/*.jpeg
 !app/static/images/*.png
+
+# Database
+*.db
+data/
