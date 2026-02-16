@@ -36,45 +36,37 @@ templates = Jinja2Templates(directory="app/templates")
 @router.get("/", response_class=HTMLResponse)
 async def demos_index(request: Request) -> HTMLResponse:
     """Demo portal homepage"""
-    return templates.TemplateResponse("demos/index.html", {"request": request})
+    return templates.TemplateResponse(request, "demos/index.html")
 
 
 @router.get("/payment-processing", response_class=HTMLResponse)
 async def payment_demo_page(request: Request) -> HTMLResponse:
     """Payment processing demo page"""
-    return templates.TemplateResponse(
-        "demos/payment_processing.html", {"request": request}
-    )
+    return templates.TemplateResponse(request, "demos/payment_processing.html")
 
 
 @router.get("/data-pipeline", response_class=HTMLResponse)
 async def pipeline_demo_page(request: Request) -> HTMLResponse:
     """Data pipeline demo page"""
-    return templates.TemplateResponse("demos/data_pipeline.html", {"request": request})
+    return templates.TemplateResponse(request, "demos/data_pipeline.html")
 
 
 @router.get("/sales-dashboard", response_class=HTMLResponse)
 async def dashboard_demo_page(request: Request) -> HTMLResponse:
     """Sales dashboard demo page"""
-    return templates.TemplateResponse(
-        "demos/sales_dashboard.html", {"request": request}
-    )
+    return templates.TemplateResponse(request, "demos/sales_dashboard.html")
 
 
 @router.get("/collections-dashboard", response_class=HTMLResponse)
 async def collections_demo_page(request: Request) -> HTMLResponse:
     """Collections dashboard demo page"""
-    return templates.TemplateResponse(
-        "demos/collections_dashboard.html", {"request": request}
-    )
+    return templates.TemplateResponse(request, "demos/collections_dashboard.html")
 
 
 @router.get("/automation-suite", response_class=HTMLResponse)
 async def automation_demo_page(request: Request) -> HTMLResponse:
     """Automation suite demo page"""
-    return templates.TemplateResponse(
-        "demos/automation_suite.html", {"request": request}
-    )
+    return templates.TemplateResponse(request, "demos/automation_suite.html")
 
 
 # API Endpoints for Payment Processing Demo
@@ -93,7 +85,7 @@ async def create_payment_session(request: Request) -> DemoResponse | JSONRespons
             data={
                 "session_id": session.session_id,
                 "open_invoices": [
-                    inv.dict() for inv in open_invoices[:10]
+                    inv.model_dump() for inv in open_invoices[:10]
                 ],  # Limit for demo
                 "customers": list(
                     {(inv.customer_id, inv.customer_name) for inv in open_invoices}
@@ -110,7 +102,7 @@ async def create_payment_session(request: Request) -> DemoResponse | JSONRespons
                 error_type="session_creation_error",
                 message="Failed to create payment processing session",
                 session_id="",
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -133,7 +125,7 @@ async def process_payment(
 
         return DemoResponse(
             success=True,
-            data=result.dict(),
+            data=result.model_dump(),
             message=f"Payment processed successfully - Status: {result.status}",
             session_id=session_id,
             execution_time_ms=150,  # Simulated processing time
@@ -147,7 +139,7 @@ async def process_payment(
                 error_type="payment_processing_error",
                 message=f"Payment processing failed: {str(e)}",
                 session_id=payment_data.get("session_id", ""),
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -159,7 +151,7 @@ async def get_customer_invoices(customer_id: str) -> DemoResponse | JSONResponse
 
         return DemoResponse(
             success=True,
-            data={"invoices": [inv.dict() for inv in invoices]},
+            data={"invoices": [inv.model_dump() for inv in invoices]},
             message=f"Found {len(invoices)} open invoices for customer",
             session_id="",
         )
@@ -172,7 +164,7 @@ async def get_customer_invoices(customer_id: str) -> DemoResponse | JSONResponse
                 error_type="data_fetch_error",
                 message="Failed to fetch customer invoices",
                 session_id="",
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -217,7 +209,7 @@ async def create_pipeline_session(request: Request) -> DemoResponse | JSONRespon
                 error_type="session_creation_error",
                 message="Failed to create data pipeline session",
                 session_id="",
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -240,7 +232,7 @@ async def extract_pipeline_data(
 
         return DemoResponse(
             success=True,
-            data=result.dict(),
+            data=result.model_dump(),
             message=f"Extracted {result.processed_records} records successfully",
             session_id=session_id,
             execution_time_ms=result.processing_time_ms,
@@ -254,7 +246,7 @@ async def extract_pipeline_data(
                 error_type="data_extraction_error",
                 message=f"Data extraction failed: {str(e)}",
                 session_id=extraction_request.get("session_id", ""),
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -288,7 +280,7 @@ async def create_dashboard_session(request: Request) -> DemoResponse | JSONRespo
                 error_type="session_creation_error",
                 message="Failed to create dashboard session",
                 session_id="",
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -310,7 +302,7 @@ async def get_dashboard_data(
 
         return DemoResponse(
             success=True,
-            data=dashboard_data.dict(),
+            data=dashboard_data.model_dump(),
             message="Dashboard data generated successfully",
             session_id=session_id,
             execution_time_ms=250,
@@ -324,7 +316,7 @@ async def get_dashboard_data(
                 error_type="dashboard_generation_error",
                 message=f"Dashboard generation failed: {str(e)}",
                 session_id=request_data.get("session_id", ""),
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -351,7 +343,7 @@ async def create_collections_session(request: Request) -> DemoResponse | JSONRes
                 error_type="session_creation_error",
                 message="Failed to create collections session",
                 session_id="",
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -386,7 +378,7 @@ async def get_collections_data(
                 error_type="collections_generation_error",
                 message=f"Collections data generation failed: {str(e)}",
                 session_id=request_data.get("session_id", ""),
-            ).dict(),
+            ).model_dump(),
         )
 
 
@@ -416,7 +408,7 @@ async def websocket_endpoint(
                         session_id
                     )
                 elif demo_type == "data_pipeline":
-                    total_records = message.get("total_records", 100)
+                    total_records = min(message.get("total_records", 100), 1000)
                     await realtime_simulator.start_pipeline_simulation(
                         session_id, total_records
                     )

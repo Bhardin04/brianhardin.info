@@ -76,13 +76,16 @@ class TestDarkModeImplementation:
             assert "classList.toggle(" in content
 
     def test_dark_mode_tailwind_config(self):
-        """Test that Tailwind is configured for dark mode."""
+        """Test that Tailwind is configured for dark mode via class strategy."""
         response = client.get("/")
         assert response.status_code == 200
         content = response.text
 
-        # Check that Tailwind is configured with dark mode
-        assert "darkMode: 'class'" in content
+        # Dark mode uses the 'class' strategy via tailwind.config.js
+        # Verify the dark: prefix classes are present in the HTML
+        assert "dark:bg-gray-900" in content
+        # Verify Tailwind production CSS is loaded (not CDN)
+        assert "tailwind.out.css" in content
 
     def test_navigation_has_dark_mode_classes(self):
         """Test that navigation elements have dark mode classes."""

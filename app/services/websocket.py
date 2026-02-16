@@ -17,6 +17,9 @@ logger = logging.getLogger(__name__)
 class ConnectionManager:
     """WebSocket connection manager for demo sessions"""
 
+    MAX_CONNECTIONS = 200
+    MAX_CONNECTIONS_PER_SESSION = 5
+
     def __init__(self) -> None:
         # Active connections by session ID
         self.active_connections: dict[str, set[WebSocket]] = {}
@@ -27,6 +30,13 @@ class ConnectionManager:
         self, websocket: WebSocket, session_id: str, demo_type: str
     ) -> None:
         """Accept a new WebSocket connection"""
+        if len(self.connection_data) >= self.MAX_CONNECTIONS:
+            await websocket.close(code=1013, reason="Server at capacity")
+            return
+        session_conns = self.active_connections.get(session_id, set())
+        if len(session_conns) >= self.MAX_CONNECTIONS_PER_SESSION:
+            await websocket.close(code=1013, reason="Too many connections for session")
+            return
         await websocket.accept()
 
         # Initialize session if not exists

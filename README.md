@@ -88,6 +88,7 @@ A modern, responsive personal website showcasing professional experience, projec
 - **Frontend**: HTMX + Custom CSS Design System
 - **Styling**: CSS Custom Properties + Tailwind CSS
 - **Email**: aiosmtplib for async email sending
+- **CSS Build**: Tailwind CSS production build (purged & minified)
 - **Testing**: Pytest + Puppeteer for E2E testing
 - **Deployment**: Docker + Docker Compose ready
 
@@ -111,6 +112,7 @@ brianhardin.info/
 │   │   └── blog.py          # Blog routes
 │   ├── services/            # Business logic
 │   │   ├── email.py         # Async email with XSS protection
+│   │   ├── project.py       # Canonical project data service
 │   │   ├── demo.py          # Demo data & processing services
 │   │   ├── websocket.py     # WebSocket connection management
 │   │   └── blog.py          # Blog service
@@ -191,14 +193,11 @@ brianhardin.info/
 
 ### 🔄 Current Focus
 - **Content Enhancement**: Adding more projects and blog content
-- **Test Coverage**: Expanding test coverage for demo backend
 - **Performance Optimization**: Analytics and performance tracking refinements
 
 ### 🚀 Upcoming Features
 - **Blog CMS**: Admin interface for content management
 - **Portfolio Expansion**: Additional project showcases
-- **Custom 404 Pages**: Branded error pages
-- **Sitemap Generation**: XML sitemap for search engines
 
 ## 🛠 Quick Commands
 
@@ -217,6 +216,12 @@ docker-compose up --build
 
 # Dependencies
 uv sync
+
+# Build Tailwind CSS
+npm run build:css
+
+# Watch Tailwind CSS (development)
+npm run watch:css
 
 # Code Quality
 uv run ruff check
@@ -271,8 +276,8 @@ Personal project - All rights reserved
 
 ---
 
-**Author**: Brian Hardin  
-**Contact**: Available through the website contact form  
-**Portfolio**: https://brianhardin.info  
+**Author**: Brian Hardin
+**Contact**: Available through the website contact form
+**Portfolio**: https://brianhardin.info
 
 Built with ❤️ using FastAPI, HTMX, and a custom CSS design system

@@ -31,24 +31,51 @@ from app.models.demo import (
 class DemoServiceBase:
     """Base service for all demo implementations"""
 
+    MAX_SESSIONS = 100
+    SESSION_TTL_SECONDS = 3600  # 1 hour
+
     def __init__(self) -> None:
         self.sessions: dict[str, DemoSession] = {}
 
+    def _cleanup_expired_sessions(self) -> None:
+        """Remove sessions older than SESSION_TTL_SECONDS"""
+        now = datetime.now()
+        expired = [
+            sid
+            for sid, session in self.sessions.items()
+            if (now - session.created_at).total_seconds() > self.SESSION_TTL_SECONDS
+        ]
+        for sid in expired:
+            del self.sessions[sid]
+
     def create_session(self, demo_type: DemoType) -> DemoSession:
         """Create a new demo session"""
+        self._cleanup_expired_sessions()
+        if len(self.sessions) >= self.MAX_SESSIONS:
+            raise ValueError(
+                "Maximum number of demo sessions reached. Please try again later."
+            )
         session = DemoSession(demo_type=demo_type)
         self.sessions[session.session_id] = session
         return session
 
     def get_session(self, session_id: str) -> DemoSession | None:
         """Get existing demo session"""
-        return self.sessions.get(session_id)
+        session = self.sessions.get(session_id)
+        if session is None:
+            return None
+        if (
+            datetime.now() - session.created_at
+        ).total_seconds() > self.SESSION_TTL_SECONDS:
+            del self.sessions[session_id]
+            return None
+        return session
 
     def update_session_status(
         self, session_id: str, status: DemoStatus, data: dict[str, Any] | None = None
     ) -> None:
         """Update session status and data"""
-        if session := self.sessions.get(session_id):
+        if session := self.get_session(session_id):
             session.update_status(status, data or {})
 
 
@@ -162,8 +189,8 @@ class PaymentProcessingService(DemoServiceBase):
             session_id,
             DemoStatus.COMPLETED,
             {
-                "payment_result": result.dict(),
-                "updated_invoices": [inv.dict() for inv in customer_invoices],
+                "payment_result": result.model_dump(),
+                "updated_invoices": [inv.model_dump() for inv in customer_invoices],
             },
         )
 
@@ -321,9 +348,9 @@ class DataPipelineService(DemoServiceBase):
             session_id,
             DemoStatus.COMPLETED,
             {
-                "extraction_result": result.dict(),
+                "extraction_result": result.model_dump(),
                 "sample_records": [
-                    r.dict() for r in records[:5]
+                    r.model_dump() for r in records[:5]
                 ],  # Show first 5 records
             },
         )
@@ -425,7 +452,9 @@ class DashboardService(DemoServiceBase):
         )
 
         self.update_session_status(
-            session_id, DemoStatus.COMPLETED, {"dashboard_data": dashboard_data.dict()}
+            session_id,
+            DemoStatus.COMPLETED,
+            {"dashboard_data": dashboard_data.model_dump()},
         )
 
         return dashboard_data
