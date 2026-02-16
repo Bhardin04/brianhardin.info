@@ -7,15 +7,19 @@ Usage:
 import asyncio
 import json
 import logging
+import re
 import sys
+from datetime import datetime
+from pathlib import Path
 
+import frontmatter
 from sqlalchemy import select
 
 from app.database.connection import get_db, init_db
 from app.database.models import BlogPost as DBBlogPost
 from app.database.models import Project as DBProject
 from app.services.blog import blog_service
-from app.services.blog_db import render_markdown
+from app.services.blog_db import calculate_reading_time, render_markdown
 from app.services.project import project_service
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -55,6 +59,94 @@ async def seed_blog_posts() -> int:
             db.add(db_post)
             count += 1
             logger.info("  Seeded blog post: %s", post.title)
+
+        await db.commit()
+
+    return count
+
+
+def _generate_slug(title: str) -> str:
+    """Generate URL-friendly slug from title."""
+    slug = re.sub(r"[^\w\s-]", "", title.lower())
+    slug = re.sub(r"[-\s]+", "-", slug)
+    return slug.strip("-")
+
+
+def _parse_date(value: str | datetime | None) -> datetime | None:
+    """Parse a date string or datetime into a datetime object."""
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value
+    return datetime.fromisoformat(str(value))
+
+
+async def seed_blog_posts_from_files(
+    directory: str = "content/blog",
+) -> int:
+    """Seed blog posts from markdown files with frontmatter."""
+    posts_dir = Path(directory)
+    if not posts_dir.exists():
+        logger.info("  No content/blog directory found, skipping file-based seeding")
+        return 0
+
+    md_files = sorted(posts_dir.glob("*.md"))
+    count = 0
+
+    async for db in get_db():
+        for file_path in md_files:
+            # Skip non-post files
+            if file_path.name == "content-strategy.md":
+                continue
+
+            try:
+                with open(file_path, encoding="utf-8") as f:
+                    post = frontmatter.load(f)
+            except Exception as e:
+                logger.warning("  Failed to parse %s: %s", file_path.name, e)
+                continue
+
+            metadata = post.metadata
+            content = post.content
+            title = metadata.get("title", "")
+            if not title:
+                logger.warning("  Skipping %s: no title in frontmatter", file_path.name)
+                continue
+
+            slug = metadata.get("slug") or _generate_slug(title)
+
+            # Check if already seeded (by slug)
+            result = await db.execute(select(DBBlogPost).where(DBBlogPost.slug == slug))
+            if result.scalar_one_or_none():
+                logger.info("  Blog post '%s' already exists, skipping", title)
+                continue
+
+            content_html = render_markdown(content)
+            reading_time = calculate_reading_time(content)
+            created_at = _parse_date(metadata.get("created_at"))
+            published_at = _parse_date(metadata.get("published_at"))
+
+            db_post = DBBlogPost(
+                title=title,
+                slug=slug,
+                content=content,
+                content_html=content_html,
+                excerpt=metadata.get("excerpt", ""),
+                tags=json.dumps(metadata.get("tags", [])),
+                published=metadata.get("published", False),
+                featured=metadata.get("featured", False),
+                author=metadata.get("author", "Brian Hardin"),
+                meta_description=metadata.get("meta_description", ""),
+                reading_time_minutes=reading_time,
+            )
+            if created_at:
+                db_post.created_at = created_at
+            if published_at:
+                db_post.published_at = published_at
+
+            db.add(db_post)
+            count += 1
+            logger.info("  Seeded blog post from file: %s", title)
 
         await db.commit()
 
@@ -121,15 +213,19 @@ async def main() -> None:
     logger.info("Initializing database...")
     await init_db()
 
-    logger.info("Seeding blog posts...")
+    logger.info("Seeding blog posts from hardcoded data...")
     blog_count = await seed_blog_posts()
-    logger.info("Seeded %d blog posts", blog_count)
+    logger.info("Seeded %d blog posts from hardcoded data", blog_count)
+
+    logger.info("Seeding blog posts from markdown files...")
+    file_count = await seed_blog_posts_from_files()
+    logger.info("Seeded %d blog posts from files", file_count)
 
     logger.info("Seeding projects...")
     project_count = await seed_projects()
     logger.info("Seeded %d projects", project_count)
 
-    logger.info("Done! Seeded %d total items.", blog_count + project_count)
+    logger.info("Done! Seeded %d total items.", blog_count + file_count + project_count)
 
 
 if __name__ == "__main__":
