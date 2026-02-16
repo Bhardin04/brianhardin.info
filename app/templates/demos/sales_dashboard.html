@@ -66,7 +66,7 @@
     <!-- Demo Header -->
     <div class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Sales & Revenue Dashboard</h1>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
@@ -405,11 +405,17 @@ async function initializeDemo() {
 
 // Update session status indicator
 function updateSessionStatus(status, color) {
+    const colorClasses = {
+        green: 'h-2 w-2 bg-green-400 rounded-full mr-2',
+        red: 'h-2 w-2 bg-red-400 rounded-full mr-2',
+        yellow: 'h-2 w-2 bg-yellow-400 rounded-full mr-2',
+        blue: 'h-2 w-2 bg-blue-400 rounded-full mr-2'
+    };
     const statusElement = document.getElementById('session-status');
     const dot = statusElement.querySelector('div');
-    const text = statusElement.childNodes[2];
-    
-    dot.className = `h-2 w-2 bg-${color}-400 rounded-full mr-2`;
+    const text = statusElement.querySelector('span') || statusElement.childNodes[2];
+
+    dot.className = colorClasses[color] || colorClasses.yellow;
     text.textContent = status;
 }
 
@@ -762,7 +768,12 @@ function renderMarginChart(data) {
 function renderRevenueTable(records) {
     const tbody = document.getElementById('revenue-tbody');
     tbody.innerHTML = '';
-    
+
+    if (!records || records.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No customers match the current search.</td></tr>';
+        return;
+    }
+
     records.forEach(record => {
         const row = document.createElement('tr');
         row.className = 'hover:bg-gray-50 dark:hover:bg-slate-700';
@@ -1169,21 +1180,30 @@ document.getElementById('refresh-btn').addEventListener('click', loadDashboardDa
 document.getElementById('start-realtime-btn').addEventListener('click', startRealtimeSimulation);
 document.getElementById('stop-realtime-btn').addEventListener('click', stopRealtimeSimulation);
 
-// Search and sort functionality
-document.getElementById('customer-search').addEventListener('input', function(e) {
+// Debounce utility
+function debounce(fn, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+// Search and sort functionality (debounced)
+document.getElementById('customer-search').addEventListener('input', debounce(function(e) {
     const filter = e.target.value.toLowerCase();
-    const filteredRecords = revenueRecords.filter(record => 
+    const filteredRecords = revenueRecords.filter(record =>
         record.customer_name.toLowerCase().includes(filter) ||
         record.customer_id.toLowerCase().includes(filter)
     );
-    
+
     // Track search usage
     if (filter.length > 0) {
         trackSearchUsage(filter, filteredRecords.length);
     }
-    
+
     renderRevenueTable(filteredRecords);
-});
+}, 300));
 
 document.getElementById('sort-selector').addEventListener('change', function(e) {
     const sortBy = e.target.value;

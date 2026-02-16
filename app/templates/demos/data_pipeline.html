@@ -7,7 +7,7 @@
     <!-- Demo Header -->
     <div class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">NetSuite to SAP Data Pipeline</h1>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
@@ -334,11 +334,17 @@ async function initializeDemo() {
 
 // Update session status indicator
 function updateSessionStatus(status, color) {
+    const colorClasses = {
+        green: 'h-2 w-2 bg-green-400 rounded-full mr-2',
+        red: 'h-2 w-2 bg-red-400 rounded-full mr-2',
+        yellow: 'h-2 w-2 bg-yellow-400 rounded-full mr-2',
+        blue: 'h-2 w-2 bg-blue-400 rounded-full mr-2'
+    };
     const statusElement = document.getElementById('session-status');
     const dot = statusElement.querySelector('div');
-    const text = statusElement.childNodes[2];
-    
-    dot.className = `h-2 w-2 bg-${color}-400 rounded-full mr-2`;
+    const text = statusElement.querySelector('span') || statusElement.childNodes[2];
+
+    dot.className = colorClasses[color] || colorClasses.yellow;
     text.textContent = status;
 }
 
@@ -714,8 +720,12 @@ function showResults(result) {
     panel.classList.remove('hidden');
     
     const successRate = result.success_rate * 100;
-    const statusColor = successRate >= 95 ? 'green' : successRate >= 85 ? 'yellow' : 'red';
-    
+    const statusStyles = successRate >= 95
+        ? { bg: 'bg-green-50 dark:bg-green-900/20', text: 'text-green-600', label: 'text-green-800 dark:text-green-200' }
+        : successRate >= 85
+        ? { bg: 'bg-yellow-50 dark:bg-yellow-900/20', text: 'text-yellow-600', label: 'text-yellow-800 dark:text-yellow-200' }
+        : { bg: 'bg-red-50 dark:bg-red-900/20', text: 'text-red-600', label: 'text-red-800 dark:text-red-200' };
+
     content.innerHTML = `
         <div class="grid md:grid-cols-3 gap-6 mb-6">
             <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
@@ -726,9 +736,9 @@ function showResults(result) {
                 <div class="text-2xl font-bold text-green-600">${result.processed_records.toLocaleString()}</div>
                 <div class="text-sm text-green-800 dark:text-green-200">Processed Successfully</div>
             </div>
-            <div class="bg-${statusColor}-50 dark:bg-${statusColor}-900/20 rounded-lg p-4">
-                <div class="text-2xl font-bold text-${statusColor}-600">${successRate.toFixed(1)}%</div>
-                <div class="text-sm text-${statusColor}-800 dark:text-${statusColor}-200">Success Rate</div>
+            <div class="${statusStyles.bg} rounded-lg p-4">
+                <div class="text-2xl font-bold ${statusStyles.text}">${successRate.toFixed(1)}%</div>
+                <div class="text-sm ${statusStyles.label}">Success Rate</div>
             </div>
         </div>
         

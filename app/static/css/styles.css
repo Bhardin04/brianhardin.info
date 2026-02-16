@@ -1,7 +1,6 @@
 /* ===== BRIAN HARDIN DESIGN SYSTEM ===== */
 
-/* Import Professional Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+/* Fonts loaded via <link> in base.html for non-blocking render */
 
 /* ===== CSS CUSTOM PROPERTIES (DESIGN TOKENS) ===== */
 :root {
@@ -977,6 +976,47 @@ textarea {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+    html {
+        scroll-behavior: auto !important;
+    }
+    .card:hover,
+    .card-premium:hover,
+    .tech-card:hover,
+    .hover-lift:hover,
+    .hover-float:hover,
+    .feature-card:hover,
+    .stats-card:hover {
+        transform: none !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    nav, footer, #theme-toggle, #theme-toggle-mobile, #mobile-menu-button {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+    }
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #555;
+    }
+    nav a[href]::after,
+    .sr-only {
+        content: none;
+    }
+    .card, .card-premium, .tech-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+    .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl {
+        box-shadow: none !important;
     }
 }
 

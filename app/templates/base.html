@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Primary Meta Tags -->
-    <title>{% block title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}</title>
-    <meta name="title" content="{% block meta_title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}">
-    <meta name="description" content="{% block meta_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
+    <title>{% block title %}{% if page_title %}{{ page_title }} | Brian Hardin{% else %}Brian Hardin - Python Developer & Software Engineer{% endif %}{% endblock %}</title>
+    <meta name="title" content="{% block meta_title %}{% if page_title %}{{ page_title }} | Brian Hardin{% else %}Brian Hardin - Python Developer & Software Engineer{% endif %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% if page_description %}{{ page_description }}{% else %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endif %}{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}Python, FastAPI, Software Engineer, Web Development, Backend Development, Portfolio{% endblock %}">
     <meta name="author" content="Brian Hardin">
     <meta name="robots" content="index, follow">
@@ -61,6 +61,7 @@
     <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap">
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
     <!-- Structured Data -->
@@ -230,7 +231,7 @@
         </div>
 
         <!-- Mobile menu panel -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-700">
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-700 transition-all duration-200 ease-in-out">
             <div class="px-4 py-3 space-y-1">
                 {% for href, label in nav_items %}
                 {% set is_active = (request.url.path == href) or (href != '/' and request.url.path.startswith(href)) %}
