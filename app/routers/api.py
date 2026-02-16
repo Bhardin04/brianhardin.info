@@ -3,9 +3,11 @@ import logging
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
 
+from app.database.connection import get_db
 from app.middleware import limiter, verify_csrf_token
 from app.models.contact import ContactForm
 from app.models.project import Project
+from app.services.contact_db import contact_message_service
 from app.services.email import email_service
 from app.services.project import project_service
 
@@ -47,6 +49,20 @@ async def submit_contact_form(
             message=message,
             company=company if company else None,
         )
+
+        # Save to database
+        try:
+            async for db in get_db():
+                await contact_message_service.create(
+                    db,
+                    name=contact_data.name,
+                    email=contact_data.email,
+                    subject=contact_data.subject,
+                    message=contact_data.message,
+                    company=contact_data.company or "",
+                )
+        except Exception:
+            logger.exception("Failed to save contact message to database")
 
         # Send email
         success = await email_service.send_contact_email(contact_data)
