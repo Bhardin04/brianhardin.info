@@ -58,6 +58,7 @@ async def homepage(request: Request) -> Response:
 async def health_check() -> dict[str, str]:
     return {"status": "healthy"}
 
+
 @app.get("/service-worker.js")
 async def service_worker():
     """Minimal service worker to prevent 404 errors"""
@@ -73,4 +74,5 @@ self.addEventListener('activate', function(event) {
     """.strip()
 
     from fastapi.responses import Response
+
     return Response(content=content, media_type="application/javascript")

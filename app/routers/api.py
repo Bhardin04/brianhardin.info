@@ -171,11 +171,13 @@ async def submit_contact_form(
         </div>
         """
 
+
 @router.post("/analytics")
 async def track_analytics(data: dict):
     """Analytics tracking endpoint - accepts analytics data but doesn't store it"""
     logger.info(f"Analytics tracked: {data}")
     return {"status": "tracked"}
+
 
 @router.post("/error-report")
 async def report_error(error_data: dict):
@@ -183,11 +185,13 @@ async def report_error(error_data: dict):
     logger.error(f"Client error reported: {error_data}")
     return {"status": "reported"}
 
+
 @router.head("/ping")
 @router.get("/ping")
 async def ping():
     """Health check ping endpoint"""
     return {"status": "pong"}
+
 
 @router.head("/health")
 @router.get("/health")

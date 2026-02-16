@@ -1,6 +1,7 @@
 """
 Demo API endpoints for interactive project demonstrations.
 """
+
 import logging
 from typing import Any
 
@@ -40,7 +41,9 @@ async def demos_index(request: Request):
 @router.get("/payment-processing", response_class=HTMLResponse)
 async def payment_demo_page(request: Request):
     """Payment processing demo page"""
-    return templates.TemplateResponse("demos/payment_processing.html", {"request": request})
+    return templates.TemplateResponse(
+        "demos/payment_processing.html", {"request": request}
+    )
 
 
 @router.get("/data-pipeline", response_class=HTMLResponse)
@@ -52,19 +55,25 @@ async def pipeline_demo_page(request: Request):
 @router.get("/sales-dashboard", response_class=HTMLResponse)
 async def dashboard_demo_page(request: Request):
     """Sales dashboard demo page"""
-    return templates.TemplateResponse("demos/sales_dashboard.html", {"request": request})
+    return templates.TemplateResponse(
+        "demos/sales_dashboard.html", {"request": request}
+    )
 
 
 @router.get("/collections-dashboard", response_class=HTMLResponse)
 async def collections_demo_page(request: Request):
     """Collections dashboard demo page"""
-    return templates.TemplateResponse("demos/collections_dashboard.html", {"request": request})
+    return templates.TemplateResponse(
+        "demos/collections_dashboard.html", {"request": request}
+    )
 
 
 @router.get("/automation-suite", response_class=HTMLResponse)
 async def automation_demo_page(request: Request):
     """Automation suite demo page"""
-    return templates.TemplateResponse("demos/automation_suite.html", {"request": request})
+    return templates.TemplateResponse(
+        "demos/automation_suite.html", {"request": request}
+    )
 
 
 # API Endpoints for Payment Processing Demo
@@ -81,11 +90,15 @@ async def create_payment_session():
             success=True,
             data={
                 "session_id": session.session_id,
-                "open_invoices": [inv.dict() for inv in open_invoices[:10]],  # Limit for demo
-                "customers": list({(inv.customer_id, inv.customer_name) for inv in open_invoices})
+                "open_invoices": [
+                    inv.dict() for inv in open_invoices[:10]
+                ],  # Limit for demo
+                "customers": list(
+                    {(inv.customer_id, inv.customer_name) for inv in open_invoices}
+                ),
             },
             message="Payment processing session created successfully",
-            session_id=session.session_id
+            session_id=session.session_id,
         )
     except Exception as e:
         logger.error(f"Error creating payment session: {str(e)}")
@@ -94,8 +107,8 @@ async def create_payment_session():
             content=DemoError(
                 error_type="session_creation_error",
                 message="Failed to create payment processing session",
-                session_id=""
-            ).dict()
+                session_id="",
+            ).dict(),
         )
 
 
@@ -118,7 +131,7 @@ async def process_payment(payment_data: dict[str, Any]):
             data=result.dict(),
             message=f"Payment processed successfully - Status: {result.status}",
             session_id=session_id,
-            execution_time_ms=150  # Simulated processing time
+            execution_time_ms=150,  # Simulated processing time
         )
 
     except Exception as e:
@@ -128,8 +141,8 @@ async def process_payment(payment_data: dict[str, Any]):
             content=DemoError(
                 error_type="payment_processing_error",
                 message=f"Payment processing failed: {str(e)}",
-                session_id=payment_data.get("session_id", "")
-            ).dict()
+                session_id=payment_data.get("session_id", ""),
+            ).dict(),
         )
 
 
@@ -143,7 +156,7 @@ async def get_customer_invoices(customer_id: str):
             success=True,
             data={"invoices": [inv.dict() for inv in invoices]},
             message=f"Found {len(invoices)} open invoices for customer",
-            session_id=""
+            session_id="",
         )
 
     except Exception as e:
@@ -153,8 +166,8 @@ async def get_customer_invoices(customer_id: str):
             content=DemoError(
                 error_type="data_fetch_error",
                 message="Failed to fetch customer invoices",
-                session_id=""
-            ).dict()
+                session_id="",
+            ).dict(),
         )
 
 
@@ -172,16 +185,22 @@ async def create_pipeline_session():
                 "available_sources": [
                     {"value": "netsuite_payments", "label": "NetSuite Payments"},
                     {"value": "netsuite_invoices", "label": "NetSuite Invoices"},
-                    {"value": "netsuite_credit_memos", "label": "NetSuite Credit Memos"},
-                    {"value": "netsuite_journal_entries", "label": "NetSuite Journal Entries"}
+                    {
+                        "value": "netsuite_credit_memos",
+                        "label": "NetSuite Credit Memos",
+                    },
+                    {
+                        "value": "netsuite_journal_entries",
+                        "label": "NetSuite Journal Entries",
+                    },
                 ],
                 "output_formats": [
                     {"value": "xml", "label": "XML"},
-                    {"value": "json", "label": "JSON"}
-                ]
+                    {"value": "json", "label": "JSON"},
+                ],
             },
             message="Data pipeline session created successfully",
-            session_id=session.session_id
+            session_id=session.session_id,
         )
 
     except Exception as e:
@@ -191,8 +210,8 @@ async def create_pipeline_session():
             content=DemoError(
                 error_type="session_creation_error",
                 message="Failed to create data pipeline session",
-                session_id=""
-            ).dict()
+                session_id="",
+            ).dict(),
         )
 
 
@@ -215,7 +234,7 @@ async def extract_pipeline_data(extraction_request: dict[str, Any]):
             data=result.dict(),
             message=f"Extracted {result.processed_records} records successfully",
             session_id=session_id,
-            execution_time_ms=result.processing_time_ms
+            execution_time_ms=result.processing_time_ms,
         )
 
     except Exception as e:
@@ -225,8 +244,8 @@ async def extract_pipeline_data(extraction_request: dict[str, Any]):
             content=DemoError(
                 error_type="data_extraction_error",
                 message=f"Data extraction failed: {str(e)}",
-                session_id=extraction_request.get("session_id", "")
-            ).dict()
+                session_id=extraction_request.get("session_id", ""),
+            ).dict(),
         )
 
 
@@ -244,11 +263,11 @@ async def create_dashboard_session():
                 "available_periods": [
                     {"value": "current_month", "label": "Current Month"},
                     {"value": "current_quarter", "label": "Current Quarter"},
-                    {"value": "current_year", "label": "Current Year"}
-                ]
+                    {"value": "current_year", "label": "Current Year"},
+                ],
             },
             message="Dashboard session created successfully",
-            session_id=session.session_id
+            session_id=session.session_id,
         )
 
     except Exception as e:
@@ -258,8 +277,8 @@ async def create_dashboard_session():
             content=DemoError(
                 error_type="session_creation_error",
                 message="Failed to create dashboard session",
-                session_id=""
-            ).dict()
+                session_id="",
+            ).dict(),
         )
 
 
@@ -281,7 +300,7 @@ async def get_dashboard_data(request_data: dict[str, Any]):
             data=dashboard_data.dict(),
             message="Dashboard data generated successfully",
             session_id=session_id,
-            execution_time_ms=250
+            execution_time_ms=250,
         )
 
     except Exception as e:
@@ -291,8 +310,8 @@ async def get_dashboard_data(request_data: dict[str, Any]):
             content=DemoError(
                 error_type="dashboard_generation_error",
                 message=f"Dashboard generation failed: {str(e)}",
-                session_id=request_data.get("session_id", "")
-            ).dict()
+                session_id=request_data.get("session_id", ""),
+            ).dict(),
         )
 
 
@@ -305,11 +324,9 @@ async def create_collections_session():
 
         return DemoResponse(
             success=True,
-            data={
-                "session_id": session.session_id
-            },
+            data={"session_id": session.session_id},
             message="Collections session created successfully",
-            session_id=session.session_id
+            session_id=session.session_id,
         )
 
     except Exception as e:
@@ -319,8 +336,8 @@ async def create_collections_session():
             content=DemoError(
                 error_type="session_creation_error",
                 message="Failed to create collections session",
-                session_id=""
-            ).dict()
+                session_id="",
+            ).dict(),
         )
 
 
@@ -341,7 +358,7 @@ async def get_collections_data(request_data: dict[str, Any]):
             data=collections_data,
             message="Collections data generated successfully",
             session_id=session_id,
-            execution_time_ms=180
+            execution_time_ms=180,
         )
 
     except Exception as e:
@@ -351,8 +368,8 @@ async def get_collections_data(request_data: dict[str, Any]):
             content=DemoError(
                 error_type="collections_generation_error",
                 message=f"Collections data generation failed: {str(e)}",
-                session_id=request_data.get("session_id", "")
-            ).dict()
+                session_id=request_data.get("session_id", ""),
+            ).dict(),
         )
 
 
@@ -376,10 +393,14 @@ async def websocket_endpoint(websocket: WebSocket, demo_type: str, session_id: s
 
             if message_type == "start_simulation":
                 if demo_type == "payment_processing":
-                    await realtime_simulator.start_payment_processing_simulation(session_id)
+                    await realtime_simulator.start_payment_processing_simulation(
+                        session_id
+                    )
                 elif demo_type == "data_pipeline":
                     total_records = message.get("total_records", 100)
-                    await realtime_simulator.start_pipeline_simulation(session_id, total_records)
+                    await realtime_simulator.start_pipeline_simulation(
+                        session_id, total_records
+                    )
                 elif demo_type == "sales_dashboard":
                     await realtime_simulator.start_dashboard_simulation(session_id)
 
@@ -387,17 +408,16 @@ async def websocket_endpoint(websocket: WebSocket, demo_type: str, session_id: s
                 realtime_simulator.stop_simulation(session_id)
 
             elif message_type == "ping":
-                await connection_manager.send_to_connection(websocket, {
-                    "type": "pong",
-                    "timestamp": asyncio.get_event_loop().time()
-                })
+                await connection_manager.send_to_connection(
+                    websocket,
+                    {"type": "pong", "timestamp": asyncio.get_event_loop().time()},
+                )
 
             # Echo other messages back for debugging
             else:
-                await connection_manager.send_to_connection(websocket, {
-                    "type": "echo",
-                    "original_message": message
-                })
+                await connection_manager.send_to_connection(
+                    websocket, {"type": "echo", "original_message": message}
+                )
 
     except WebSocketDisconnect:
         connection_manager.disconnect(websocket)

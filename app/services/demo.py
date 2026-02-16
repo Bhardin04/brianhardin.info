@@ -2,6 +2,7 @@
 Demo services for interactive project demonstrations.
 Provides business logic and data processing for demo scenarios.
 """
+
 import random
 from datetime import datetime, timedelta
 from typing import Any
@@ -43,7 +44,9 @@ class DemoServiceBase:
         """Get existing demo session"""
         return self.sessions.get(session_id)
 
-    def update_session_status(self, session_id: str, status: DemoStatus, data: dict[str, Any] = None):
+    def update_session_status(
+        self, session_id: str, status: DemoStatus, data: dict[str, Any] = None
+    ):
         """Update session status and data"""
         if session := self.sessions.get(session_id):
             session.update_status(status, data or {})
@@ -77,15 +80,15 @@ class PaymentProcessingService(DemoServiceBase):
                 amount = random.uniform(5000, 50000)
 
                 invoice = Invoice(
-                    invoice_id=f"INV-{i+1:03d}-{j+1:03d}",
-                    invoice_number=f"INV-2024-{(i*4)+j+1:04d}",
+                    invoice_id=f"INV-{i + 1:03d}-{j + 1:03d}",
+                    invoice_number=f"INV-2024-{(i * 4) + j + 1:04d}",
                     customer_id=customer_id,
                     customer_name=customer_name,
                     invoice_date=invoice_date,
                     due_date=due_date,
                     amount=round(amount, 2),
                     balance=round(amount, 2),
-                    days_outstanding=max(0, days_outstanding)
+                    days_outstanding=max(0, days_outstanding),
                 )
                 invoices.append(invoice)
 
@@ -93,13 +96,19 @@ class PaymentProcessingService(DemoServiceBase):
 
     def get_customer_invoices(self, customer_id: str) -> list[Invoice]:
         """Get open invoices for a customer"""
-        return [inv for inv in self.sample_invoices if inv.customer_id == customer_id and inv.balance > 0]
+        return [
+            inv
+            for inv in self.sample_invoices
+            if inv.customer_id == customer_id and inv.balance > 0
+        ]
 
     def get_all_open_invoices(self) -> list[Invoice]:
         """Get all open invoices"""
         return [inv for inv in self.sample_invoices if inv.balance > 0]
 
-    def process_payment(self, session_id: str, payment: PaymentEntry) -> PaymentProcessingResult:
+    def process_payment(
+        self, session_id: str, payment: PaymentEntry
+    ) -> PaymentProcessingResult:
         """Process a payment and match to invoices"""
         session = self.get_session(session_id)
         if not session:
@@ -115,7 +124,7 @@ class PaymentProcessingService(DemoServiceBase):
         matches = self._find_payment_matches(payment, customer_invoices)
 
         # Generate payment ID
-        payment_id = f"PAY-{datetime.now().strftime('%Y%m%d')}-{len(self.processed_payments)+1:04d}"
+        payment_id = f"PAY-{datetime.now().strftime('%Y%m%d')}-{len(self.processed_payments) + 1:04d}"
 
         # Calculate remaining amount
         total_applied = sum(match.amount_applied for match in matches)
@@ -137,34 +146,40 @@ class PaymentProcessingService(DemoServiceBase):
             status=status,
             matches=matches,
             remaining_amount=remaining_amount,
-            processing_notes=notes
+            processing_notes=notes,
         )
 
         # Apply matches to invoices
         self._apply_payment_matches(matches)
 
         # Store processed payment
-        self.processed_payments.append({
-            "payment": payment,
-            "result": result,
-            "processed_at": datetime.now()
-        })
+        self.processed_payments.append(
+            {"payment": payment, "result": result, "processed_at": datetime.now()}
+        )
 
         # Update session
-        self.update_session_status(session_id, DemoStatus.COMPLETED, {
-            "payment_result": result.dict(),
-            "updated_invoices": [inv.dict() for inv in customer_invoices]
-        })
+        self.update_session_status(
+            session_id,
+            DemoStatus.COMPLETED,
+            {
+                "payment_result": result.dict(),
+                "updated_invoices": [inv.dict() for inv in customer_invoices],
+            },
+        )
 
         return result
 
-    def _find_payment_matches(self, payment: PaymentEntry, invoices: list[Invoice]) -> list[PaymentMatch]:
+    def _find_payment_matches(
+        self, payment: PaymentEntry, invoices: list[Invoice]
+    ) -> list[PaymentMatch]:
         """Find the best matches for a payment"""
         matches = []
         remaining_amount = payment.amount
 
         # Sort invoices by aging (oldest first)
-        sorted_invoices = sorted(invoices, key=lambda x: x.days_outstanding, reverse=True)
+        sorted_invoices = sorted(
+            invoices, key=lambda x: x.days_outstanding, reverse=True
+        )
 
         for invoice in sorted_invoices:
             if remaining_amount <= 0:
@@ -183,7 +198,10 @@ class PaymentProcessingService(DemoServiceBase):
             amount_to_apply = min(remaining_amount, invoice.balance)
 
             # Determine match type
-            if amount_to_apply == invoice.balance and remaining_amount >= invoice.balance:
+            if (
+                amount_to_apply == invoice.balance
+                and remaining_amount >= invoice.balance
+            ):
                 match_type = "exact"
             elif amount_to_apply < invoice.balance:
                 match_type = "partial"
@@ -195,7 +213,7 @@ class PaymentProcessingService(DemoServiceBase):
                 invoice_id=invoice.invoice_id,
                 amount_applied=amount_to_apply,
                 confidence_score=confidence,
-                match_type=match_type
+                match_type=match_type,
             )
 
             matches.append(match)
@@ -203,7 +221,9 @@ class PaymentProcessingService(DemoServiceBase):
 
         return matches
 
-    def _calculate_match_confidence(self, payment: PaymentEntry, invoice: Invoice) -> float:
+    def _calculate_match_confidence(
+        self, payment: PaymentEntry, invoice: Invoice
+    ) -> float:
         """Calculate confidence score for payment-invoice match"""
         # Base confidence
         confidence = 0.7
@@ -215,7 +235,9 @@ class PaymentProcessingService(DemoServiceBase):
         elif abs(payment.amount - invoice.balance) / invoice.balance < 0.05:
             confidence = 0.85
         # Reference number contains invoice number
-        elif invoice.invoice_number.replace("-", "").replace("INV", "") in payment.reference.replace("-", ""):
+        elif invoice.invoice_number.replace("-", "").replace(
+            "INV", ""
+        ) in payment.reference.replace("-", ""):
             confidence = 0.9
 
         # Reduce confidence for very old invoices
@@ -232,7 +254,9 @@ class PaymentProcessingService(DemoServiceBase):
                     invoice.balance = max(0, invoice.balance - match.amount_applied)
                     break
 
-    def _generate_processing_notes(self, payment: PaymentEntry, matches: list[PaymentMatch], remaining: float) -> list[str]:
+    def _generate_processing_notes(
+        self, payment: PaymentEntry, matches: list[PaymentMatch], remaining: float
+    ) -> list[str]:
         """Generate processing notes based on results"""
         notes = []
 
@@ -259,7 +283,9 @@ class PaymentProcessingService(DemoServiceBase):
 class DataPipelineService(DemoServiceBase):
     """Service for data pipeline demo"""
 
-    def extract_data(self, session_id: str, params: DataExtractionParams) -> PipelineResult:
+    def extract_data(
+        self, session_id: str, params: DataExtractionParams
+    ) -> PipelineResult:
         """Extract data from NetSuite based on parameters"""
         session = self.get_session(session_id)
         if not session:
@@ -272,8 +298,14 @@ class DataPipelineService(DemoServiceBase):
 
         # Process records
         processed_count = len(records)
-        failed_count = random.randint(0, max(1, len(records) // 20))  # 0-5% failure rate
-        success_rate = (processed_count - failed_count) / processed_count if processed_count > 0 else 0
+        failed_count = random.randint(
+            0, max(1, len(records) // 20)
+        )  # 0-5% failure rate
+        success_rate = (
+            (processed_count - failed_count) / processed_count
+            if processed_count > 0
+            else 0
+        )
 
         result = PipelineResult(
             batch_id=f"BATCH-{datetime.now().strftime('%Y%m%d%H%M%S')}",
@@ -282,17 +314,25 @@ class DataPipelineService(DemoServiceBase):
             failed_records=failed_count,
             processing_time_ms=random.randint(1500, 5000),
             errors=self._generate_sample_errors(failed_count),
-            success_rate=round(success_rate, 3)
+            success_rate=round(success_rate, 3),
         )
 
-        self.update_session_status(session_id, DemoStatus.COMPLETED, {
-            "extraction_result": result.dict(),
-            "sample_records": [r.dict() for r in records[:5]]  # Show first 5 records
-        })
+        self.update_session_status(
+            session_id,
+            DemoStatus.COMPLETED,
+            {
+                "extraction_result": result.dict(),
+                "sample_records": [
+                    r.dict() for r in records[:5]
+                ],  # Show first 5 records
+            },
+        )
 
         return result
 
-    def _generate_sample_records(self, params: DataExtractionParams) -> list[DataRecord]:
+    def _generate_sample_records(
+        self, params: DataExtractionParams
+    ) -> list[DataRecord]:
         """Generate sample data records based on extraction parameters"""
         records = []
         record_count = random.randint(50, 500)  # Simulate variable data volume
@@ -302,10 +342,10 @@ class DataPipelineService(DemoServiceBase):
             data = self._generate_record_data(params.source.value, i)
 
             record = DataRecord(
-                record_id=f"REC-{i+1:06d}",
-                source_id=f"{params.source.value.upper()}-{i+1}",
+                record_id=f"REC-{i + 1:06d}",
+                source_id=f"{params.source.value.upper()}-{i + 1}",
                 record_type=params.source.value,
-                data=data
+                data=data,
             )
             records.append(record)
 
@@ -317,28 +357,28 @@ class DataPipelineService(DemoServiceBase):
 
         if source_type == "netsuite_payments":
             return {
-                "payment_id": f"PAY-{index+1:06d}",
+                "payment_id": f"PAY-{index + 1:06d}",
                 "customer_id": f"CUST-{random.randint(1, 100):03d}",
                 "amount": round(random.uniform(1000, 50000), 2),
                 "payment_date": base_date.isoformat(),
                 "payment_method": random.choice(["ACH", "Wire", "Check"]),
-                "reference": f"REF-{random.randint(100000, 999999)}"
+                "reference": f"REF-{random.randint(100000, 999999)}",
             }
         elif source_type == "netsuite_invoices":
             return {
-                "invoice_id": f"INV-{index+1:06d}",
+                "invoice_id": f"INV-{index + 1:06d}",
                 "customer_id": f"CUST-{random.randint(1, 100):03d}",
                 "amount": round(random.uniform(5000, 100000), 2),
                 "invoice_date": base_date.isoformat(),
                 "due_date": (base_date + timedelta(days=30)).isoformat(),
-                "status": random.choice(["Open", "Paid", "Overdue"])
+                "status": random.choice(["Open", "Paid", "Overdue"]),
             }
         else:
             return {
-                "id": f"ID-{index+1:06d}",
+                "id": f"ID-{index + 1:06d}",
                 "date": base_date.isoformat(),
                 "amount": round(random.uniform(1000, 10000), 2),
-                "status": "Active"
+                "status": "Active",
             }
 
     def _generate_sample_errors(self, count: int) -> list[str]:
@@ -349,7 +389,7 @@ class DataPipelineService(DemoServiceBase):
             "Amount exceeds maximum allowed value",
             "Duplicate record detected",
             "Customer ID not found in target system",
-            "Currency code validation failed"
+            "Currency code validation failed",
         ]
 
         return random.sample(error_types, min(count, len(error_types)))
@@ -358,7 +398,9 @@ class DataPipelineService(DemoServiceBase):
 class DashboardService(DemoServiceBase):
     """Service for dashboard demo"""
 
-    def generate_dashboard_data(self, session_id: str, period: str = "current_month") -> DashboardData:
+    def generate_dashboard_data(
+        self, session_id: str, period: str = "current_month"
+    ) -> DashboardData:
         """Generate comprehensive dashboard data"""
         session = self.get_session(session_id)
         if not session:
@@ -379,12 +421,12 @@ class DashboardService(DemoServiceBase):
             kpis=kpis,
             revenue_by_customer=revenue_records,
             chart_data=chart_data,
-            filters={"period": period, "currency": "USD"}
+            filters={"period": period, "currency": "USD"},
         )
 
-        self.update_session_status(session_id, DemoStatus.COMPLETED, {
-            "dashboard_data": dashboard_data.dict()
-        })
+        self.update_session_status(
+            session_id, DemoStatus.COMPLETED, {"dashboard_data": dashboard_data.dict()}
+        )
 
         return dashboard_data
 
@@ -399,7 +441,7 @@ class DashboardService(DemoServiceBase):
                 unit="$",
                 change_percent=15.2,
                 trend="up",
-                target=base_revenue * 0.9
+                target=base_revenue * 0.9,
             ),
             KPIMetric(
                 name="Gross Margin",
@@ -407,7 +449,7 @@ class DashboardService(DemoServiceBase):
                 unit="%",
                 change_percent=2.1,
                 trend="up",
-                target=38.0
+                target=38.0,
             ),
             KPIMetric(
                 name="Customer Count",
@@ -415,7 +457,7 @@ class DashboardService(DemoServiceBase):
                 unit="",
                 change_percent=-3.2,
                 trend="down",
-                target=130
+                target=130,
             ),
             KPIMetric(
                 name="Average Deal Size",
@@ -423,7 +465,7 @@ class DashboardService(DemoServiceBase):
                 unit="$",
                 change_percent=8.7,
                 trend="up",
-                target=18000
+                target=18000,
             ),
             KPIMetric(
                 name="Churn Rate",
@@ -431,17 +473,23 @@ class DashboardService(DemoServiceBase):
                 unit="%",
                 change_percent=-12.5,
                 trend="down",
-                target=7.0
-            )
+                target=7.0,
+            ),
         ]
 
     def _generate_revenue_records(self) -> list[RevenueRecord]:
         """Generate customer revenue records"""
         customers = [
-            "Enterprise Corp", "TechStart Inc", "Global Industries",
-            "Retail Partners", "Manufacturing Co", "Finance Solutions",
-            "Healthcare Systems", "Education Group", "Transport LLC",
-            "Energy Services"
+            "Enterprise Corp",
+            "TechStart Inc",
+            "Global Industries",
+            "Retail Partners",
+            "Manufacturing Co",
+            "Finance Solutions",
+            "Healthcare Systems",
+            "Education Group",
+            "Transport LLC",
+            "Energy Services",
         ]
 
         records = []
@@ -452,13 +500,13 @@ class DashboardService(DemoServiceBase):
             growth_rate = (current_revenue - previous_revenue) / previous_revenue
 
             record = RevenueRecord(
-                customer_id=f"CUST-{i+1:03d}",
+                customer_id=f"CUST-{i + 1:03d}",
                 customer_name=customer,
                 current_month=round(current_revenue, 2),
                 previous_month=round(previous_revenue, 2),
                 ytd_revenue=round(ytd_revenue, 2),
                 growth_rate=round(growth_rate, 3),
-                churn_risk=random.choice(["low", "medium", "high"])
+                churn_risk=random.choice(["low", "medium", "high"]),
             )
             records.append(record)
 
@@ -471,16 +519,16 @@ class DashboardService(DemoServiceBase):
         return {
             "revenue_trend": {
                 "labels": months,
-                "data": [random.randint(180000, 220000) for _ in months]
+                "data": [random.randint(180000, 220000) for _ in months],
             },
             "margin_trend": {
                 "labels": months,
-                "data": [round(random.uniform(38, 42), 1) for _ in months]
+                "data": [round(random.uniform(38, 42), 1) for _ in months],
             },
             "customer_distribution": {
                 "labels": ["Enterprise", "Mid-Market", "SMB"],
-                "data": [45, 35, 20]
-            }
+                "data": [45, 35, 20],
+            },
         }
 
 
@@ -499,12 +547,12 @@ class CollectionsService(DemoServiceBase):
             "dso_metrics": self._generate_dso_metrics(),
             "collector_performance": self._generate_collector_metrics(),
             "aging_analysis": self._generate_aging_buckets(),
-            "customer_targets": self._generate_customer_targets()
+            "customer_targets": self._generate_customer_targets(),
         }
 
-        self.update_session_status(session_id, DemoStatus.COMPLETED, {
-            "collections_data": data
-        })
+        self.update_session_status(
+            session_id, DemoStatus.COMPLETED, {"collections_data": data}
+        )
 
         return data
 
@@ -515,20 +563,23 @@ class CollectionsService(DemoServiceBase):
             "target_dso": 35.0,
             "previous_month_dso": 45.2,
             "industry_benchmark": 38.0,
-            "trend": "improving"
+            "trend": "improving",
         }
 
     def _generate_collector_metrics(self) -> list[CollectorMetric]:
         """Generate collector performance metrics"""
         collectors = [
-            "Sarah Johnson", "Mike Chen", "Lisa Rodriguez",
-            "David Thompson", "Anna Williams"
+            "Sarah Johnson",
+            "Mike Chen",
+            "Lisa Rodriguez",
+            "David Thompson",
+            "Anna Williams",
         ]
 
         metrics = []
         for i, name in enumerate(collectors):
             metric = CollectorMetric(
-                collector_id=f"COL-{i+1:03d}",
+                collector_id=f"COL-{i + 1:03d}",
                 collector_name=name,
                 collections_mtd=random.uniform(80000, 150000),
                 target_mtd=100000,
@@ -537,7 +588,7 @@ class CollectionsService(DemoServiceBase):
                 calls_made=random.randint(80, 120),
                 emails_sent=random.randint(150, 200),
                 meetings_held=random.randint(8, 15),
-                performance_rank=i + 1
+                performance_rank=i + 1,
             )
             metrics.append(metric)
 
@@ -551,55 +602,69 @@ class CollectionsService(DemoServiceBase):
                 days_range="0-30 days",
                 amount=850000.00,
                 count=125,
-                percentage=56.7
+                percentage=56.7,
             ),
             AgingBucket(
                 bucket_name="30 Days",
                 days_range="31-60 days",
                 amount=320000.00,
                 count=48,
-                percentage=21.3
+                percentage=21.3,
             ),
             AgingBucket(
                 bucket_name="60 Days",
                 days_range="61-90 days",
                 amount=180000.00,
                 count=28,
-                percentage=12.0
+                percentage=12.0,
             ),
             AgingBucket(
                 bucket_name="90+ Days",
                 days_range="90+ days",
                 amount=150000.00,
                 count=22,
-                percentage=10.0
-            )
+                percentage=10.0,
+            ),
         ]
 
     def _generate_customer_targets(self) -> list[CustomerTarget]:
         """Generate priority customer target list"""
         customers = [
-            "ABC Manufacturing", "XYZ Retail Corp", "Global Tech Solutions",
-            "Premier Services Inc", "Advanced Systems LLC"
+            "ABC Manufacturing",
+            "XYZ Retail Corp",
+            "Global Tech Solutions",
+            "Premier Services Inc",
+            "Advanced Systems LLC",
         ]
 
         targets = []
         for i, customer in enumerate(customers):
             target = CustomerTarget(
-                customer_id=f"CUST-{i+1:03d}",
+                customer_id=f"CUST-{i + 1:03d}",
                 customer_name=customer,
                 total_outstanding=random.uniform(25000, 100000),
                 days_past_due=random.randint(35, 120),
                 risk_score=random.choice(["high", "medium", "low"]),
                 priority_rank=i + 1,
                 last_contact=datetime.now() - timedelta(days=random.randint(1, 14)),
-                next_action=random.choice(["phone_call", "email_follow_up", "meeting_scheduled", "payment_plan"]),
+                next_action=random.choice(
+                    [
+                        "phone_call",
+                        "email_follow_up",
+                        "meeting_scheduled",
+                        "payment_plan",
+                    ]
+                ),
                 assigned_collector=f"COL-{random.randint(1, 5):03d}",
                 payment_promise={
                     "amount": random.uniform(5000, 25000),
-                    "promise_date": (datetime.now() + timedelta(days=random.randint(1, 30))).isoformat(),
-                    "status": random.choice(["pending", "confirmed", "broken"])
-                } if random.random() > 0.3 else None
+                    "promise_date": (
+                        datetime.now() + timedelta(days=random.randint(1, 30))
+                    ).isoformat(),
+                    "status": random.choice(["pending", "confirmed", "broken"]),
+                }
+                if random.random() > 0.3
+                else None,
             )
             targets.append(target)
 
