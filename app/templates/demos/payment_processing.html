@@ -48,7 +48,7 @@
                         <form id="payment-form" class="space-y-4">
                             <!-- Customer Selection -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="customer-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Customer
                                 </label>
                                 <select id="customer-select" class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm">
@@ -79,7 +79,7 @@
 
                             <!-- Amount -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="payment-amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Payment Amount
                                 </label>
                                 <div class="relative">
@@ -94,7 +94,7 @@
 
                             <!-- Reference -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="payment-reference" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Reference
                                 </label>
                                 <input type="text" id="payment-reference" 
@@ -104,7 +104,7 @@
 
                             <!-- Memo -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="payment-memo" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Memo (Optional)
                                 </label>
                                 <input type="text" id="payment-memo" 
@@ -112,8 +112,11 @@
                                        placeholder="Payment description">
                             </div>
 
+                            <!-- Form validation errors -->
+                            <div id="payment-form-errors" class="hidden rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 p-3 text-sm text-red-700 dark:text-red-300" role="alert" aria-live="assertive"></div>
+
                             <!-- Submit Button -->
-                            <button type="submit" id="process-payment-btn" 
+                            <button type="submit" id="process-payment-btn"
                                     class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                                 Process Payment
                             </button>
@@ -368,21 +371,28 @@ document.getElementById('customer-select').addEventListener('change', function(e
 document.getElementById('payment-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    const errorsDiv = document.getElementById('payment-form-errors');
+    errorsDiv.classList.add('hidden');
+    errorsDiv.textContent = '';
+
     if (!demoSession) {
-        alert('Demo session not initialized. Please refresh the page.');
+        errorsDiv.textContent = 'Demo session not initialized. Please refresh the page.';
+        errorsDiv.classList.remove('hidden');
         return;
     }
-    
+
     // Get form data
     const customerId = document.getElementById('customer-select').value;
     const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
     const amount = parseFloat(document.getElementById('payment-amount').value);
     const reference = document.getElementById('payment-reference').value;
     const memo = document.getElementById('payment-memo').value;
-    
+
     // Validate required fields
     if (!customerId || !paymentMethod || !amount || !reference) {
-        alert('Please fill in all required fields.');
+        errorsDiv.textContent = 'Please fill in all required fields.';
+        errorsDiv.classList.remove('hidden');
+        errorsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         return;
     }
     

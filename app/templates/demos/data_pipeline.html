@@ -93,7 +93,7 @@
                         <form id="extraction-form" class="space-y-4">
                             <!-- Data Source -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="data-source" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     NetSuite Data Source
                                 </label>
                                 <select id="data-source" class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm">
@@ -104,14 +104,14 @@
                             <!-- Date Range -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label for="start-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Start Date
                                     </label>
                                     <input type="date" id="start-date" 
                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label for="end-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         End Date
                                     </label>
                                     <input type="date" id="end-date" 
@@ -121,7 +121,7 @@
 
                             <!-- Filters -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label for="customer-filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Customer Filter (Optional)
                                 </label>
                                 <input type="text" id="customer-filter" 
@@ -132,7 +132,7 @@
                             <!-- Amount Range -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label for="amount-min" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Min Amount
                                     </label>
                                     <div class="relative">
@@ -145,7 +145,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label for="amount-max" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Max Amount
                                     </label>
                                     <div class="relative">
@@ -176,8 +176,11 @@
                                 </div>
                             </div>
 
+                            <!-- Form validation errors -->
+                            <div id="extraction-form-errors" class="hidden rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 p-3 text-sm text-red-700 dark:text-red-300" role="alert" aria-live="assertive"></div>
+
                             <!-- Extract Button -->
-                            <button type="submit" id="extract-btn" 
+                            <button type="submit" id="extract-btn"
                                     class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                                 Start Data Extraction
                             </button>
@@ -476,11 +479,16 @@ function getSampleDataForSource(sourceType) {
 document.getElementById('extraction-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    const errorsDiv = document.getElementById('extraction-form-errors');
+    errorsDiv.classList.add('hidden');
+    errorsDiv.textContent = '';
+
     if (!demoSession) {
-        alert('Demo session not initialized. Please refresh the page.');
+        errorsDiv.textContent = 'Demo session not initialized. Please refresh the page.';
+        errorsDiv.classList.remove('hidden');
         return;
     }
-    
+
     // Get form data
     const formData = {
         source: document.getElementById('data-source').value,
@@ -491,10 +499,12 @@ document.getElementById('extraction-form').addEventListener('submit', async func
         amount_max: parseFloat(document.getElementById('amount-max').value) || null,
         output_format: document.querySelector('input[name="output_format"]:checked').value
     };
-    
+
     // Validate required fields
     if (!formData.source || !formData.start_date || !formData.end_date) {
-        alert('Please fill in all required fields.');
+        errorsDiv.textContent = 'Please fill in all required fields.';
+        errorsDiv.classList.remove('hidden');
+        errorsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         return;
     }
     

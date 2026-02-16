@@ -182,13 +182,11 @@
 
                 <!-- Desktop navigation -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] flex items-center">Home</a>
-                    <a href="/about" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] flex items-center">About</a>
-                    <a href="/projects" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] flex items-center">Projects</a>
-                    <a href="/demos" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] flex items-center">Demos</a>
-                    <a href="/resume" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] flex items-center">Resume</a>
-                    <a href="/blog" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] flex items-center">Blog</a>
-                    <a href="/contact" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] flex items-center">Contact</a>
+                    {% set nav_items = [('/', 'Home'), ('/about', 'About'), ('/projects', 'Projects'), ('/demos', 'Demos'), ('/resume', 'Resume'), ('/blog', 'Blog'), ('/contact', 'Contact')] %}
+                    {% for href, label in nav_items %}
+                    {% set is_active = (request.url.path == href) or (href != '/' and request.url.path.startswith(href)) %}
+                    <a href="{{ href }}" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors min-h-[44px] flex items-center {% if is_active %}text-blue-600 dark:text-blue-400 font-semibold{% else %}text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white{% endif %}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
+                    {% endfor %}
 
                     <!-- Dark mode toggle -->
                     <button id="theme-toggle" type="button"
@@ -234,13 +232,10 @@
         <!-- Mobile menu panel -->
         <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-700">
             <div class="px-4 py-3 space-y-1">
-                <a href="/" class="block px-3 py-2 rounded-md transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
-                <a href="/about" class="block px-3 py-2 rounded-md transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">About</a>
-                <a href="/projects" class="block px-3 py-2 rounded-md transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Projects</a>
-                <a href="/demos" class="block px-3 py-2 rounded-md transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Demos</a>
-                <a href="/resume" class="block px-3 py-2 rounded-md transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Resume</a>
-                <a href="/blog" class="block px-3 py-2 rounded-md transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Blog</a>
-                <a href="/contact" class="block px-3 py-2 rounded-md transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+                {% for href, label in nav_items %}
+                {% set is_active = (request.url.path == href) or (href != '/' and request.url.path.startswith(href)) %}
+                <a href="{{ href }}" class="block px-3 py-2 rounded-md transition-colors {% if is_active %}text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
+                {% endfor %}
             </div>
         </div>
     </nav>
