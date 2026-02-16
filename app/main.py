@@ -12,9 +12,9 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
 from app.middleware import limiter
-from app.models.project import Project
 from app.routers import api, blog, demos, pages, projects
 from app.services.blog import blog_service
+from app.services.project import project_service
 
 logger = logging.getLogger(__name__)
 
@@ -52,20 +52,20 @@ async def forbidden_handler(request: Request, exc: StarletteHTTPException) -> Re
 @app.exception_handler(404)
 async def not_found_handler(request: Request, exc: StarletteHTTPException) -> Response:
     return templates.TemplateResponse(
+        request,
         "errors/404.html",
-        {"request": request, "current_page": ""},
+        context={"current_page": ""},
         status_code=404,
     )
 
 
 @app.exception_handler(500)
-async def server_error_handler(
-    request: Request, exc: StarletteHTTPException
-) -> Response:
+async def server_error_handler(request: Request, exc: Exception) -> Response:
     try:
         return templates.TemplateResponse(
+            request,
             "errors/500.html",
-            {"request": request, "current_page": ""},
+            context={"current_page": ""},
             status_code=500,
         )
     except Exception:
@@ -77,28 +77,12 @@ async def server_error_handler(
 
 @app.get("/", response_class=HTMLResponse)
 async def homepage(request: Request) -> Response:
-    featured_projects = [
-        Project(
-            id=1,
-            title="Personal Website",
-            description="FastAPI-based personal brand website with HTMX interactions, dark mode, and responsive design",
-            technologies=["Python", "FastAPI", "Jinja2", "HTMX"],
-            github_url="https://github.com/Bhardin04/brianhardin.info",
-            demo_url="https://brianhardin.info",
-        ),
-        Project(
-            id=2,
-            title="REST API Toolkit",
-            description="Production-ready FastAPI starter with authentication, database integration, and auto-generated docs",
-            technologies=["Python", "FastAPI", "PostgreSQL", "Docker"],
-            github_url="https://github.com/Bhardin04",
-        ),
-    ]
+    featured_projects = project_service.get_featured(limit=2)
     featured_posts = blog_service.get_posts_summary(published_only=True, limit=2)
     return templates.TemplateResponse(
+        request,
         "index.html",
-        {
-            "request": request,
+        context={
             "current_page": "home",
             "projects": featured_projects,
             "featured_posts": featured_posts,

@@ -17,11 +17,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **RSS Feed** - `/blog/feed.xml` endpoint with RSS 2.0 format and atom:link self-reference
 - **Scroll-to-Top Button** - Fixed-position button with smooth scroll, `requestAnimationFrame` debounce, and `prefers-reduced-motion` support
 - **Demos Router Registration** - Fixed bug where demos router was not included in the app, preventing `/demos/` from loading
+- **Demo Test Suite** - 38 new tests covering demo page rendering, API endpoints, service business logic, session management, and WebSocket communication
+- **ProjectService** - Centralized project data service (`app/services/project.py`) as single source of truth, replacing duplicate project definitions across routers
 
 ### Changed
 - **Pre-commit Hooks** - Removed redundant `black` and `isort` (handled by ruff); updated ruff to v0.12.2, pre-commit-hooks to v5.0.0, mypy to v1.14.1, bandit to 1.8.3
+- **Pydantic V2 Migration** - Replaced deprecated `class Config` with `model_config = ConfigDict()` and `.dict()` with `.model_dump()` across all models and services
+- **Starlette TemplateResponse** - Updated all `TemplateResponse` calls to new API signature (`request` as first positional arg, `context=` kwarg) across all routers
+
+### Security
+- **SMTP Header Injection Prevention** - Sanitize email subject by stripping `\r` and `\n` characters before setting header
+- **Demo Session Limits** - Added `MAX_SESSIONS=100` and `SESSION_TTL_SECONDS=3600` to prevent unbounded memory growth from demo sessions
+- **WebSocket Connection Limits** - Added `MAX_CONNECTIONS=200` and `MAX_CONNECTIONS_PER_SESSION=5` to prevent resource exhaustion
+- **Pipeline Record Cap** - Capped WebSocket pipeline `total_records` to 1000 to prevent DoS via excessive simulation
 
 ### Fixed
+- **500 Error Handler Type** - Changed exception parameter from `StarletteHTTPException` to `Exception` to properly catch all 500 errors
 - **Suggestion-level UX improvements** - Dynamic Tailwind class fix (CDN-safe object mapping), debounced search inputs, Google Fonts loaded via `<link>`, scoped connection monitoring to demo pages, reduced motion support (scroll-behavior, transform suppression), print styles, flex-wrap on demo headers, empty state messages for filtered tables, SEO meta tag propagation from page variables, improved CTA copy, mobile menu transition
 - **Dark mode blog sidebar** - Added missing `dark:bg-gray-800` to "About This Blog" card on blog index, fixing invisible text on white background in dark mode
 - **Footer whitespace** - Added sticky footer layout (`flex-col` + `flex-1`), reduced excessive padding on demos page (hero, grid, CTA), tightened contact page bottom padding, defined missing CSS spacing variables (`--space-4`, `--space-16`, `--space-24`, `--space-32`) used by section and container classes

@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ProjectCategory(str, Enum):
@@ -97,8 +97,7 @@ class Project(BaseModel):
     team_size: str | None = None
     client_type: str | None = None
 
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class ProjectCreate(BaseModel):
