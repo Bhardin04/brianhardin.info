@@ -1,0 +1,678 @@
+{% extends "base.html" %}
+{% set page_title = "Payment Processing Demo" %}
+{% set page_description = "Interactive demonstration of automated payment application system" %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-green-50 dark:from-slate-900 dark:to-slate-800">
+    <!-- Demo Header -->
+    <div class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Payment Processing Demo</h1>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                        Interactive demonstration of automated payment application and AR matching
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="session-status" class="flex items-center text-sm text-gray-600 dark:text-gray-300" role="status" aria-live="polite">
+                        <div class="h-2 w-2 bg-yellow-400 rounded-full mr-2" aria-hidden="true"></div>
+                        <span>Initializing...</span>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="/projects/6" class="text-sm text-green-600 hover:text-green-500 dark:text-green-400">
+                            📋 Project Details
+                        </a>
+                        <nav class="flex" aria-label="Breadcrumb">
+                            <ol class="inline-flex items-center space-x-1">
+                                <li class="inline-flex items-center">
+                                    <a href="/" class="text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                        </svg>
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="/demos" class="ml-1 text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">Demos</a>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="ml-1 text-sm text-gray-400 dark:text-gray-500 font-medium">Payment Processing</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Content -->
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8">
+        <div class="grid lg:grid-cols-12 gap-8">
+
+            <!-- Payment Entry Panel -->
+            <div class="lg:col-span-5">
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Payment Entry</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Enter payment details for processing</p>
+                    </div>
+
+                    <div class="p-6">
+                        <form id="payment-form" class="space-y-4">
+                            <!-- Customer Selection -->
+                            <div>
+                                <label for="customer-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Customer
+                                </label>
+                                <select id="customer-select" class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm">
+                                    <option value="">Select a customer...</option>
+                                </select>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Payment Method
+                                </label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700">
+                                        <input type="radio" name="payment_method" value="ach" class="mr-2">
+                                        <span class="text-sm">ACH</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700">
+                                        <input type="radio" name="payment_method" value="wire" class="mr-2">
+                                        <span class="text-sm">Wire</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700">
+                                        <input type="radio" name="payment_method" value="check" class="mr-2">
+                                        <span class="text-sm">Check</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Amount -->
+                            <div>
+                                <label for="payment-amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Payment Amount
+                                </label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                    </div>
+                                    <input type="number" step="0.01" id="payment-amount"
+                                           class="w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
+                                           placeholder="0.00">
+                                </div>
+                            </div>
+
+                            <!-- Reference -->
+                            <div>
+                                <label for="payment-reference" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Reference
+                                </label>
+                                <input type="text" id="payment-reference"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
+                                       placeholder="Check #, Wire confirmation, ACH trace">
+                            </div>
+
+                            <!-- Memo -->
+                            <div>
+                                <label for="payment-memo" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Memo (Optional)
+                                </label>
+                                <input type="text" id="payment-memo"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
+                                       placeholder="Payment description">
+                            </div>
+
+                            <!-- Form validation errors -->
+                            <div id="payment-form-errors" class="hidden rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 p-3 text-sm text-red-700 dark:text-red-300" role="alert" aria-live="assertive"></div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" id="process-payment-btn"
+                                    class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                Process Payment
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Processing Status -->
+                <div id="processing-status" class="mt-6 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hidden">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Processing Status</h3>
+                        <div id="status-content" role="status" aria-live="polite">
+                            <!-- Dynamic status content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AR Ledger Panel -->
+            <div class="lg:col-span-7">
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Open AR Ledger</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Outstanding invoices available for payment application</p>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Customer Filter -->
+                        <div class="mb-4">
+                            <input type="text" id="ledger-filter" aria-label="Search invoices"
+                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
+                                   placeholder="Search invoices by customer, invoice number, or amount...">
+                        </div>
+
+                        <!-- Invoices Table -->
+                        <div class="overflow-x-auto">
+                            <table id="invoices-table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-slate-700">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Invoice #
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Customer
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Due Date
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Balance
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Days Outstanding
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Aging
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoices-tbody" class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    <!-- Dynamic invoice rows -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loading-invoices" class="text-center py-8">
+                            <div class="inline-flex items-center">
+                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Loading AR ledger...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include WebSocket utilities -->
+<script src="/static/js/websocket-client.js"></script>
+<script src="/static/js/error-handler.js"></script>
+<script src="/static/js/connection-manager.js"></script>
+<script src="/static/js/error-boundary.js"></script>
+
+<!-- JavaScript for Demo Functionality -->
+<script>
+let demoSession = null;
+let allInvoices = [];
+let customers = [];
+let websocketConnection = null;
+let processingAnimation = null;
+
+// Initialize demo session
+async function initializeDemo() {
+    try {
+        const response = await fetch('/demos/api/payment-processing/session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            demoSession = result.data.session_id;
+            allInvoices = result.data.open_invoices;
+            customers = result.data.customers;
+
+            updateSessionStatus('Connected', 'green');
+            populateCustomers();
+            displayInvoices(allInvoices);
+            setupWebSocketConnection();
+        } else {
+            updateSessionStatus('Error', 'red');
+            console.error('Failed to initialize demo session');
+        }
+    } catch (error) {
+        updateSessionStatus('Error', 'red');
+        console.error('Error initializing demo:', error);
+    }
+}
+
+// Update session status indicator
+function updateSessionStatus(status, color) {
+    const colorClasses = {
+        green: 'h-2 w-2 bg-green-400 rounded-full mr-2',
+        red: 'h-2 w-2 bg-red-400 rounded-full mr-2',
+        yellow: 'h-2 w-2 bg-yellow-400 rounded-full mr-2',
+        blue: 'h-2 w-2 bg-blue-400 rounded-full mr-2'
+    };
+    const statusElement = document.getElementById('session-status');
+    const dot = statusElement.querySelector('div');
+    const text = statusElement.querySelector('span') || statusElement.childNodes[2];
+
+    dot.className = colorClasses[color] || colorClasses.yellow;
+    text.textContent = status;
+}
+
+// Populate customer dropdown
+function populateCustomers() {
+    const select = document.getElementById('customer-select');
+    select.innerHTML = '<option value="">Select a customer...</option>';
+
+    customers.forEach(([id, name]) => {
+        const option = document.createElement('option');
+        option.value = id;
+        option.textContent = `${name} (${id})`;
+        select.appendChild(option);
+    });
+}
+
+// Display invoices in table
+function displayInvoices(invoices) {
+    const tbody = document.getElementById('invoices-tbody');
+    const loading = document.getElementById('loading-invoices');
+
+    loading.style.display = 'none';
+    tbody.innerHTML = '';
+
+    if (invoices.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                    No invoices found
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    invoices.forEach(invoice => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50 dark:hover:bg-slate-700';
+
+        const agingBucket = getAgingBucket(invoice.days_outstanding);
+        const agingColor = getAgingColor(agingBucket);
+
+        row.innerHTML = `
+            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                ${invoice.invoice_number}
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                ${invoice.customer_name}
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                ${formatDate(invoice.due_date)}
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                $${formatNumber(invoice.balance)}
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                ${invoice.days_outstanding} days
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${agingColor}">
+                    ${agingBucket}
+                </span>
+            </td>
+        `;
+
+        tbody.appendChild(row);
+    });
+}
+
+// Utility functions
+function getAgingBucket(days) {
+    if (days <= 30) return 'Current';
+    if (days <= 60) return '30 Days';
+    if (days <= 90) return '60 Days';
+    return '90+ Days';
+}
+
+function getAgingColor(bucket) {
+    switch (bucket) {
+        case 'Current': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+        case '30 Days': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+        case '60 Days': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300';
+        default: return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+    }
+}
+
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString();
+}
+
+function formatNumber(num) {
+    return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Debounce utility
+function debounce(fn, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+// Filter invoices (debounced)
+document.getElementById('ledger-filter').addEventListener('input', debounce(function(e) {
+    const filter = e.target.value.toLowerCase();
+    const filteredInvoices = allInvoices.filter(invoice =>
+        invoice.customer_name.toLowerCase().includes(filter) ||
+        invoice.invoice_number.toLowerCase().includes(filter) ||
+        invoice.balance.toString().includes(filter)
+    );
+    displayInvoices(filteredInvoices);
+}, 300));
+
+// Customer selection change
+document.getElementById('customer-select').addEventListener('change', function(e) {
+    const customerId = e.target.value;
+    if (customerId) {
+        const customerInvoices = allInvoices.filter(inv => inv.customer_id === customerId);
+        displayInvoices(customerInvoices);
+    } else {
+        displayInvoices(allInvoices);
+    }
+});
+
+// Payment form submission
+document.getElementById('payment-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const errorsDiv = document.getElementById('payment-form-errors');
+    errorsDiv.classList.add('hidden');
+    errorsDiv.textContent = '';
+
+    if (!demoSession) {
+        errorsDiv.textContent = 'Demo session not initialized. Please refresh the page.';
+        errorsDiv.classList.remove('hidden');
+        return;
+    }
+
+    // Get form data
+    const customerId = document.getElementById('customer-select').value;
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+    const amount = parseFloat(document.getElementById('payment-amount').value);
+    const reference = document.getElementById('payment-reference').value;
+    const memo = document.getElementById('payment-memo').value;
+
+    // Validate required fields
+    if (!customerId || !paymentMethod || !amount || !reference) {
+        errorsDiv.textContent = 'Please fill in all required fields.';
+        errorsDiv.classList.remove('hidden');
+        errorsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+    }
+
+    // Show processing status
+    const statusDiv = document.getElementById('processing-status');
+    const statusContent = document.getElementById('status-content');
+    const submitBtn = document.getElementById('process-payment-btn');
+
+    statusDiv.classList.remove('hidden');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Processing...';
+
+    statusContent.innerHTML = `
+        <div class="flex items-center text-blue-600">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing payment...
+        </div>
+    `;
+
+    try {
+        // Start real-time processing simulation if WebSocket is connected
+        if (websocketConnection) {
+            window.demoWebSocket.startSimulation('payment_processing', demoSession, {
+                payment: {
+                    customer_id: customerId,
+                    amount: amount,
+                    payment_method: paymentMethod,
+                    reference: reference,
+                    memo: memo || null
+                }
+            });
+        }
+
+        // Process payment
+        const response = await fetch('/demos/api/payment-processing/process', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                session_id: demoSession,
+                payment: {
+                    customer_id: customerId,
+                    amount: amount,
+                    payment_method: paymentMethod,
+                    reference: reference,
+                    memo: memo || null
+                }
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            displayProcessingResult(result.data);
+            document.getElementById('payment-form').reset();
+            // Refresh invoices to show updated balances
+            setTimeout(() => {
+                fetch('/demos/api/payment-processing/session', { method: 'POST' })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            allInvoices = data.data.open_invoices;
+                            displayInvoices(allInvoices);
+                        }
+                    });
+            }, 1000);
+        } else {
+            statusContent.innerHTML = `
+                <div class="text-red-600">
+                    <strong>Error:</strong> ${result.message || 'Payment processing failed'}
+                </div>
+            `;
+        }
+    } catch (error) {
+        statusContent.innerHTML = `
+            <div class="text-red-600">
+                <strong>Error:</strong> ${error.message}
+            </div>
+        `;
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Process Payment';
+    }
+});
+
+// Display processing result
+function displayProcessingResult(result) {
+    const statusContent = document.getElementById('status-content');
+
+    let statusColor = result.status === 'matched' ? 'text-green-600' :
+                     result.status === 'partial' ? 'text-yellow-600' : 'text-red-600';
+
+    let html = `
+        <div class="${statusColor} mb-4">
+            <strong>Status:</strong> ${result.status.toUpperCase()}
+        </div>
+    `;
+
+    if (result.matches && result.matches.length > 0) {
+        html += `
+            <div class="mb-4">
+                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Matched Invoices:</h4>
+                <div class="space-y-2">
+        `;
+
+        result.matches.forEach(match => {
+            html += `
+                <div class="flex justify-between items-center p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                    <span class="text-sm">${match.invoice_id}</span>
+                    <span class="text-sm font-medium">$${formatNumber(match.amount_applied)}</span>
+                    <span class="text-xs text-gray-500">${Math.round(match.confidence_score * 100)}% confidence</span>
+                </div>
+            `;
+        });
+
+        html += `
+                </div>
+            </div>
+        `;
+    }
+
+    if (result.remaining_amount > 0) {
+        html += `
+            <div class="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                <strong>Remaining Amount:</strong> $${formatNumber(result.remaining_amount)}
+                <br><small class="text-gray-600 dark:text-gray-400">Manual review required</small>
+            </div>
+        `;
+    }
+
+    if (result.processing_notes && result.processing_notes.length > 0) {
+        html += `
+            <div class="mt-4">
+                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Processing Notes:</h4>
+                <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+        `;
+
+        result.processing_notes.forEach(note => {
+            html += `<li>• ${note}</li>`;
+        });
+
+        html += `
+                </ul>
+            </div>
+        `;
+    }
+
+    statusContent.innerHTML = html;
+}
+
+// Setup WebSocket connection for real-time updates
+function setupWebSocketConnection() {
+    if (!demoSession) return;
+
+    websocketConnection = window.demoWebSocket.connect('payment_processing', demoSession, {
+        onMessage: (data) => {
+            handleRealtimeUpdate(data);
+        },
+        onOpen: () => {
+            console.log('WebSocket connected for payment processing');
+        },
+        onClose: () => {
+            console.log('WebSocket disconnected');
+        },
+        onError: (error) => {
+            console.error('WebSocket error:', error);
+        }
+    });
+}
+
+// Handle real-time updates from WebSocket
+function handleRealtimeUpdate(data) {
+    if (data.type === 'payment_processing_update') {
+        const { update_type, data: updateData } = data;
+
+        switch (update_type) {
+            case 'step_update':
+                updateProcessingStep(updateData);
+                break;
+            case 'invoice_match':
+                updateInvoiceMatches(updateData);
+                break;
+            case 'balance_update':
+                updateAccountBalances(updateData);
+                break;
+        }
+    }
+}
+
+// Update processing step in real-time
+function updateProcessingStep(data) {
+    const statusContent = document.getElementById('status-content');
+    const { step, description, status } = data;
+
+    if (status === 'in_progress') {
+        statusContent.innerHTML = `
+            <div class="flex items-center text-blue-600">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                ${description}
+            </div>
+        `;
+    } else if (status === 'completed') {
+        statusContent.innerHTML = `
+            <div class="flex items-center text-green-600">
+                <svg class="-ml-1 mr-3 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                ${description}
+            </div>
+        `;
+    }
+}
+
+// Update invoice matches in real-time
+function updateInvoiceMatches(data) {
+    console.log('Real-time invoice match update:', data);
+    // Could update the invoice list with real-time matching indicators
+}
+
+// Update account balances in real-time
+function updateAccountBalances(data) {
+    console.log('Real-time balance update:', data);
+    // Could update displayed invoice balances in real-time
+}
+
+// Initialize demo when page loads
+document.addEventListener('DOMContentLoaded', initializeDemo);
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (websocketConnection) {
+        window.demoWebSocket.disconnect('payment_processing', demoSession);
+    }
+});
+</script>
+{% endblock %}

@@ -1,3 +1,5 @@
+import html
+
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -30,9 +32,9 @@ async def blog_list(request: Request, tag: str | None = None) -> Response:
     featured_posts = blog_service.get_featured_posts(limit=3)
 
     return templates.TemplateResponse(
+        request,
         "blog/index.html",
-        {
-            "request": request,
+        context={
             "posts": posts,
             "featured_posts": featured_posts,
             "all_tags": sorted(all_tags),
@@ -41,6 +43,48 @@ async def blog_list(request: Request, tag: str | None = None) -> Response:
             "current_page": "blog",
         },
     )
+
+
+@router.get("/blog/feed.xml")
+async def blog_rss_feed() -> Response:
+    """RSS 2.0 feed of published blog posts."""
+    posts = blog_service.get_all_posts(published_only=True)
+    posts.sort(
+        key=lambda p: p.published_at or p.created_at,
+        reverse=True,
+    )
+
+    items = []
+    for post in posts:
+        pub_date = (post.published_at or post.created_at).strftime(
+            "%a, %d %b %Y %H:%M:%S +0000"
+        )
+        title = html.escape(post.title)
+        description = html.escape(post.excerpt)
+        link = f"https://brianhardin.info/blog/{post.slug}"
+        items.append(
+            f"""    <item>
+      <title>{title}</title>
+      <link>{link}</link>
+      <description>{description}</description>
+      <pubDate>{pub_date}</pubDate>
+      <guid isPermaLink="true">{link}</guid>
+    </item>"""
+        )
+
+    rss = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Brian Hardin - Technical Blog</title>
+    <link>https://brianhardin.info/blog</link>
+    <description>Technical articles on Python, FastAPI, and software engineering by Brian Hardin.</description>
+    <language>en-us</language>
+    <atom:link href="https://brianhardin.info/blog/feed.xml" rel="self" type="application/rss+xml"/>
+{chr(10).join(items)}
+  </channel>
+</rss>"""
+
+    return Response(content=rss, media_type="application/rss+xml")
 
 
 @router.get("/blog/{slug}", response_class=HTMLResponse)
@@ -67,9 +111,9 @@ async def blog_post(request: Request, slug: str) -> Response:
                     break
 
     return templates.TemplateResponse(
+        request,
         "blog/post.html",
-        {
-            "request": request,
+        context={
             "post": post,
             "related_posts": related_posts,
             "current_page": "blog",

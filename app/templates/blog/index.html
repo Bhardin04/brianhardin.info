@@ -11,17 +11,33 @@
 {% block canonical %}https://brianhardin.info/blog{% if current_tag %}?tag={{ current_tag }}{% endif %}{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ page_title }}</h1>
-        <p class="text-lg text-gray-600 dark:text-gray-300">
-            {% if current_tag %}
-                Posts tagged with "{{ current_tag }}"
-            {% else %}
-                Technical insights, tutorials, and thoughts on software development
-            {% endif %}
-        </p>
+<!-- Blog Hero Section -->
+<section class="section-sm bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div class="container">
+        <div class="text-center mb-16 slide-up">
+            <div class="inline-flex items-center px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium mb-4">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                </svg>
+                {% if current_tag %}Filtered by {{ current_tag }}{% else %}Technical Blog{% endif %}
+            </div>
+            <h1 class="text-responsive-3xl font-extrabold text-gradient-primary mb-6">
+                {{ page_title }}
+            </h1>
+            <p class="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
+                {% if current_tag %}
+                    Exploring {{ current_tag }} through practical examples, insights, and real-world applications.
+                {% else %}
+                    Technical insights, tutorials, and thoughts on modern software development, Python, and web technologies.
+                {% endif %}
+            </p>
+        </div>
     </div>
+</section>
+
+<!-- Blog Content Section -->
+<section class="section-sm">
+    <div class="container">
 
     <div class="grid lg:grid-cols-3 gap-8">
         <!-- Main Content -->
@@ -36,26 +52,26 @@
                                 </time>
                                 <span>{{ post.reading_time_minutes }} min read</span>
                             </div>
-                            
+
                             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                                 <a href="/blog/{{ post.slug }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                     {{ post.title }}
                                 </a>
                             </h2>
-                            
+
                             <p class="text-gray-600 dark:text-gray-300 mb-4">{{ post.excerpt }}</p>
-                            
+
                             <div class="flex items-center justify-between">
                                 <div class="flex flex-wrap gap-2">
                                     {% for tag in post.tags %}
-                                        <a href="/blog?tag={{ tag }}" 
+                                        <a href="/blog?tag={{ tag }}"
                                            class="px-3 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
                                             {{ tag }}
                                         </a>
                                     {% endfor %}
                                 </div>
-                                
-                                <a href="/blog/{{ post.slug }}" 
+
+                                <a href="/blog/{{ post.slug }}"
                                    class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium">
                                     Read more →
                                 </a>
@@ -107,7 +123,7 @@
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Topics</h3>
                         <div class="flex flex-wrap gap-2">
                             {% for tag in all_tags %}
-                                <a href="/blog?tag={{ tag }}" 
+                                <a href="/blog?tag={{ tag }}"
                                    class="px-3 py-1 text-sm rounded-full transition-colors
                                           {% if current_tag == tag %}
                                               bg-blue-600 text-white
@@ -118,7 +134,7 @@
                                 </a>
                             {% endfor %}
                         </div>
-                        
+
                         {% if current_tag %}
                             <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                                 <a href="/blog" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
@@ -130,10 +146,10 @@
                 {% endif %}
 
                 <!-- About -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">About This Blog</h3>
                     <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        I share technical insights, tutorials, and thoughts on Python development, 
+                        I share technical insights, tutorials, and thoughts on Python development,
                         FastAPI, web technologies, and software engineering practices.
                     </p>
                     <a href="/about" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
@@ -143,5 +159,5 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

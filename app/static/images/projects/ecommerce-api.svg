@@ -1,0 +1,185 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="api-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="primary-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="success-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="warning-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="error-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#1e293b" flood-opacity="0.1"/>
+    </filter>
+    <filter id="card-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="#1e293b" flood-opacity="0.05"/>
+    </filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg-gradient)"/>
+  <rect x="40" y="40" width="1120" height="720" rx="12" fill="#ffffff" filter="url(#shadow)"/>
+  <rect x="40" y="40" width="1120" height="50" rx="12" fill="#f1f5f9"/>
+  <rect x="40" y="78" width="1120" height="2" fill="#e2e8f0"/>
+  <circle cx="70" cy="65" r="8" fill="#ef4444"/>
+  <circle cx="95" cy="65" r="8" fill="#f59e0b"/>
+  <circle cx="120" cy="65" r="8" fill="#10b981"/>
+  <rect x="200" y="50" width="400" height="30" rx="15" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="69" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">🔒 api.shop-engine.com/admin</text>
+  <rect x="40" y="90" width="1120" height="670" fill="url(#api-bg)"/>
+  <rect x="40" y="90" width="1120" height="70" fill="#ffffff"/>
+  <rect x="40" y="158" width="1120" height="2" fill="#e2e8f0"/>
+  <circle cx="80" cy="125" r="16" fill="url(#primary-gradient)"/>
+  <text x="74" y="131" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold">🛒</text>
+  <text x="110" y="131" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold">E-commerce API Dashboard</text>
+  <rect x="400" y="110" width="100" height="30" rx="6" fill="#3b82f6"/>
+  <text x="450" y="128" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" text-anchor="middle">Overview</text>
+  <text x="520" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Products</text>
+  <text x="580" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Orders</text>
+  <text x="640" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Analytics</text>
+  <text x="700" y="128" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Settings</text>
+  <circle cx="1050" cy="125" r="6" fill="#10b981" filter="url(#glow)"/>
+  <text x="1070" y="130" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">API Online</text>
+  <text x="850" y="115" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Response Time: 45ms</text>
+  <text x="850" y="135" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="12">1,247 requests/min</text>
+  <g transform="translate(60, 180)">
+    <rect width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="0" y="0" width="250" height="4" rx="2" fill="url(#primary-gradient)"/>
+    <text x="20" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">Total Products</text>
+    <text x="20" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">8,247</text>
+    <text x="20" y="80" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↗ +342</text>
+    <text x="20" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">this week</text>
+    <rect x="270" width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="270" y="0" width="250" height="4" rx="2" fill="url(#warning-gradient)"/>
+    <text x="290" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">Active Orders</text>
+    <text x="290" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">1,856</text>
+    <text x="290" y="80" fill="#f59e0b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↗ +23</text>
+    <text x="290" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">pending processing</text>
+    <rect x="540" width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="540" y="0" width="250" height="4" rx="2" fill="url(#success-gradient)"/>
+    <text x="560" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">Revenue Today</text>
+    <text x="560" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">$47.2K</text>
+    <text x="560" y="80" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↗ +18.5%</text>
+    <text x="560" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">vs yesterday</text>
+    <rect x="810" width="250" height="120" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+    <rect x="810" y="0" width="250" height="4" rx="2" fill="url(#error-gradient)"/>
+    <text x="830" y="30" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500">API Calls/Hour</text>
+    <text x="830" y="60" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold">74.8K</text>
+    <text x="830" y="80" fill="#ef4444" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">↗ +5.2K</text>
+    <text x="830" y="100" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">peak traffic</text>
+  </g>
+  <rect x="60" y="320" width="520" height="400" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+  <text x="80" y="350" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold">Recent Orders</text>
+  <text x="80" y="370" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14">Real-time order processing • PostgreSQL backend</text>
+  <rect x="80" y="390" width="480" height="30" fill="#f8fafc"/>
+  <text x="100" y="408" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">ORDER ID</text>
+  <text x="200" y="408" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">CUSTOMER</text>
+  <text x="320" y="408" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">AMOUNT</text>
+  <text x="420" y="408" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">STATUS</text>
+  <g transform="translate(80, 430)">
+    <rect x="20" y="0" width="460" height="40" rx="4" fill="#ffffff" stroke="#f1f5f9" stroke-width="1"/>
+    <text x="30" y="15" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">#ORD-2024-001</text>
+    <text x="30" y="30" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">2 min ago</text>
+    <text x="130" y="15" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Sarah Johnson</text>
+    <text x="130" y="30" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">sarah.j@example.com</text>
+    <text x="250" y="20" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">$234.99</text>
+    <rect x="350" y="10" width="70" height="20" rx="10" fill="#10b981"/>
+    <text x="385" y="22" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">Completed</text>
+    <rect x="20" y="50" width="460" height="40" rx="4" fill="#ffffff" stroke="#f1f5f9" stroke-width="1"/>
+    <text x="30" y="65" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">#ORD-2024-002</text>
+    <text x="30" y="80" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">5 min ago</text>
+    <text x="130" y="65" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Mike Chen</text>
+    <text x="130" y="80" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">mike.c@example.com</text>
+    <text x="250" y="70" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">$89.50</text>
+    <rect x="350" y="60" width="70" height="20" rx="10" fill="#f59e0b"/>
+    <text x="385" y="72" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">Processing</text>
+    <rect x="20" y="100" width="460" height="40" rx="4" fill="#ffffff" stroke="#f1f5f9" stroke-width="1"/>
+    <text x="30" y="115" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">#ORD-2024-003</text>
+    <text x="30" y="130" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">8 min ago</text>
+    <text x="130" y="115" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Emma Wilson</text>
+    <text x="130" y="130" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">emma.w@example.com</text>
+    <text x="250" y="120" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">$156.75</text>
+    <rect x="350" y="110" width="70" height="20" rx="10" fill="#3b82f6"/>
+    <text x="385" y="122" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">Shipped</text>
+    <rect x="20" y="150" width="460" height="40" rx="4" fill="#ffffff" stroke="#f1f5f9" stroke-width="1"/>
+    <text x="30" y="165" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">#ORD-2024-004</text>
+    <text x="30" y="180" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">12 min ago</text>
+    <text x="130" y="165" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">David Brown</text>
+    <text x="130" y="180" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">david.b@example.com</text>
+    <text x="250" y="170" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">$67.25</text>
+    <rect x="350" y="160" width="70" height="20" rx="10" fill="#ef4444"/>
+    <text x="385" y="172" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">Cancelled</text>
+    <rect x="20" y="200" width="460" height="40" rx="4" fill="#ffffff" stroke="#f1f5f9" stroke-width="1"/>
+    <text x="30" y="215" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">#ORD-2024-005</text>
+    <text x="30" y="230" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">15 min ago</text>
+    <text x="130" y="215" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="12">Lisa Garcia</text>
+    <text x="130" y="230" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="10">lisa.g@example.com</text>
+    <text x="250" y="220" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600">$342.00</text>
+    <rect x="350" y="210" width="70" height="20" rx="10" fill="#10b981"/>
+    <text x="385" y="222" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">Completed</text>
+  </g>
+  <rect x="600" y="320" width="500" height="400" rx="12" fill="#ffffff" filter="url(#card-shadow)"/>
+  <text x="620" y="350" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold">Active API Endpoints</text>
+  <text x="620" y="370" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="14">FastAPI • OpenAPI • JWT Authentication</text>
+  <g transform="translate(620, 390)">
+    <rect width="460" height="50" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="10" y="10" width="50" height="20" rx="4" fill="#10b981"/>
+    <text x="35" y="22" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">GET</text>
+    <text x="75" y="22" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">/api/v1/products</text>
+    <text x="75" y="38" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="11">Retrieve product catalog</text>
+    <text x="400" y="22" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">99.9%</text>
+    <text x="400" y="38" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="10">uptime</text>
+    <rect y="60" width="460" height="50" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="10" y="70" width="50" height="20" rx="4" fill="#3b82f6"/>
+    <text x="35" y="82" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">POST</text>
+    <text x="75" y="82" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">/api/v1/orders</text>
+    <text x="75" y="98" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="11">Create new order</text>
+    <text x="400" y="82" fill="#3b82f6" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">45ms</text>
+    <text x="400" y="98" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="10">avg response</text>
+    <rect y="120" width="460" height="50" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="10" y="130" width="50" height="20" rx="4" fill="#f59e0b"/>
+    <text x="35" y="142" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">PUT</text>
+    <text x="75" y="142" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">/api/v1/orders/{id}</text>
+    <text x="75" y="158" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="11">Update order status</text>
+    <text x="400" y="142" fill="#f59e0b" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">1.2K</text>
+    <text x="400" y="158" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="10">calls/hour</text>
+    <rect y="180" width="460" height="50" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="10" y="190" width="50" height="20" rx="4" fill="#10b981"/>
+    <text x="35" y="202" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">GET</text>
+    <text x="75" y="202" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">/api/v1/analytics</text>
+    <text x="75" y="218" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="11">Generate sales reports</text>
+    <text x="400" y="202" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">98.7%</text>
+    <text x="400" y="218" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="10">success rate</text>
+    <rect y="240" width="460" height="50" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="10" y="250" width="50" height="20" rx="4" fill="#ef4444"/>
+    <text x="35" y="262" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" text-anchor="middle">DEL</text>
+    <text x="75" y="262" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">/api/v1/products/{id}</text>
+    <text x="75" y="278" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="11">Delete product</text>
+    <text x="400" y="262" fill="#ef4444" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">127</text>
+    <text x="400" y="278" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="10">requests/day</text>
+  </g>
+  <rect x="40" y="730" width="1120" height="30" fill="#f8fafc"/>
+  <text x="60" y="748" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="12">Stack: FastAPI • PostgreSQL • Redis • Celery • Stripe API • JWT • OpenAPI</text>
+  <text x="1000" y="748" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="12">🟢 All systems operational</text>
+</svg>

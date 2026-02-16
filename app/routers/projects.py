@@ -1,43 +1,31 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from starlette.responses import Response
 
-from app.models.project import Project
+from app.services.project import project_service
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/", response_class=HTMLResponse)
-async def projects_list(request: Request) -> Response:
-    projects = [
-        Project(
-            id=1,
-            title="Personal Website",
-            description="FastAPI-based personal brand website",
-            technologies=["Python", "FastAPI", "Jinja2", "HTMX"],
-            github_url="https://github.com/Bhardin04/brianhardin.info",
-            demo_url="https://brianhardin.info",
-        )
-    ]
+async def projects_list(request: Request) -> HTMLResponse:
+    projects = project_service.get_sorted()
     return templates.TemplateResponse(
-        "projects.html",
-        {"request": request, "projects": projects, "current_page": "projects"},
+        request, "projects.html", context={"projects": projects}
     )
 
 
 @router.get("/{project_id}", response_class=HTMLResponse)
-async def project_detail(request: Request, project_id: int) -> Response:
-    project = Project(
-        id=project_id,
-        title="Project Details",
-        description="Detailed view of the project",
-        technologies=["Python", "FastAPI"],
-        github_url="https://github.com/example",
-        demo_url="https://example.com",
-    )
+async def project_detail(request: Request, project_id: int) -> HTMLResponse:
+    project = project_service.get_by_id(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    related_projects = project_service.get_related(project_id)
+
     return templates.TemplateResponse(
+        request,
         "project_detail.html",
-        {"request": request, "project": project, "current_page": "projects"},
+        context={"project": project, "related_projects": related_projects},
     )

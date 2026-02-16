@@ -1,182 +1,105 @@
-# Website Improvements
+# Development Roadmap
 
-## Responsive Design Issues
+> **Last Updated**: 2026-02-16
+> **Current Version**: Unreleased (post-v1.4.0)
+> **Test Suite**: 98 tests passing
 
-### Critical (High Priority)
-- [ ] Fix 4px horizontal overflow on mobile portrait (375px viewport)
-- [ ] Increase touch targets to 44x44px minimum for accessibility
-- [ ] Make contact form inputs taller (44px minimum height)
+## Completed Phases
 
-### Moderate (Medium Priority)  
-- [ ] Improve text readability - ensure 16px minimum font size
-- [ ] Optimize line height for better readability (1.5 minimum)
-- [ ] Add proper box-sizing: border-box to prevent overflow
+### Phase 1: Foundation (v1.0.0 - v1.2.0) ✅
+- [x] Design system with 150+ CSS tokens
+- [x] Responsive mobile-first layout
+- [x] Interactive contact form with HTMX
+- [x] Dark mode support
+- [x] Professional resume page
+- [x] SEO meta tags and structured data
+- [x] Project portfolio with case studies
 
-### CSS Changes Needed
-- [ ] Update styles.css with responsive fixes
-- [ ] Add viewport meta tag optimizations
-- [ ] Implement touch-friendly button sizing
+### Phase 2: Interactive Demos & Content (v1.3.0 - v1.4.0) ✅
+- [x] Payment processing demo with WebSocket real-time updates
+- [x] NetSuite to SAP data pipeline demo
+- [x] Sales & revenue dashboard demo
+- [x] Collections management dashboard demo
+- [x] Blog system with tagging and RSS feed
+- [x] Comprehensive case study data for all projects
+- [x] CI/CD pipeline with GitHub Actions
 
-## Content & Features
+### Phase 3: Security & Quality (Current) ✅ Mostly Complete
+- [x] Rate limiting on all endpoints (slowapi)
+- [x] CSRF protection with HMAC-signed tokens
+- [x] Input validation and XSS prevention
+- [x] SMTP header injection fix
+- [x] Pydantic V2 migration (ConfigDict, .model_dump())
+- [x] Starlette TemplateResponse updated to new API
+- [x] Demo session limits (MAX_SESSIONS=100, TTL=1hr)
+- [x] WebSocket connection limits (200 total, 5/session)
+- [x] ProjectService as single source of truth
+- [x] Demo test suite (37 tests)
+- [x] Pre-commit hooks (ruff, mypy, bandit)
+- [ ] Security response headers middleware (M1)
+- [ ] Typed Pydantic models for demo endpoints (M2)
 
-### Projects Section
-- [ ] Add more projects to showcase fuller portfolio
-- [ ] Replace placeholder content in project detail page
-- [ ] Add project images for visual appeal
+---
 
-### Navigation
-- [ ] Consider hamburger menu for mobile navigation
-- [ ] Improve mobile navigation spacing
+## Current Backlog
 
-### General
-- [ ] Reduce excessive white space before footer on some pages
-- [ ] Implement proper routing for multiple projects
+### Next Up: MEDIUM Priority Improvements
 
-## Performance & SEO
+See [improvements-list.md](improvements-list.md) for full details on each item.
 
-### SEO Optimization
-- [ ] Implement proper meta tags and descriptions for all pages
-- [ ] Add Open Graph data for social media sharing
-- [ ] Create XML sitemap for search engines
-- [ ] Add structured data (JSON-LD) for better search visibility
-- [ ] Implement canonical URLs
+#### Batch 1: Security & Quick Wins (~5-7 hours)
+- [ ] **M1** - Security response headers middleware
+- [ ] **M2** - Typed Pydantic models for demo POST bodies
+- [ ] **M3** - Constrain analytics/error report payloads
+- [ ] **M6** - Tests for error handlers, sitemap, RSS feed
+- [ ] **M7** - Dynamic project IDs in sitemap
 
-### Performance
-- [ ] Optimize images and implement lazy loading
-- [ ] Minimize CSS and JavaScript bundles
-- [ ] Add compression (gzip/brotli) for static assets
-- [ ] Implement caching strategies
-- [ ] Add performance monitoring
+#### Batch 2: Test Coverage & Configuration (~8-10 hours)
+- [ ] **M4** - WebSocket service test coverage (currently 43%)
+- [ ] **M5** - Configure structured logging
+- [ ] **M11** - Convert Settings to Pydantic BaseSettings
+- [ ] **M12** - EmailService should use Settings
+- [ ] **M13** - Blog and project router edge-case tests
 
-## Enhanced Features
+#### Batch 3: Cleanup & Polish (~7-8 hours)
+- [ ] **M8** - Remove duplicate health check endpoints
+- [ ] **M9** - Wire up markdown blog loading or remove dead code
+- [ ] **M10** - Fix docker-compose deprecations
+- [ ] **M14** - Replace deprecated asyncio.get_event_loop()
+- [ ] **M15** - Consolidate Jinja2Templates instances
 
-### Blog/Content System
-- [ ] Add blog/articles section for technical writing
-- [ ] Implement markdown support for content creation
-- [ ] Add tags and categories for content organization
-- [ ] Create RSS feed for blog posts
+---
 
-### Portfolio Enhancements
-- [ ] Add project filtering and search functionality
-- [ ] Implement project categories (Web, Mobile, Data, etc.)
-- [ ] Add live demo embeds or screenshots
-- [ ] Create case studies for major projects
-- [ ] Add technology stack visualization
+## Future Phases
 
-### UI/UX Improvements
-- [ ] Implement dark mode toggle
-- [ ] Add loading animations and micro-interactions
-- [ ] Create custom 404 and error pages
-- [ ] Implement breadcrumb navigation
-- [ ] Add scroll-to-top functionality
+### Phase 4: Production Hardening
+- [ ] Structured JSON logging for production
+- [ ] Pydantic BaseSettings for all configuration
+- [ ] Error monitoring (Sentry or similar)
+- [ ] Performance monitoring / APM
+- [ ] CDN for static assets
+- [ ] Gzip/brotli compression
 
-## Development Quality
+### Phase 5: Content & CMS
+- [ ] Wire up markdown file-based blog (infrastructure exists in BlogService)
+- [ ] Admin interface for content management
+- [ ] Additional project showcases
+- [ ] Automation Suite demo (currently placeholder)
 
-### Code Quality
-- [ ] Set up pre-commit hooks (black, ruff, mypy)
-- [ ] Add comprehensive type hints throughout codebase
-- [ ] Implement proper logging with structured output
-- [ ] Add code coverage reporting
-- [ ] Create development environment setup scripts
+### Phase 6: Advanced Features
+- [ ] PostgreSQL for dynamic content
+- [ ] Redis caching layer
+- [ ] Accessibility audit (WCAG compliance)
+- [ ] Visual regression testing
+- [ ] Load testing
 
-### Security & Reliability
-- [ ] Add rate limiting for contact form and API endpoints
-- [ ] Implement CSRF protection
-- [ ] Add input validation and sanitization
-- [ ] Set up error monitoring (Sentry or similar)
-- [ ] Add health check endpoints
+---
 
-### Testing
-- [ ] Expand unit test coverage to >90%
-- [ ] Add integration tests for all API endpoints
-- [ ] Implement visual regression testing
-- [ ] Add accessibility testing automation
-- [ ] Create load testing for contact form
+## Key Decisions
 
-## Production Infrastructure
-
-### Deployment & CI/CD
-- [ ] Set up automated deployment pipeline (GitHub Actions)
-- [ ] Implement staging environment
-- [ ] Add database migrations system
-- [ ] Create backup and recovery procedures
-- [ ] Set up monitoring and alerting
-
-### Production Services
-- [ ] Configure production email service (SendGrid/Mailgun)
-- [ ] Set up CDN for static assets
-- [ ] Implement database (PostgreSQL) for dynamic content
-- [ ] Add Redis for caching and sessions
-- [ ] Configure SSL/TLS certificates
-
-### Analytics & Monitoring
-- [ ] Integrate Google Analytics or privacy-focused alternative
-- [ ] Add application performance monitoring (APM)
-- [ ] Implement user behavior tracking
-- [ ] Set up uptime monitoring
-- [ ] Create dashboards for key metrics
-
-## Advanced Features
-
-### Admin Interface
-- [ ] Create admin dashboard for content management
-- [ ] Implement authentication and authorization
-- [ ] Add project/blog post CRUD operations
-- [ ] Create file upload and media management
-- [ ] Add analytics dashboard for admin users
-
-### API Development
-- [ ] Design and implement REST API for portfolio data
-- [ ] Add API documentation (OpenAPI/Swagger)
-- [ ] Implement API versioning
-- [ ] Add API rate limiting and authentication
-- [ ] Create GraphQL endpoint (optional)
-
-### Progressive Web App (PWA)
-- [ ] Implement service worker for offline functionality
-- [ ] Add web app manifest
-- [ ] Enable install prompts for mobile devices
-- [ ] Add push notifications for blog updates
-- [ ] Implement background sync for contact form
-
-### Internationalization
-- [ ] Set up i18n framework for multi-language support
-- [ ] Create language selection interface
-- [ ] Translate content to target languages
-- [ ] Implement locale-specific formatting
-- [ ] Add RTL language support
-
-## Current Development Priorities
-
-### Phase 1: Foundation (Immediate - Next 2 weeks)
-1. **Fix responsive design issues** - Critical mobile UX problems
-2. **Add more portfolio content** - Showcase additional projects
-3. **Implement SEO basics** - Meta tags and structured data
-
-### Phase 2: Enhancement (1-2 months)
-1. **Add blog system** - Technical writing showcase
-2. **Implement dark mode** - Modern UI feature
-3. **Set up CI/CD pipeline** - Automated deployments
-4. **Add comprehensive testing** - Quality assurance
-
-### Phase 3: Advanced (3-6 months)
-1. **Create admin interface** - Content management system
-2. **Implement PWA features** - Offline functionality
-3. **Add analytics and monitoring** - Data-driven improvements
-4. **Consider internationalization** - Global audience reach
-
-## Testing Completed ✅
-- [x] Visual audit with Puppeteer screenshots
-- [x] Contact form functionality testing
-- [x] Responsive design testing across 6 viewport sizes
-- [x] HTMX integration validation
-- [x] Email service integration testing
-- [x] Cross-browser compatibility assessment
-
-## Documentation Status ✅
-- [x] Comprehensive project documentation structure
-- [x] Installation and setup guides
-- [x] Architecture documentation
-- [x] API reference documentation
-- [x] Testing procedures and guides
-- [x] Development environment setup
+| Decision | Rationale | Date |
+|----------|-----------|------|
+| Keep Tailwind CDN | Production build broke CSS due to `styles.css` broad selectors overriding Tailwind utilities. CDN injects last, maintaining specificity. | 2026-02-16 |
+| ProjectService pattern | Eliminated duplicate project data in 3 files. Single source of truth in `app/services/project.py`. | 2026-02-16 |
+| Session TTL over database sessions | Demo sessions are ephemeral; in-memory with TTL is simpler than database for this use case. | 2026-02-16 |
+| Skip Pydantic BaseSettings for now | Works but requires `pydantic-settings` dependency. Planned for Batch 2. | 2026-02-16 |

@@ -1,0 +1,1428 @@
+{% extends "base.html" %}
+{% set page_title = "Sales & Revenue Dashboard Demo" %}
+{% set page_description = "Interactive business intelligence dashboard with real-time KPIs and analytics" %}
+
+{% block extra_head %}
+<style>
+    /* Compact mode styles */
+    .compact-mode .mx-auto.max-w-7xl {
+        max-width: none;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .compact-mode .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-5 {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .compact-mode .bg-white.dark\:bg-slate-800 {
+        padding: 1rem;
+    }
+
+    .compact-mode .p-6 {
+        padding: 1rem;
+    }
+
+    .compact-mode .h-80 {
+        height: 15rem;
+    }
+
+    /* Export dropdown animations */
+    .export-dropdown-menu {
+        transform: translateY(-10px);
+        opacity: 0;
+        transition: all 0.2s ease;
+    }
+
+    .export-dropdown-menu:not(.hidden) {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    /* Preferences button styling */
+    #preferences-btn {
+        position: relative;
+    }
+
+    #preferences-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Enhanced export button styling */
+    .export-menu-item {
+        transition: all 0.15s ease;
+    }
+
+    .export-menu-item:hover {
+        transform: translateX(4px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-900 dark:to-slate-800">
+    <!-- Demo Header -->
+    <div class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Sales & Revenue Dashboard</h1>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                        Interactive business intelligence dashboard with real-time KPIs and revenue analytics
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="session-status" class="flex items-center text-sm text-gray-600 dark:text-gray-300" role="status" aria-live="polite">
+                        <div class="h-2 w-2 bg-yellow-400 rounded-full mr-2" aria-hidden="true"></div>
+                        <span>Initializing...</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select id="period-selector" aria-label="Select time period" class="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 px-3 py-1 text-sm">
+                            <option value="current_month">Current Month</option>
+                            <option value="current_quarter">Current Quarter</option>
+                            <option value="current_year">Current Year</option>
+                        </select>
+                        <button id="start-realtime-btn" class="bg-green-600 text-white px-3 py-2 min-h-[36px] rounded-md hover:bg-green-700 transition-colors text-sm">
+                            Start Real-time
+                        </button>
+                        <button id="stop-realtime-btn" class="bg-red-600 text-white px-3 py-2 min-h-[36px] rounded-md hover:bg-red-700 transition-colors text-sm" style="display: none;">
+                            Stop Real-time
+                        </button>
+                        <button id="refresh-btn" class="bg-purple-600 text-white px-3 py-2 min-h-[36px] rounded-md hover:bg-purple-700 transition-colors text-sm">
+                            Refresh Data
+                        </button>
+                        <button id="preferences-btn" class="bg-gray-600 text-white px-3 py-2 min-h-[36px] rounded-md hover:bg-gray-700 transition-colors text-sm">
+                            Preferences
+                        </button>
+                        <button id="analytics-btn" class="bg-indigo-600 text-white px-3 py-2 min-h-[36px] rounded-md hover:bg-indigo-700 transition-colors text-sm">
+                            Analytics
+                        </button>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="/projects/3" class="text-sm text-purple-600 hover:text-purple-500 dark:text-purple-400">
+                            📋 Project Details
+                        </a>
+                        <nav class="flex" aria-label="Breadcrumb">
+                            <ol class="inline-flex items-center space-x-1">
+                                <li class="inline-flex items-center">
+                                    <a href="/" class="text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                        </svg>
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="/demos" class="ml-1 text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">Demos</a>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="ml-1 text-sm text-gray-400 dark:text-gray-500 font-medium">Sales Dashboard</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8">
+
+        <!-- KPI Metrics Grid -->
+        <div id="kpi-section" class="mb-8 error-boundary" data-error-context="kpi-section">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Key Performance Indicators</h2>
+            <div id="kpi-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- KPI cards will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Charts and Analytics Grid -->
+        <div class="grid lg:grid-cols-12 gap-8 mb-8">
+
+            <!-- Revenue Trend Chart -->
+            <div class="lg:col-span-8 error-boundary" data-error-context="revenue-chart-section">
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Revenue Trend Analysis</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Monthly revenue performance with growth indicators</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="relative">
+                            <div id="revenue-chart" class="h-80">
+                                <!-- Chart will be rendered here -->
+                                <div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                                    <div class="text-center">
+                                        <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Loading chart data...
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Export buttons -->
+                            <div class="absolute top-2 right-2">
+                                <div class="relative inline-block text-left">
+                                    <button id="export-revenue-dropdown" aria-haspopup="true" aria-expanded="false" class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 flex items-center gap-1">
+                                        Export
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="export-revenue-menu" class="hidden export-dropdown-menu absolute right-0 mt-1 w-32 bg-white dark:bg-slate-700 rounded-md shadow-lg z-10" role="menu">
+                                        <button id="export-revenue-png" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 rounded-t-md min-h-[36px]">PNG Image</button>
+                                        <button id="export-revenue-pdf" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 min-h-[36px]">PDF Document</button>
+                                        <button id="export-revenue-excel" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 min-h-[36px]">Excel File</button>
+                                        <button id="export-revenue-csv" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 rounded-b-md min-h-[36px]">CSV Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Distribution -->
+            <div class="lg:col-span-4 error-boundary" data-error-context="customer-chart-section">
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Customer Segments</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Revenue distribution by customer type</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="relative">
+                            <div id="customer-chart" class="h-80">
+                                <!-- Pie chart will be rendered here -->
+                                <div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                                    <div class="text-center">
+                                        <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Loading chart data...
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Export buttons -->
+                            <div class="absolute top-2 right-2">
+                                <div class="relative inline-block text-left">
+                                    <button id="export-customer-dropdown" aria-haspopup="true" aria-expanded="false" class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 flex items-center gap-1">
+                                        Export
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="export-customer-menu" class="hidden export-dropdown-menu absolute right-0 mt-1 w-32 bg-white dark:bg-slate-700 rounded-md shadow-lg z-10" role="menu">
+                                        <button id="export-customer-png" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 rounded-t-md min-h-[36px]">PNG Image</button>
+                                        <button id="export-customer-pdf" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 min-h-[36px]">PDF Document</button>
+                                        <button id="export-customer-excel" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 min-h-[36px]">Excel File</button>
+                                        <button id="export-customer-csv" role="menuitem" class="export-menu-item block w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-slate-600 rounded-b-md min-h-[36px]">CSV Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Analytics Table -->
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-8 error-boundary" data-error-context="revenue-table-section">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Customer Revenue Analysis</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Detailed revenue breakdown by customer with growth metrics</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="customer-search" placeholder="Search customers..." aria-label="Search customers"
+                               class="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 px-3 py-1 text-sm">
+                        <select id="sort-selector" aria-label="Sort customers by" class="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 px-3 py-1 text-sm">
+                            <option value="current_month">Sort by Current Month</option>
+                            <option value="ytd_revenue">Sort by YTD Revenue</option>
+                            <option value="growth_rate">Sort by Growth Rate</option>
+                            <option value="customer_name">Sort by Customer Name</option>
+                        </select>
+                        <button id="export-dashboard-btn" class="bg-purple-600 text-white px-3 py-1 rounded text-xs hover:bg-purple-700">
+                            Export Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table id="revenue-table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-slate-700">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Customer
+                                </th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Current Month
+                                </th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Previous Month
+                                </th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    YTD Revenue
+                                </th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Growth Rate
+                                </th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Churn Risk
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="revenue-tbody" class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Dynamic revenue rows -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading-revenue" class="text-center py-8" role="status" aria-live="polite">
+                    <div class="inline-flex items-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Loading revenue data...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Analytics -->
+        <div class="grid lg:grid-cols-2 gap-8">
+
+            <!-- Margin Analysis -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Margin Analysis</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Gross margin trends over time</p>
+                </div>
+                <div class="p-6">
+                    <div id="margin-chart" class="h-64">
+                        <!-- Margin chart will be rendered here -->
+                        <div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                            <div class="text-center">
+                                <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Loading chart data...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Summary -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Performance Insights</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Key business insights and recommendations</p>
+                </div>
+                <div class="p-6">
+                    <div id="insights-content" class="space-y-4">
+                        <!-- Insights will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js and advanced utilities for visualizations -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+<!-- Export libraries loaded dynamically by chart-utils -->
+<script src="/static/js/chart-utils.js"></script>
+<script src="/static/js/websocket-client.js"></script>
+<script src="/static/js/user-preferences.js"></script>
+<script src="/static/js/preferences-ui.js"></script>
+<script src="/static/js/analytics-tracker.js"></script>
+<script src="/static/js/performance-monitor.js"></script>
+<script src="/static/js/analytics-dashboard.js"></script>
+<script src="/static/js/error-handler.js"></script>
+<script src="/static/js/connection-manager.js"></script>
+<script src="/static/js/error-boundary.js"></script>
+
+<!-- JavaScript for Demo Functionality -->
+<script>
+let demoSession = null;
+let dashboardData = null;
+let revenueRecords = [];
+let charts = {};
+let realtimeEnabled = false;
+let websocketConnection = null;
+let autoSaveInterval = null;
+let autoRefreshInterval = null;
+
+// Initialize demo session
+async function initializeDemo() {
+    try {
+        const response = await fetch('/demos/api/dashboard/session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            demoSession = result.data.session_id;
+            updateSessionStatus('Connected', 'green');
+
+            // Initialize analytics tracking
+            window.demoAnalytics.trackDemoStart('sales_dashboard', demoSession, {
+                period: document.getElementById('period-selector').value,
+                userAgent: navigator.userAgent,
+                screenResolution: `${screen.width}x${screen.height}`
+            });
+
+            // Apply user preferences
+            applyUserPreferences();
+
+            // Load saved state if available
+            const savedState = window.userPreferences.loadDemoState('sales_dashboard', demoSession);
+            if (savedState && savedState.period) {
+                document.getElementById('period-selector').value = savedState.period;
+            }
+
+            await loadDashboardData();
+            setupWebSocketConnection();
+
+            // Start auto-save if enabled
+            if (window.userPreferences.getPreference('autoSave', true)) {
+                startAutoSave();
+            }
+
+            // Start auto-refresh if enabled
+            if (window.userPreferences.getPreference('dashboard.autoRefresh', false)) {
+                startAutoRefresh();
+            }
+        } else {
+            updateSessionStatus('Error', 'red');
+            console.error('Failed to initialize demo session');
+        }
+    } catch (error) {
+        updateSessionStatus('Error', 'red');
+        console.error('Error initializing demo:', error);
+    }
+}
+
+// Update session status indicator
+function updateSessionStatus(status, color) {
+    const colorClasses = {
+        green: 'h-2 w-2 bg-green-400 rounded-full mr-2',
+        red: 'h-2 w-2 bg-red-400 rounded-full mr-2',
+        yellow: 'h-2 w-2 bg-yellow-400 rounded-full mr-2',
+        blue: 'h-2 w-2 bg-blue-400 rounded-full mr-2'
+    };
+    const statusElement = document.getElementById('session-status');
+    const dot = statusElement.querySelector('div');
+    const text = statusElement.querySelector('span') || statusElement.childNodes[2];
+
+    dot.className = colorClasses[color] || colorClasses.yellow;
+    text.textContent = status;
+}
+
+// Load dashboard data
+async function loadDashboardData() {
+    const period = document.getElementById('period-selector').value;
+    const startTime = performance.now();
+
+    try {
+        // Track data loading performance
+        window.demoAnalytics.trackFeatureUsage('load_dashboard_data', { period });
+
+        const response = await window.connectionManager.fetch('/demos/api/dashboard/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                session_id: demoSession,
+                period: period
+            })
+        });
+
+        const responseTime = performance.now() - startTime;
+        if (window.performanceMonitor && typeof window.performanceMonitor.trackPerformance === 'function') {
+            window.performanceMonitor.trackPerformance('api_response_time', responseTime, {
+                endpoint: 'dashboard/data',
+                period: period
+            });
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+            dashboardData = result.data;
+            revenueRecords = dashboardData.revenue_by_customer;
+
+            renderKPIs(dashboardData.kpis);
+            renderCharts(dashboardData.chart_data);
+            renderRevenueTable(revenueRecords);
+            renderInsights();
+
+            // Track successful data load
+            window.demoAnalytics.trackEvent('dashboard_data_loaded', {
+                period: period,
+                recordCount: revenueRecords.length,
+                loadTime: responseTime
+            });
+
+            // Hide loading indicators
+            document.getElementById('loading-revenue').style.display = 'none';
+        } else {
+            showError(result.message || 'Failed to load dashboard data');
+            window.demoAnalytics.trackError(new Error(result.message || 'Failed to load dashboard data'), {
+                context: 'loadDashboardData',
+                period: period
+            });
+        }
+    } catch (error) {
+        // Use error handler for recovery
+        const errorInfo = {
+            type: 'data_error',
+            message: `Error loading dashboard data: ${error.message}`,
+            error: error,
+            context: 'loadDashboardData',
+            url: '/demos/api/dashboard/data',
+            timestamp: Date.now(),
+            severity: 'high'
+        };
+
+        const recovery = await window.errorHandler.handleError(errorInfo);
+        if (!recovery.success) {
+            showError(`Error loading dashboard data: ${error.message}`);
+        }
+    }
+}
+
+// Render KPI cards
+function renderKPIs(kpis) {
+    const grid = document.getElementById('kpi-grid');
+    grid.innerHTML = '';
+
+    kpis.forEach(kpi => {
+        const trendIcon = getTrendIcon(kpi.trend);
+        const trendColor = getTrendColor(kpi.trend);
+        const changeSign = kpi.change_percent >= 0 ? '+' : '';
+
+        const card = document.createElement('div');
+        card.className = 'bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6';
+
+        card.innerHTML = `
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-300">${kpi.name}</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                        ${kpi.unit}${formatNumber(kpi.value)}
+                    </p>
+                    ${kpi.change_percent !== null ? `
+                        <div class="flex items-center mt-1">
+                            <span class="text-sm ${trendColor}">
+                                ${changeSign}${kpi.change_percent.toFixed(1)}%
+                            </span>
+                            ${trendIcon}
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="text-right">
+                    ${kpi.target ? `
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Target: ${kpi.unit}${formatNumber(kpi.target)}</p>
+                        <div class="w-12 h-2 bg-gray-200 dark:bg-gray-600 rounded-full mt-1">
+                            <div class="h-2 bg-purple-600 rounded-full" style="width: ${Math.min((kpi.value / kpi.target) * 100, 100)}%"></div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+// Render charts
+function renderCharts(chartData) {
+    renderRevenueChart(chartData.revenue_trend);
+    renderCustomerChart(chartData.customer_distribution);
+    renderMarginChart(chartData.margin_trend);
+}
+
+// Render revenue trend chart with advanced features
+let revenueChartRendering = false;
+function renderRevenueChart(data) {
+    if (revenueChartRendering) {
+        console.warn('Revenue chart already rendering, skipping...');
+        return;
+    }
+
+    try {
+        revenueChartRendering = true;
+        const ctx = document.getElementById('revenue-chart');
+
+        if (charts.revenue) {
+            charts.revenue.destroy();
+        }
+
+        // Clear loading state
+        ctx.innerHTML = '<canvas></canvas>';
+        const canvas = ctx.querySelector('canvas');
+
+    charts.revenue = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Revenue',
+                data: data.data,
+                borderColor: 'rgb(147, 51, 234)',
+                backgroundColor: 'rgba(147, 51, 234, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                zoom: {
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + (value / 1000) + 'K';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+        // Register with advanced chart manager
+        // TODO: Implement advanced chart manager or remove dependency
+        // // window.advancedChartManager // DISABLED - not implemented.registerChart('revenue-chart', charts.revenue, {
+        //     allowDrillDown: true,
+        //     allowZoom: true,
+        //     allowExport: true,
+        //     drillDownLevels: ['quarterly', 'monthly'],
+        //     chartContainer: ctx.parentElement
+        // });
+    } catch (error) {
+        // Handle chart rendering error
+        const errorInfo = {
+            type: 'chart_error',
+            message: `Failed to render revenue chart: ${error.message}`,
+            error: error,
+            context: 'revenue-chart-section',
+            chartType: 'revenue_trend',
+            timestamp: Date.now(),
+            severity: 'medium'
+        };
+
+        window.errorHandler.handleError(errorInfo);
+    } finally {
+        revenueChartRendering = false;
+    }
+}
+
+// Render customer distribution chart with drill-down
+let customerChartRendering = false;
+function renderCustomerChart(data) {
+    if (customerChartRendering) {
+        console.warn('Customer chart already rendering, skipping...');
+        return;
+    }
+
+    try {
+        customerChartRendering = true;
+        const ctx = document.getElementById('customer-chart');
+
+        if (charts.customer) {
+            charts.customer.destroy();
+        }
+
+        // Clear loading state
+        ctx.innerHTML = '<canvas></canvas>';
+        const canvas = ctx.querySelector('canvas');
+
+    charts.customer = new Chart(canvas, {
+        type: 'doughnut',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                data: data.data,
+                backgroundColor: [
+                    'rgb(147, 51, 234)',
+                    'rgb(59, 130, 246)',
+                    'rgb(34, 197, 94)'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                tooltip: {
+                    footer: (tooltipItems) => {
+                        return 'Click to view customer details';
+                    }
+                }
+            }
+        }
+    });
+
+        // Register with advanced chart manager
+        // TODO: Implement advanced chart manager or remove dependency
+        // // window.advancedChartManager // DISABLED - not implemented.registerChart('customer-chart', charts.customer, {
+        //     allowDrillDown: true,
+        //     allowExport: true,
+        //     drillDownLevels: ['customer'],
+        //     chartContainer: ctx.parentElement
+        // });
+    } catch (error) {
+        // Handle chart rendering error
+        const errorInfo = {
+            type: 'chart_error',
+            message: `Failed to render customer chart: ${error.message}`,
+            error: error,
+            context: 'customer-chart-section',
+            chartType: 'customer_distribution',
+            timestamp: Date.now(),
+            severity: 'medium'
+        };
+
+        window.errorHandler.handleError(errorInfo);
+    } finally {
+        customerChartRendering = false;
+    }
+}
+
+// Render margin chart
+function renderMarginChart(data) {
+    const ctx = document.getElementById('margin-chart');
+
+    if (charts.margin) {
+        charts.margin.destroy();
+    }
+
+    // Clear loading state
+    ctx.innerHTML = '<canvas></canvas>';
+    const canvas = ctx.querySelector('canvas');
+
+    charts.margin = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Gross Margin %',
+                data: data.data,
+                backgroundColor: 'rgba(147, 51, 234, 0.8)',
+                borderColor: 'rgb(147, 51, 234)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 50,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Render revenue table
+function renderRevenueTable(records) {
+    const tbody = document.getElementById('revenue-tbody');
+    tbody.innerHTML = '';
+
+    if (!records || records.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No customers match the current search.</td></tr>';
+        return;
+    }
+
+    records.forEach(record => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50 dark:hover:bg-slate-700';
+
+        const growthRate = record.growth_rate * 100;
+        const growthColor = growthRate >= 0 ? 'text-green-600' : 'text-red-600';
+        const growthIcon = growthRate >= 0 ? '↗' : '↘';
+
+        const churnColor = getChurnRiskColor(record.churn_risk);
+
+        row.innerHTML = `
+            <td class="px-4 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900 dark:text-white">${record.customer_name}</div>
+                <div class="text-sm text-gray-500">${record.customer_id}</div>
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                $${formatNumber(record.current_month)}
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                $${formatNumber(record.previous_month)}
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                $${formatNumber(record.ytd_revenue)}
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm ${growthColor}">
+                ${growthIcon} ${Math.abs(growthRate).toFixed(1)}%
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${churnColor}">
+                    ${record.churn_risk.charAt(0).toUpperCase() + record.churn_risk.slice(1)}
+                </span>
+            </td>
+        `;
+
+        tbody.appendChild(row);
+    });
+}
+
+// Render insights
+function renderInsights() {
+    const content = document.getElementById('insights-content');
+
+    // Calculate insights from data
+    const totalRevenue = revenueRecords.reduce((sum, r) => sum + r.current_month, 0);
+    const avgGrowthRate = revenueRecords.reduce((sum, r) => sum + (r.growth_rate * 100), 0) / revenueRecords.length;
+    const highRiskCustomers = revenueRecords.filter(r => r.churn_risk === 'high').length;
+    const topCustomer = revenueRecords.reduce((max, r) => r.current_month > max.current_month ? r : max, revenueRecords[0]);
+
+    content.innerHTML = `
+        <div class="space-y-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="flex items-center justify-center h-6 w-6 rounded-full bg-green-100">
+                        <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-gray-900 dark:text-white">Strong Revenue Performance</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        Average growth rate of ${avgGrowthRate.toFixed(1)}% indicates healthy business expansion.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="flex items-center justify-center h-6 w-6 rounded-full bg-blue-100">
+                        <svg class="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-gray-900 dark:text-white">Top Revenue Contributor</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        ${topCustomer.customer_name} generated $${formatNumber(topCustomer.current_month)} this month.
+                    </p>
+                </div>
+            </div>
+
+            ${highRiskCustomers > 0 ? `
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="flex items-center justify-center h-6 w-6 rounded-full bg-yellow-100">
+                        <svg class="h-4 w-4 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-gray-900 dark:text-white">Attention Required</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        ${highRiskCustomers} customer${highRiskCustomers > 1 ? 's' : ''} at high churn risk. Consider retention strategies.
+                    </p>
+                </div>
+            </div>
+            ` : ''}
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="flex items-center justify-center h-6 w-6 rounded-full bg-purple-100">
+                        <svg class="h-4 w-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-gray-900 dark:text-white">Data Refresh</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        Dashboard updated at ${new Date().toLocaleTimeString()}. Real-time sync enabled.
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Utility functions
+function getTrendIcon(trend) {
+    switch (trend) {
+        case 'up':
+            return '<svg class="w-4 h-4 text-green-500 ml-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>';
+        case 'down':
+            return '<svg class="w-4 h-4 text-red-500 ml-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
+        default:
+            return '<svg class="w-4 h-4 text-gray-500 ml-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>';
+    }
+}
+
+function getTrendColor(trend) {
+    switch (trend) {
+        case 'up': return 'text-green-600 dark:text-green-400';
+        case 'down': return 'text-red-600 dark:text-red-400';
+        default: return 'text-gray-600 dark:text-gray-400';
+    }
+}
+
+function getTrendLabel(trend) {
+    switch (trend) {
+        case 'up': return 'Trending up';
+        case 'down': return 'Trending down';
+        default: return 'No change';
+    }
+}
+
+function getChurnRiskColor(risk) {
+    switch (risk) {
+        case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+        case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+        default: return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+    }
+}
+
+function formatNumber(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+        return (num / 1000).toFixed(0) + 'K';
+    }
+    return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function showError(message) {
+    console.error(message);
+
+    // Use error handler for user-friendly error display
+    if (window.errorHandler) {
+        window.errorHandler.showNotification('Error', message, 'error');
+    } else {
+        // Fallback for basic error notification
+        alert(message);
+    }
+}
+
+// Setup WebSocket connection for real-time updates
+function setupWebSocketConnection() {
+    if (!demoSession) return;
+
+    websocketConnection = window.demoWebSocket.connect('sales_dashboard', demoSession, {
+        onMessage: (data) => {
+            handleRealtimeUpdate(data);
+        },
+        onOpen: () => {
+            console.log('WebSocket connected for dashboard');
+        },
+        onClose: () => {
+            console.log('WebSocket disconnected');
+            realtimeEnabled = false;
+            updateRealtimeButtons();
+        },
+        onError: (error) => {
+            console.error('WebSocket error:', error);
+
+            // Handle WebSocket error with error handler
+            const errorInfo = {
+                type: 'websocket_error',
+                message: `WebSocket connection error: ${error.message || 'Connection failed'}`,
+                error: error,
+                context: 'websocket_connection',
+                timestamp: Date.now(),
+                severity: 'medium'
+            };
+
+            if (window.errorHandler) {
+                window.errorHandler.handleError(errorInfo);
+            }
+        }
+    });
+}
+
+// Handle real-time updates from WebSocket
+function handleRealtimeUpdate(data) {
+    if (data.type === 'dashboard_update') {
+        const { chart_type, data: updateData } = data;
+
+        switch (chart_type) {
+            case 'kpi_update':
+                updateKPIsRealtime(updateData);
+                break;
+            case 'new_customer':
+                addNewCustomerData(updateData);
+                break;
+            case 'revenue_update':
+                updateRevenueChart(updateData);
+                break;
+        }
+    }
+}
+
+// Update KPIs with real-time data
+function updateKPIsRealtime(updates) {
+    // Find and update KPI cards
+    Object.entries(updates).forEach(([metric, change]) => {
+        // Update the relevant KPI card with the change
+        console.log(`Updating KPI ${metric} with change: ${change}`);
+    });
+}
+
+// Start real-time simulation
+function startRealtimeSimulation() {
+    if (!websocketConnection || realtimeEnabled) return;
+
+    window.demoWebSocket.startSimulation('sales_dashboard', demoSession);
+    realtimeEnabled = true;
+    updateRealtimeButtons();
+}
+
+// Stop real-time simulation
+function stopRealtimeSimulation() {
+    if (!websocketConnection || !realtimeEnabled) return;
+
+    window.demoWebSocket.stopSimulation('sales_dashboard', demoSession);
+    realtimeEnabled = false;
+    updateRealtimeButtons();
+}
+
+// Update real-time button states
+function updateRealtimeButtons() {
+    const startBtn = document.getElementById('start-realtime-btn');
+    const stopBtn = document.getElementById('stop-realtime-btn');
+
+    if (realtimeEnabled) {
+        startBtn.style.display = 'none';
+        stopBtn.style.display = 'inline-block';
+    } else {
+        startBtn.style.display = 'inline-block';
+        stopBtn.style.display = 'none';
+    }
+}
+
+// Track chart interactions
+function trackChartInteraction(chartId, action, data = {}) {
+    window.demoAnalytics.trackChartInteraction(chartId, action, data);
+    window.demoAnalytics.trackFeatureUsage('chart_interaction', {
+        chartId: chartId,
+        action: action,
+        ...data
+    });
+}
+
+// Enhanced search tracking
+function trackSearchUsage(query, results) {
+    window.demoAnalytics.trackSearch(query, results, {
+        context: 'customer_search',
+        demoType: 'sales_dashboard'
+    });
+}
+
+// Setup export functionality
+function setupExportHandlers() {
+    // Revenue chart export dropdown
+    const revenueDropdown = document.getElementById('export-revenue-dropdown');
+    const revenueMenu = document.getElementById('export-revenue-menu');
+
+    revenueDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = revenueMenu.classList.toggle('hidden');
+        revenueDropdown.setAttribute('aria-expanded', String(!isOpen));
+        // Close customer menu if open
+        document.getElementById('export-customer-menu').classList.add('hidden');
+        customerDropdown.setAttribute('aria-expanded', 'false');
+    });
+
+    // Revenue chart exports
+    document.getElementById('export-revenue-png').addEventListener('click', () => {
+        trackChartInteraction('revenue-chart', 'export', { format: 'png' });
+        console.warn('Advanced chart manager not implemented - PNG export disabled');
+        window.demoAnalytics.trackExport('png', 'revenue-chart', true);
+        revenueMenu.classList.add('hidden');
+    });
+
+    document.getElementById('export-revenue-pdf').addEventListener('click', () => {
+        trackChartInteraction('revenue-chart', 'export', { format: 'pdf' });
+        console.warn('Advanced chart manager not implemented - PDF export disabled');
+        window.demoAnalytics.trackExport('pdf', 'revenue-chart', false, { error: 'Advanced chart manager not available' });
+        revenueMenu.classList.add('hidden');
+    });
+
+    document.getElementById('export-revenue-excel').addEventListener('click', () => {
+        console.warn('Advanced chart manager not implemented - Excel export disabled');
+        revenueMenu.classList.add('hidden');
+    });
+
+    document.getElementById('export-revenue-csv').addEventListener('click', () => {
+        console.warn('Advanced chart manager not implemented - CSV export disabled');
+        revenueMenu.classList.add('hidden');
+    });
+
+    // Customer chart export dropdown
+    const customerDropdown = document.getElementById('export-customer-dropdown');
+    const customerMenu = document.getElementById('export-customer-menu');
+
+    customerDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = customerMenu.classList.toggle('hidden');
+        customerDropdown.setAttribute('aria-expanded', String(!isOpen));
+        // Close revenue menu if open
+        revenueMenu.classList.add('hidden');
+        revenueDropdown.setAttribute('aria-expanded', 'false');
+    });
+
+    // Customer chart exports
+    document.getElementById('export-customer-png').addEventListener('click', () => {
+        // Advanced chart manager not implemented - PNG export disabled
+        console.warn('Advanced chart manager not implemented - PNG export disabled');
+        customerMenu.classList.add('hidden');
+    });
+
+    document.getElementById('export-customer-pdf').addEventListener('click', () => {
+        // Advanced chart manager not implemented - PDF export disabled
+        console.warn('Advanced chart manager not implemented - PDF export disabled');
+        customerMenu.classList.add('hidden');
+    });
+
+    document.getElementById('export-customer-excel').addEventListener('click', () => {
+        // Advanced chart manager not implemented - Excel export disabled
+        console.warn('Advanced chart manager not implemented - Excel export disabled');
+        customerMenu.classList.add('hidden');
+    });
+
+    document.getElementById('export-customer-csv').addEventListener('click', () => {
+        // Advanced chart manager not implemented - CSV export disabled
+        console.warn('Advanced chart manager not implemented - CSV export disabled');
+        customerMenu.classList.add('hidden');
+    });
+
+    // Dashboard export
+    document.getElementById('export-dashboard-btn').addEventListener('click', () => {
+        const chartIds = ['revenue-chart', 'customer-chart'];
+        // Advanced chart manager not implemented - Dashboard export disabled
+        console.warn('Advanced chart manager not implemented - Dashboard export disabled');
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+        revenueMenu.classList.add('hidden');
+        customerMenu.classList.add('hidden');
+        revenueDropdown.setAttribute('aria-expanded', 'false');
+        customerDropdown.setAttribute('aria-expanded', 'false');
+    });
+
+    // Close dropdowns on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (!revenueMenu.classList.contains('hidden')) {
+                revenueMenu.classList.add('hidden');
+                revenueDropdown.setAttribute('aria-expanded', 'false');
+                revenueDropdown.focus();
+            }
+            if (!customerMenu.classList.contains('hidden')) {
+                customerMenu.classList.add('hidden');
+                customerDropdown.setAttribute('aria-expanded', 'false');
+                customerDropdown.focus();
+            }
+        }
+    });
+}
+
+// Event handlers
+document.getElementById('period-selector').addEventListener('change', loadDashboardData);
+document.getElementById('refresh-btn').addEventListener('click', loadDashboardData);
+document.getElementById('start-realtime-btn').addEventListener('click', startRealtimeSimulation);
+document.getElementById('stop-realtime-btn').addEventListener('click', stopRealtimeSimulation);
+
+// Debounce utility
+function debounce(fn, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+// Search and sort functionality (debounced)
+document.getElementById('customer-search').addEventListener('input', debounce(function(e) {
+    const filter = e.target.value.toLowerCase();
+    const filteredRecords = revenueRecords.filter(record =>
+        record.customer_name.toLowerCase().includes(filter) ||
+        record.customer_id.toLowerCase().includes(filter)
+    );
+
+    // Track search usage
+    if (filter.length > 0) {
+        trackSearchUsage(filter, filteredRecords.length);
+    }
+
+    renderRevenueTable(filteredRecords);
+}, 300));
+
+document.getElementById('sort-selector').addEventListener('change', function(e) {
+    const sortBy = e.target.value;
+
+    // Track sort usage
+    window.demoAnalytics.trackFeatureUsage('sort_customers', { sortBy });
+
+    const sortedRecords = [...revenueRecords].sort((a, b) => {
+        switch (sortBy) {
+            case 'current_month':
+                return b.current_month - a.current_month;
+            case 'ytd_revenue':
+                return b.ytd_revenue - a.ytd_revenue;
+            case 'growth_rate':
+                return b.growth_rate - a.growth_rate;
+            case 'customer_name':
+                return a.customer_name.localeCompare(b.customer_name);
+            default:
+                return 0;
+        }
+    });
+    renderRevenueTable(sortedRecords);
+});
+
+// Apply user preferences to dashboard
+function applyUserPreferences() {
+    // Set default period
+    const defaultPeriod = window.userPreferences.getPreference('dashboard.defaultPeriod', 'current_month');
+    document.getElementById('period-selector').value = defaultPeriod;
+
+    // Apply compact mode if enabled
+    const compactMode = window.userPreferences.getPreference('dashboard.compactMode', false);
+    if (compactMode) {
+        document.body.classList.add('compact-mode');
+    }
+
+    // Hide KPIs if disabled
+    const showKPIs = window.userPreferences.getPreference('dashboard.showKPIs', true);
+    if (!showKPIs) {
+        document.getElementById('kpi-section').style.display = 'none';
+    }
+}
+
+// Start auto-save functionality
+function startAutoSave() {
+    if (autoSaveInterval) clearInterval(autoSaveInterval);
+
+    autoSaveInterval = window.userPreferences.startAutoSave('sales_dashboard', demoSession, () => {
+        return {
+            period: document.getElementById('period-selector').value,
+            realtimeEnabled: realtimeEnabled,
+            dashboardData: dashboardData,
+            timestamp: Date.now()
+        };
+    });
+}
+
+// Start auto-refresh functionality
+function startAutoRefresh() {
+    if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+
+    const refreshRate = window.userPreferences.getPreference('dataRefreshInterval', 30000);
+    autoRefreshInterval = setInterval(() => {
+        if (!realtimeEnabled) {
+            loadDashboardData();
+        }
+    }, refreshRate);
+}
+
+// Stop auto-refresh
+function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+    }
+}
+
+// Enhanced export with user preferences
+function exportWithPreferences(chartId, format = null) {
+    const preferredFormat = format || window.userPreferences.getPreference('exportFormat', 'pdf');
+    const showNotifications = window.userPreferences.getPreference('notifications.exports', true);
+
+    if (showNotifications) {
+        window.demoWebSocket?.showNotification?.('Export Started', `Exporting chart as ${preferredFormat.toUpperCase()}`, 'info');
+    }
+
+    // Advanced chart manager not implemented - export disabled
+    console.warn('Advanced chart manager not implemented - export disabled for', chartId);
+
+    if (showNotifications) {
+        window.demoWebSocket?.showNotification?.('Export Not Available', 'Chart export functionality is not yet implemented', 'warning');
+    }
+}
+
+// Initialize demo when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize error boundaries first
+    if (window.ErrorBoundary) {
+        window.ErrorBoundary.create('.error-boundary', {
+            retryable: true,
+            logErrors: true,
+            onError: (error, boundary) => {
+                // Custom error handling for demo context
+                if (window.demoAnalytics) {
+                    window.demoAnalytics.trackError(error, {
+                        boundaryId: boundary.getBoundaryId(),
+                        context: boundary.element.getAttribute('data-error-context')
+                    });
+                }
+            }
+        });
+    }
+
+    initializeDemo();
+    setupExportHandlers();
+
+    // Setup preferences button
+    document.getElementById('preferences-btn').addEventListener('click', () => {
+        window.demoAnalytics.trackFeatureUsage('preferences', { action: 'open' });
+        if (window.preferencesUI) {
+            window.preferencesUI.show();
+        }
+    });
+
+    // Setup analytics button
+    document.getElementById('analytics-btn').addEventListener('click', () => {
+        window.demoAnalytics.trackFeatureUsage('analytics_dashboard', { action: 'open' });
+        if (window.analyticsDashboard) {
+            window.analyticsDashboard.show();
+        }
+    });
+
+    // Listen for preference changes
+    document.addEventListener('preferencesChanged', (e) => {
+        const { preferences } = e.detail;
+
+        // Restart auto-refresh if setting changed
+        if (preferences.dashboard?.autoRefresh) {
+            startAutoRefresh();
+        } else {
+            stopAutoRefresh();
+        }
+
+        // Update KPI visibility
+        const kpiSection = document.getElementById('kpi-section');
+        if (preferences.dashboard?.showKPIs) {
+            kpiSection.style.display = 'block';
+        } else {
+            kpiSection.style.display = 'none';
+        }
+
+        // Apply compact mode
+        if (preferences.dashboard?.compactMode) {
+            document.body.classList.add('compact-mode');
+        } else {
+            document.body.classList.remove('compact-mode');
+        }
+    });
+});
+
+// Cleanup on page unload
+window.addEventListener('pagehide', () => {
+    if (websocketConnection) {
+        window.demoWebSocket.disconnect('sales_dashboard', demoSession);
+    }
+
+    // Stop auto-save and auto-refresh
+    if (autoSaveInterval) {
+        clearInterval(autoSaveInterval);
+        window.userPreferences.stopAutoSave('sales_dashboard', demoSession);
+    }
+
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+    }
+
+    // Track demo completion and save final state
+    if (window.demoAnalytics && demoSession) {
+        window.demoAnalytics.trackDemoComplete('sales_dashboard', demoSession, {
+            finalPeriod: document.getElementById('period-selector').value,
+            realtimeUsed: realtimeEnabled,
+            dataLoaded: !!dashboardData,
+            sessionDuration: Date.now() - (window.demoAnalytics.startTime || 0)
+        });
+    }
+
+    if (window.userPreferences && demoSession) {
+        window.userPreferences.saveDemoState('sales_dashboard', demoSession, {
+            period: document.getElementById('period-selector').value,
+            realtimeEnabled: realtimeEnabled,
+            dashboardData: dashboardData,
+            timestamp: Date.now()
+        });
+    }
+});
+</script>
+{% endblock %}

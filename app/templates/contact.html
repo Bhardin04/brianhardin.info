@@ -20,7 +20,7 @@
     </div>
 </section>
 
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Contact Form -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 border-l-4 border-l-brand-500 border border-gray-100 dark:border-gray-700">
@@ -28,6 +28,7 @@
 
             <form hx-post="/api/contact" hx-target="#form-message" hx-swap="innerHTML"
                   hx-on::after-request="this.reset()" class="space-y-6" id="contact-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name *</label>
                     <input type="text" id="name" name="name" required

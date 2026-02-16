@@ -1,0 +1,91 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="primary-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="card-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1e293b" flood-opacity="0.1"/>
+    </filter>
+    <filter id="card-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.05"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg-gradient)"/>
+  <rect x="40" y="40" width="1120" height="720" rx="12" fill="#ffffff" filter="url(#shadow)"/>
+  <rect x="40" y="40" width="1120" height="50" rx="12" fill="#f1f5f9"/>
+  <rect x="40" y="78" width="1120" height="2" fill="#e2e8f0"/>
+  <circle cx="70" cy="65" r="8" fill="#ef4444"/>
+  <circle cx="95" cy="65" r="8" fill="#f59e0b"/>
+  <circle cx="120" cy="65" r="8" fill="#10b981"/>
+  <rect x="200" y="50" width="400" height="30" rx="15" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="69" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">🔒 brianhardin.info</text>
+  <rect x="40" y="90" width="1120" height="70" fill="#ffffff"/>
+  <circle cx="80" cy="125" r="20" fill="url(#primary-gradient)"/>
+  <text x="75" y="132" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold">BH</text>
+  <text x="115" y="132" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold">Brian Hardin</text>
+  <text x="900" y="120" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600">Home</text>
+  <text x="960" y="120" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="16">About</text>
+  <text x="1020" y="120" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="16">Projects</text>
+  <text x="1090" y="120" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="16">Contact</text>
+  <circle cx="1130" cy="125" r="12" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+  <circle cx="1125" cy="125" r="6" fill="#0ea5e9"/>
+  <rect x="40" y="160" width="1120" height="300" fill="#ffffff"/>
+  <circle cx="350" cy="240" r="40" fill="url(#primary-gradient)"/>
+  <text x="340" y="250" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold">BH</text>
+  <text x="600" y="220" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" text-anchor="middle">Transform Your Vision Into</text>
+  <text x="600" y="270" fill="#0ea5e9" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" text-anchor="middle">Scalable Python Solutions</text>
+  <text x="600" y="310" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="20" text-anchor="middle">Senior Python developer with proven track record of delivering</text>
+  <text x="600" y="335" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="20" text-anchor="middle">enterprise-grade applications that drive business growth</text>
+  <g transform="translate(400, 370)">
+    <text x="0" y="0" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold" text-anchor="middle">40%</text>
+    <text x="0" y="20" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14" text-anchor="middle">Faster to Market</text>
+  </g>
+  <g transform="translate(600, 370)">
+    <text x="0" y="0" fill="#f59e0b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold" text-anchor="middle">10x</text>
+    <text x="0" y="20" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14" text-anchor="middle">Scalability</text>
+  </g>
+  <g transform="translate(800, 370)">
+    <text x="0" y="0" fill="#ef4444" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold" text-anchor="middle">50+</text>
+    <text x="0" y="20" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14" text-anchor="middle">Projects</text>
+  </g>
+  <rect x="450" y="420" width="180" height="50" rx="25" fill="url(#primary-gradient)" filter="url(#card-shadow)"/>
+  <text x="540" y="450" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" text-anchor="middle">Schedule Consultation</text>
+  <rect x="650" y="420" width="150" height="50" rx="25" fill="transparent" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="725" y="450" fill="#0ea5e9" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" text-anchor="middle">View Projects</text>
+  <rect x="40" y="490" width="1120" height="260" fill="#f8fafc"/>
+  <text x="600" y="530" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold" text-anchor="middle">Featured Projects</text>
+  <g transform="translate(100, 560)">
+    <rect width="300" height="160" rx="12" fill="url(#card-gradient)" filter="url(#card-shadow)"/>
+    <rect x="0" y="0" width="300" height="90" rx="12" fill="#1e293b"/>
+    <text x="150" y="50" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" text-anchor="middle">Portfolio Website</text>
+    <text x="150" y="70" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="14" text-anchor="middle">FastAPI • HTMX • Tailwind</text>
+    <text x="20" y="120" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600">Modern Portfolio Site</text>
+    <text x="20" y="140" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Professional brand website with case studies</text>
+  </g>
+  <g transform="translate(450, 560)">
+    <rect width="300" height="160" rx="12" fill="url(#card-gradient)" filter="url(#card-shadow)"/>
+    <rect x="0" y="0" width="300" height="90" rx="12" fill="#0ea5e9"/>
+    <text x="150" y="50" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" text-anchor="middle">Real-Time Chat API</text>
+    <text x="150" y="70" fill="#bae6fd" font-family="system-ui, -apple-system, sans-serif" font-size="14" text-anchor="middle">FastAPI • WebSocket • Redis</text>
+    <text x="20" y="120" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600">Enterprise Chat Platform</text>
+    <text x="20" y="140" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">High-performance messaging for 5K+ users</text>
+  </g>
+  <g transform="translate(800, 560)">
+    <rect width="300" height="160" rx="12" fill="url(#card-gradient)" filter="url(#card-shadow)"/>
+    <rect x="0" y="0" width="300" height="90" rx="12" fill="#10b981"/>
+    <text x="150" y="50" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" text-anchor="middle">Analytics Dashboard</text>
+    <text x="150" y="70" fill="#a7f3d0" font-family="system-ui, -apple-system, sans-serif" font-size="14" text-anchor="middle">Streamlit • Plotly • PostgreSQL</text>
+    <text x="20" y="120" fill="#1e293b" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600">Business Intelligence</text>
+    <text x="20" y="140" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Real-time dashboards for Fortune 500</text>
+  </g>
+  <rect x="40" y="750" width="1120" height="10" fill="#e2e8f0"/>
+</svg>

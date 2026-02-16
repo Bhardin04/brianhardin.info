@@ -1,0 +1,139 @@
+{
+  "palette": {
+    "primary": {
+      "name": "Primary",
+      "cssVariable": "--color-primary",
+      "hex": "#C85103",
+      "rgb": [200, 81, 3],
+      "usage": "Main buttons, links, key highlights"
+    },
+    "primaryLight": {
+      "name": "Primary Light",
+      "cssVariable": "--color-primary-light",
+      "hex": "#E0773F",
+      "rgb": [224, 123, 63],
+      "usage": "Hover states, subtle backgrounds, highlights"
+    },
+    "primaryDark": {
+      "name": "Primary Dark",
+      "cssVariable": "--color-primary-dark",
+      "hex": "#9A3C02",
+      "rgb": [154, 60, 2],
+      "usage": "Active buttons, footer background"
+    },
+    "secondary": {
+      "name": "Secondary",
+      "cssVariable": "--color-secondary",
+      "hex": "#035AC8",
+      "rgb": [3, 90, 200],
+      "usage": "Secondary actions, link hover, call-to-action accents"
+    },
+    "accent": {
+      "name": "Accent",
+      "cssVariable": "--color-accent",
+      "hex": "#03C8A6",
+      "rgb": [3, 200, 166],
+      "usage": "Icons, badges, notifications"
+    },
+    "neutralLight": {
+      "name": "Neutral Light",
+      "cssVariable": "--color-neutral-light",
+      "hex": "#F7F5F2",
+      "rgb": [247, 245, 242],
+      "usage": "Page background, cards, form fields"
+    },
+    "neutralDark": {
+      "name": "Neutral Dark",
+      "cssVariable": "--color-neutral-dark",
+      "hex": "#333333",
+      "rgb": [51, 51, 51],
+      "usage": "Headings, body text, footers"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "primary": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "secondary": "Merriweather, Georgia, serif"
+    },
+    "fontSize": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "md": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem"
+    },
+    "fontWeight": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "lineHeight": {
+      "tight": 1.2,
+      "normal": 1.5,
+      "relaxed": 1.75
+    },
+    "letterSpacing": {
+      "normal": "0",
+      "wide": "0.05em"
+    }
+  },
+  "spacing": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "32px",
+    "2xl": "48px"
+  },
+  "borderRadius": {
+    "sm": "2px",
+    "md": "4px",
+    "lg": "8px",
+    "full": "9999px"
+  },
+  "shadows": {
+    "sm": "0 1px 2px rgba(0,0,0,0.05)",
+    "md": "0 4px 8px rgba(0,0,0,0.08)",
+    "lg": "0 8px 16px rgba(0,0,0,0.12)"
+  },
+  "breakpoints": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px"
+  },
+  "zIndex": {
+    "dropdown": 100,
+    "sticky": 200,
+    "modal": 300,
+    "overlay": 400,
+    "tooltip": 500
+  },
+  "transitions": {
+    "duration": {
+      "fast": "150ms",
+      "normal": "300ms",
+      "slow": "500ms"
+    },
+    "easing": {
+      "in": "cubic-bezier(0.4, 0, 1, 1)",
+      "out": "cubic-bezier(0, 0, 0.2, 1)",
+      "inOut": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "borderWidth": {
+    "thin": "1px",
+    "regular": "2px",
+    "thick": "4px"
+  },
+  "opacity": {
+    "low": 0.2,
+    "medium": 0.5,
+    "high": 0.8
+  }
+}

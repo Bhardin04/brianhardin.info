@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found | Brian Hardin{% endblock %}
+{% block meta_description %}The page you're looking for doesn't exist or has been moved.{% endblock %}
+
+{% block content %}
+<section class="min-h-[60vh] flex items-center justify-center px-4 py-16">
+    <div class="text-center max-w-lg">
+        <p class="text-8xl font-extrabold text-blue-600 dark:text-blue-400">404</p>
+        <h1 class="mt-4 text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">Page Not Found</h1>
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Sorry, the page you're looking for doesn't exist or has been moved.</p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/" class="inline-flex items-center px-6 py-3 min-h-[44px] rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors">Go Home</a>
+            <a href="/projects" class="inline-flex items-center px-6 py-3 min-h-[44px] rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">View Projects</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

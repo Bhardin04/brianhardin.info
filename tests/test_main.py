@@ -1,8 +1,17 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.middleware import generate_csrf_token, limiter
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def _reset_limiter():
+    """Reset rate limiter state between tests."""
+    limiter._limiter.storage.reset()
+    yield
 
 
 def test_homepage():
@@ -49,27 +58,35 @@ def test_resume_page():
 
 
 def test_project_detail():
-    response = client.get("/projects/1")
+    response = client.get("/projects/3")
     assert response.status_code == 200
 
 
 def test_contact_form_submission():
+    token = generate_csrf_token()
     form_data = {
         "name": "Test User",
         "email": "test@example.com",
         "subject": "Test Subject",
         "message": "This is a test message",
         "company": "Test Company",
+        "csrf_token": token,
     }
-    response = client.post("/api/contact", data=form_data)
+    response = client.post(
+        "/api/contact", data=form_data, cookies={"csrf_token": token}
+    )
     assert response.status_code == 200
     assert "Success!" in response.text
 
 
 def test_contact_form_missing_fields():
+    token = generate_csrf_token()
     form_data = {
         "name": "Test User",
+        "csrf_token": token,
         # Missing required fields
     }
-    response = client.post("/api/contact", data=form_data)
+    response = client.post(
+        "/api/contact", data=form_data, cookies={"csrf_token": token}
+    )
     assert response.status_code == 422  # Validation error

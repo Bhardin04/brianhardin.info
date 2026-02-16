@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+{% set page_title = "Interactive Project Demos" %}
+{% set page_description = "Experience my projects through hands-on interactive demonstrations" %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
+    <!-- Hero Section -->
+    <div class="relative py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+                    Interactive Project Demos
+                </h1>
+                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+                    Experience my projects through hands-on demonstrations. Don't just read about capabilities—interact with real data, see processing workflows, and explore business logic.
+                </p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="#demos" class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                        Try Live Demos
+                    </a>
+                    <a href="/projects" class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                        View Project Portfolio <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Demos Grid -->
+    <div id="demos" class="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
+        <div class="mx-auto max-w-2xl lg:max-w-none">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+
+                <!-- Payment Processing Demo -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 focus-within:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-400/10 to-emerald-600/10"></div>
+                    <div class="relative p-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Payment Processing System</h3>
+                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">🏆 Featured</span>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Experience automated payment matching with real AR ledger data. Process ACH, Wire, and Check payments through intelligent matching algorithms.
+                        </p>
+
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Interactive payment entry with validation
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Real-time AR ledger with aging analysis
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Automated matching with confidence scoring
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <a href="/projects/6" class="flex-1 inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Project Details
+                            </a>
+                            <a href="/demos/payment-processing" class="flex-1 inline-flex items-center justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 transition-colors duration-200 group">
+                                Launch Demo
+                                <svg class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Pipeline Demo -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 focus-within:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-600/10"></div>
+                    <div class="relative p-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">NetSuite to SAP Pipeline</h3>
+                                <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">🏆 Featured</span>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Watch enterprise data integration in action. Extract, transform, and validate data with real-time processing workflows.
+                        </p>
+
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Visual data transformation mapping
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Real-time processing pipeline
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Error handling and validation
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <a href="/projects/7" class="flex-1 inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Project Details
+                            </a>
+                            <a href="/demos/data-pipeline" class="flex-1 inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors duration-200 group">
+                                Launch Demo
+                                <svg class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Dashboard Demo -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 focus-within:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-pink-600/10"></div>
+                    <div class="relative p-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Sales & Revenue Dashboard</h3>
+                                <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-600/20">🏆 Featured</span>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Interactive business intelligence dashboard with real-time KPIs, revenue analytics, and growth trend analysis.
+                        </p>
+
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Real-time KPI metrics and targets
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Interactive revenue analytics
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Growth trends and forecasting
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <a href="/projects/3" class="flex-1 inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Project Details
+                            </a>
+                            <a href="/demos/sales-dashboard" class="flex-1 inline-flex items-center justify-center rounded-md bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 transition-colors duration-200 group">
+                                Launch Demo
+                                <svg class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collections Dashboard Demo -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 focus-within:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-orange-400/10 to-red-600/10"></div>
+                    <div class="relative p-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-500">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Collections Management</h3>
+                                <span class="inline-flex items-center rounded-md bg-orange-50 px-2 py-1 text-xs font-medium text-orange-700 ring-1 ring-inset ring-orange-600/20">🏆 Featured</span>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Comprehensive AR collections dashboard with DSO analytics, collector performance tracking, and customer target management.
+                        </p>
+
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                DSO analytics and aging buckets
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Collector performance metrics
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-2 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Priority customer target lists
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <a href="/projects/8" class="flex-1 inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Project Details
+                            </a>
+                            <a href="/demos/collections-dashboard" class="flex-1 inline-flex items-center justify-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition-colors duration-200 group">
+                                Launch Demo
+                                <svg class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Additional Demo - Automation Suite -->
+            <div class="mt-8">
+                <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 focus-within:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-teal-400/10 to-cyan-600/10"></div>
+                    <div class="relative p-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-teal-500">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Automation Suite Playground</h3>
+                                <span class="inline-flex items-center rounded-md bg-teal-50 px-2 py-1 text-xs font-medium text-teal-700 ring-1 ring-inset ring-teal-600/20">Coming Soon</span>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                                    Interactive workflow builder and automation playground. Create, test, and monitor automated business processes.
+                                </p>
+
+                                <div class="space-y-2">
+                                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                        <svg class="h-4 w-4 mr-2 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Visual workflow designer
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                        <svg class="h-4 w-4 mr-2 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Real-time execution monitoring
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                        <svg class="h-4 w-4 mr-2 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Error handling and recovery
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-center">
+                                <button disabled class="inline-flex items-center justify-center rounded-md bg-gray-300 px-4 py-2 text-sm font-semibold text-gray-500 cursor-not-allowed w-full">
+                                    Coming Soon
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-gray-900 py-12 sm:py-16">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    Ready to see more?
+                </h2>
+                <p class="mt-6 text-lg leading-8 text-gray-300">
+                    Explore my complete project portfolio or get in touch to discuss how I can help with your next project.
+                </p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="/projects" class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                        View All Projects
+                    </a>
+                    <a href="/contact" class="text-sm font-semibold leading-6 text-white">
+                        Get in Touch <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
