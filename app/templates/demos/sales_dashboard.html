@@ -10,51 +10,51 @@
         padding-left: 1rem;
         padding-right: 1rem;
     }
-    
+
     .compact-mode .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-5 {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
     }
-    
+
     .compact-mode .bg-white.dark\:bg-slate-800 {
         padding: 1rem;
     }
-    
+
     .compact-mode .p-6 {
         padding: 1rem;
     }
-    
+
     .compact-mode .h-80 {
         height: 15rem;
     }
-    
+
     /* Export dropdown animations */
     .export-dropdown-menu {
         transform: translateY(-10px);
         opacity: 0;
         transition: all 0.2s ease;
     }
-    
+
     .export-dropdown-menu:not(.hidden) {
         transform: translateY(0);
         opacity: 1;
     }
-    
+
     /* Preferences button styling */
     #preferences-btn {
         position: relative;
     }
-    
+
     #preferences-btn:hover {
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     /* Enhanced export button styling */
     .export-menu-item {
         transition: all 0.15s ease;
     }
-    
+
     .export-menu-item:hover {
         transform: translateX(4px);
     }
@@ -104,9 +104,34 @@
                         <a href="/projects/3" class="text-sm text-purple-600 hover:text-purple-500 dark:text-purple-400">
                             📋 Project Details
                         </a>
-                        <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
-                            ← Back to Demos
-                        </a>
+                        <nav class="flex" aria-label="Breadcrumb">
+                            <ol class="inline-flex items-center space-x-1">
+                                <li class="inline-flex items-center">
+                                    <a href="/" class="text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                        </svg>
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="/demos" class="ml-1 text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">Demos</a>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="ml-1 text-sm text-gray-400 dark:text-gray-500 font-medium">Sales Dashboard</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -115,7 +140,7 @@
 
     <!-- Dashboard Content -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8">
-        
+
         <!-- KPI Metrics Grid -->
         <div id="kpi-section" class="mb-8 error-boundary" data-error-context="kpi-section">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Key Performance Indicators</h2>
@@ -126,7 +151,7 @@
 
         <!-- Charts and Analytics Grid -->
         <div class="grid lg:grid-cols-12 gap-8 mb-8">
-            
+
             <!-- Revenue Trend Chart -->
             <div class="lg:col-span-8 error-boundary" data-error-context="revenue-chart-section">
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
@@ -237,7 +262,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="p-6">
                 <div class="overflow-x-auto">
                     <table id="revenue-table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -284,7 +309,7 @@
 
         <!-- Additional Analytics -->
         <div class="grid lg:grid-cols-2 gap-8">
-            
+
             <!-- Margin Analysis -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
@@ -358,37 +383,37 @@ async function initializeDemo() {
                 'Content-Type': 'application/json',
             }
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             demoSession = result.data.session_id;
             updateSessionStatus('Connected', 'green');
-            
+
             // Initialize analytics tracking
             window.demoAnalytics.trackDemoStart('sales_dashboard', demoSession, {
                 period: document.getElementById('period-selector').value,
                 userAgent: navigator.userAgent,
                 screenResolution: `${screen.width}x${screen.height}`
             });
-            
+
             // Apply user preferences
             applyUserPreferences();
-            
+
             // Load saved state if available
             const savedState = window.userPreferences.loadDemoState('sales_dashboard', demoSession);
             if (savedState && savedState.period) {
                 document.getElementById('period-selector').value = savedState.period;
             }
-            
+
             await loadDashboardData();
             setupWebSocketConnection();
-            
+
             // Start auto-save if enabled
             if (window.userPreferences.getPreference('autoSave', true)) {
                 startAutoSave();
             }
-            
+
             // Start auto-refresh if enabled
             if (window.userPreferences.getPreference('dashboard.autoRefresh', false)) {
                 startAutoRefresh();
@@ -423,11 +448,11 @@ function updateSessionStatus(status, color) {
 async function loadDashboardData() {
     const period = document.getElementById('period-selector').value;
     const startTime = performance.now();
-    
+
     try {
         // Track data loading performance
         window.demoAnalytics.trackFeatureUsage('load_dashboard_data', { period });
-        
+
         const response = await window.connectionManager.fetch('/demos/api/dashboard/data', {
             method: 'POST',
             headers: {
@@ -438,7 +463,7 @@ async function loadDashboardData() {
                 period: period
             })
         });
-        
+
         const responseTime = performance.now() - startTime;
         if (window.performanceMonitor && typeof window.performanceMonitor.trackPerformance === 'function') {
             window.performanceMonitor.trackPerformance('api_response_time', responseTime, {
@@ -446,25 +471,25 @@ async function loadDashboardData() {
                 period: period
             });
         }
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             dashboardData = result.data;
             revenueRecords = dashboardData.revenue_by_customer;
-            
+
             renderKPIs(dashboardData.kpis);
             renderCharts(dashboardData.chart_data);
             renderRevenueTable(revenueRecords);
             renderInsights();
-            
+
             // Track successful data load
             window.demoAnalytics.trackEvent('dashboard_data_loaded', {
                 period: period,
                 recordCount: revenueRecords.length,
                 loadTime: responseTime
             });
-            
+
             // Hide loading indicators
             document.getElementById('loading-revenue').style.display = 'none';
         } else {
@@ -485,7 +510,7 @@ async function loadDashboardData() {
             timestamp: Date.now(),
             severity: 'high'
         };
-        
+
         const recovery = await window.errorHandler.handleError(errorInfo);
         if (!recovery.success) {
             showError(`Error loading dashboard data: ${error.message}`);
@@ -497,15 +522,15 @@ async function loadDashboardData() {
 function renderKPIs(kpis) {
     const grid = document.getElementById('kpi-grid');
     grid.innerHTML = '';
-    
+
     kpis.forEach(kpi => {
         const trendIcon = getTrendIcon(kpi.trend);
         const trendColor = getTrendColor(kpi.trend);
         const changeSign = kpi.change_percent >= 0 ? '+' : '';
-        
+
         const card = document.createElement('div');
         card.className = 'bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6';
-        
+
         card.innerHTML = `
             <div class="flex items-center justify-between">
                 <div>
@@ -532,7 +557,7 @@ function renderKPIs(kpis) {
                 </div>
             </div>
         `;
-        
+
         grid.appendChild(card);
     });
 }
@@ -551,19 +576,19 @@ function renderRevenueChart(data) {
         console.warn('Revenue chart already rendering, skipping...');
         return;
     }
-    
+
     try {
         revenueChartRendering = true;
         const ctx = document.getElementById('revenue-chart');
-        
+
         if (charts.revenue) {
             charts.revenue.destroy();
         }
-        
+
         // Clear loading state
         ctx.innerHTML = '<canvas></canvas>';
         const canvas = ctx.querySelector('canvas');
-    
+
     charts.revenue = new Chart(canvas, {
         type: 'line',
         data: {
@@ -613,7 +638,7 @@ function renderRevenueChart(data) {
             }
         }
     });
-    
+
         // Register with advanced chart manager
         // TODO: Implement advanced chart manager or remove dependency
         // // window.advancedChartManager // DISABLED - not implemented.registerChart('revenue-chart', charts.revenue, {
@@ -634,7 +659,7 @@ function renderRevenueChart(data) {
             timestamp: Date.now(),
             severity: 'medium'
         };
-        
+
         window.errorHandler.handleError(errorInfo);
     } finally {
         revenueChartRendering = false;
@@ -648,19 +673,19 @@ function renderCustomerChart(data) {
         console.warn('Customer chart already rendering, skipping...');
         return;
     }
-    
+
     try {
         customerChartRendering = true;
         const ctx = document.getElementById('customer-chart');
-        
+
         if (charts.customer) {
             charts.customer.destroy();
         }
-        
+
         // Clear loading state
         ctx.innerHTML = '<canvas></canvas>';
         const canvas = ctx.querySelector('canvas');
-    
+
     charts.customer = new Chart(canvas, {
         type: 'doughnut',
         data: {
@@ -690,7 +715,7 @@ function renderCustomerChart(data) {
             }
         }
     });
-    
+
         // Register with advanced chart manager
         // TODO: Implement advanced chart manager or remove dependency
         // // window.advancedChartManager // DISABLED - not implemented.registerChart('customer-chart', charts.customer, {
@@ -710,7 +735,7 @@ function renderCustomerChart(data) {
             timestamp: Date.now(),
             severity: 'medium'
         };
-        
+
         window.errorHandler.handleError(errorInfo);
     } finally {
         customerChartRendering = false;
@@ -720,15 +745,15 @@ function renderCustomerChart(data) {
 // Render margin chart
 function renderMarginChart(data) {
     const ctx = document.getElementById('margin-chart');
-    
+
     if (charts.margin) {
         charts.margin.destroy();
     }
-    
+
     // Clear loading state
     ctx.innerHTML = '<canvas></canvas>';
     const canvas = ctx.querySelector('canvas');
-    
+
     charts.margin = new Chart(canvas, {
         type: 'bar',
         data: {
@@ -777,13 +802,13 @@ function renderRevenueTable(records) {
     records.forEach(record => {
         const row = document.createElement('tr');
         row.className = 'hover:bg-gray-50 dark:hover:bg-slate-700';
-        
+
         const growthRate = record.growth_rate * 100;
         const growthColor = growthRate >= 0 ? 'text-green-600' : 'text-red-600';
         const growthIcon = growthRate >= 0 ? '↗' : '↘';
-        
+
         const churnColor = getChurnRiskColor(record.churn_risk);
-        
+
         row.innerHTML = `
             <td class="px-4 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-900 dark:text-white">${record.customer_name}</div>
@@ -807,7 +832,7 @@ function renderRevenueTable(records) {
                 </span>
             </td>
         `;
-        
+
         tbody.appendChild(row);
     });
 }
@@ -815,13 +840,13 @@ function renderRevenueTable(records) {
 // Render insights
 function renderInsights() {
     const content = document.getElementById('insights-content');
-    
+
     // Calculate insights from data
     const totalRevenue = revenueRecords.reduce((sum, r) => sum + r.current_month, 0);
     const avgGrowthRate = revenueRecords.reduce((sum, r) => sum + (r.growth_rate * 100), 0) / revenueRecords.length;
     const highRiskCustomers = revenueRecords.filter(r => r.churn_risk === 'high').length;
     const topCustomer = revenueRecords.reduce((max, r) => r.current_month > max.current_month ? r : max, revenueRecords[0]);
-    
+
     content.innerHTML = `
         <div class="space-y-4">
             <div class="flex items-start">
@@ -839,7 +864,7 @@ function renderInsights() {
                     </p>
                 </div>
             </div>
-            
+
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <div class="flex items-center justify-center h-6 w-6 rounded-full bg-blue-100">
@@ -855,7 +880,7 @@ function renderInsights() {
                     </p>
                 </div>
             </div>
-            
+
             ${highRiskCustomers > 0 ? `
             <div class="flex items-start">
                 <div class="flex-shrink-0">
@@ -873,7 +898,7 @@ function renderInsights() {
                 </div>
             </div>
             ` : ''}
-            
+
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <div class="flex items-center justify-center h-6 w-6 rounded-full bg-purple-100">
@@ -940,7 +965,7 @@ function formatNumber(num) {
 
 function showError(message) {
     console.error(message);
-    
+
     // Use error handler for user-friendly error display
     if (window.errorHandler) {
         window.errorHandler.showNotification('Error', message, 'error');
@@ -953,7 +978,7 @@ function showError(message) {
 // Setup WebSocket connection for real-time updates
 function setupWebSocketConnection() {
     if (!demoSession) return;
-    
+
     websocketConnection = window.demoWebSocket.connect('sales_dashboard', demoSession, {
         onMessage: (data) => {
             handleRealtimeUpdate(data);
@@ -968,7 +993,7 @@ function setupWebSocketConnection() {
         },
         onError: (error) => {
             console.error('WebSocket error:', error);
-            
+
             // Handle WebSocket error with error handler
             const errorInfo = {
                 type: 'websocket_error',
@@ -978,7 +1003,7 @@ function setupWebSocketConnection() {
                 timestamp: Date.now(),
                 severity: 'medium'
             };
-            
+
             if (window.errorHandler) {
                 window.errorHandler.handleError(errorInfo);
             }
@@ -990,7 +1015,7 @@ function setupWebSocketConnection() {
 function handleRealtimeUpdate(data) {
     if (data.type === 'dashboard_update') {
         const { chart_type, data: updateData } = data;
-        
+
         switch (chart_type) {
             case 'kpi_update':
                 updateKPIsRealtime(updateData);
@@ -1017,7 +1042,7 @@ function updateKPIsRealtime(updates) {
 // Start real-time simulation
 function startRealtimeSimulation() {
     if (!websocketConnection || realtimeEnabled) return;
-    
+
     window.demoWebSocket.startSimulation('sales_dashboard', demoSession);
     realtimeEnabled = true;
     updateRealtimeButtons();
@@ -1026,7 +1051,7 @@ function startRealtimeSimulation() {
 // Stop real-time simulation
 function stopRealtimeSimulation() {
     if (!websocketConnection || !realtimeEnabled) return;
-    
+
     window.demoWebSocket.stopSimulation('sales_dashboard', demoSession);
     realtimeEnabled = false;
     updateRealtimeButtons();
@@ -1036,7 +1061,7 @@ function stopRealtimeSimulation() {
 function updateRealtimeButtons() {
     const startBtn = document.getElementById('start-realtime-btn');
     const stopBtn = document.getElementById('stop-realtime-btn');
-    
+
     if (realtimeEnabled) {
         startBtn.style.display = 'none';
         stopBtn.style.display = 'inline-block';
@@ -1069,7 +1094,7 @@ function setupExportHandlers() {
     // Revenue chart export dropdown
     const revenueDropdown = document.getElementById('export-revenue-dropdown');
     const revenueMenu = document.getElementById('export-revenue-menu');
-    
+
     revenueDropdown.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = revenueMenu.classList.toggle('hidden');
@@ -1078,7 +1103,7 @@ function setupExportHandlers() {
         document.getElementById('export-customer-menu').classList.add('hidden');
         customerDropdown.setAttribute('aria-expanded', 'false');
     });
-    
+
     // Revenue chart exports
     document.getElementById('export-revenue-png').addEventListener('click', () => {
         trackChartInteraction('revenue-chart', 'export', { format: 'png' });
@@ -1086,28 +1111,28 @@ function setupExportHandlers() {
         window.demoAnalytics.trackExport('png', 'revenue-chart', true);
         revenueMenu.classList.add('hidden');
     });
-    
+
     document.getElementById('export-revenue-pdf').addEventListener('click', () => {
         trackChartInteraction('revenue-chart', 'export', { format: 'pdf' });
         console.warn('Advanced chart manager not implemented - PDF export disabled');
         window.demoAnalytics.trackExport('pdf', 'revenue-chart', false, { error: 'Advanced chart manager not available' });
         revenueMenu.classList.add('hidden');
     });
-    
+
     document.getElementById('export-revenue-excel').addEventListener('click', () => {
         console.warn('Advanced chart manager not implemented - Excel export disabled');
         revenueMenu.classList.add('hidden');
     });
-    
+
     document.getElementById('export-revenue-csv').addEventListener('click', () => {
         console.warn('Advanced chart manager not implemented - CSV export disabled');
         revenueMenu.classList.add('hidden');
     });
-    
+
     // Customer chart export dropdown
     const customerDropdown = document.getElementById('export-customer-dropdown');
     const customerMenu = document.getElementById('export-customer-menu');
-    
+
     customerDropdown.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = customerMenu.classList.toggle('hidden');
@@ -1116,39 +1141,39 @@ function setupExportHandlers() {
         revenueMenu.classList.add('hidden');
         revenueDropdown.setAttribute('aria-expanded', 'false');
     });
-    
+
     // Customer chart exports
     document.getElementById('export-customer-png').addEventListener('click', () => {
         // Advanced chart manager not implemented - PNG export disabled
         console.warn('Advanced chart manager not implemented - PNG export disabled');
         customerMenu.classList.add('hidden');
     });
-    
+
     document.getElementById('export-customer-pdf').addEventListener('click', () => {
         // Advanced chart manager not implemented - PDF export disabled
         console.warn('Advanced chart manager not implemented - PDF export disabled');
         customerMenu.classList.add('hidden');
     });
-    
+
     document.getElementById('export-customer-excel').addEventListener('click', () => {
         // Advanced chart manager not implemented - Excel export disabled
         console.warn('Advanced chart manager not implemented - Excel export disabled');
         customerMenu.classList.add('hidden');
     });
-    
+
     document.getElementById('export-customer-csv').addEventListener('click', () => {
         // Advanced chart manager not implemented - CSV export disabled
         console.warn('Advanced chart manager not implemented - CSV export disabled');
         customerMenu.classList.add('hidden');
     });
-    
+
     // Dashboard export
     document.getElementById('export-dashboard-btn').addEventListener('click', () => {
         const chartIds = ['revenue-chart', 'customer-chart'];
         // Advanced chart manager not implemented - Dashboard export disabled
         console.warn('Advanced chart manager not implemented - Dashboard export disabled');
     });
-    
+
     // Close dropdowns when clicking outside
     document.addEventListener('click', () => {
         revenueMenu.classList.add('hidden');
@@ -1207,10 +1232,10 @@ document.getElementById('customer-search').addEventListener('input', debounce(fu
 
 document.getElementById('sort-selector').addEventListener('change', function(e) {
     const sortBy = e.target.value;
-    
+
     // Track sort usage
     window.demoAnalytics.trackFeatureUsage('sort_customers', { sortBy });
-    
+
     const sortedRecords = [...revenueRecords].sort((a, b) => {
         switch (sortBy) {
             case 'current_month':
@@ -1233,13 +1258,13 @@ function applyUserPreferences() {
     // Set default period
     const defaultPeriod = window.userPreferences.getPreference('dashboard.defaultPeriod', 'current_month');
     document.getElementById('period-selector').value = defaultPeriod;
-    
+
     // Apply compact mode if enabled
     const compactMode = window.userPreferences.getPreference('dashboard.compactMode', false);
     if (compactMode) {
         document.body.classList.add('compact-mode');
     }
-    
+
     // Hide KPIs if disabled
     const showKPIs = window.userPreferences.getPreference('dashboard.showKPIs', true);
     if (!showKPIs) {
@@ -1250,7 +1275,7 @@ function applyUserPreferences() {
 // Start auto-save functionality
 function startAutoSave() {
     if (autoSaveInterval) clearInterval(autoSaveInterval);
-    
+
     autoSaveInterval = window.userPreferences.startAutoSave('sales_dashboard', demoSession, () => {
         return {
             period: document.getElementById('period-selector').value,
@@ -1264,7 +1289,7 @@ function startAutoSave() {
 // Start auto-refresh functionality
 function startAutoRefresh() {
     if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-    
+
     const refreshRate = window.userPreferences.getPreference('dataRefreshInterval', 30000);
     autoRefreshInterval = setInterval(() => {
         if (!realtimeEnabled) {
@@ -1285,14 +1310,14 @@ function stopAutoRefresh() {
 function exportWithPreferences(chartId, format = null) {
     const preferredFormat = format || window.userPreferences.getPreference('exportFormat', 'pdf');
     const showNotifications = window.userPreferences.getPreference('notifications.exports', true);
-    
+
     if (showNotifications) {
         window.demoWebSocket?.showNotification?.('Export Started', `Exporting chart as ${preferredFormat.toUpperCase()}`, 'info');
     }
-    
+
     // Advanced chart manager not implemented - export disabled
     console.warn('Advanced chart manager not implemented - export disabled for', chartId);
-    
+
     if (showNotifications) {
         window.demoWebSocket?.showNotification?.('Export Not Available', 'Chart export functionality is not yet implemented', 'warning');
     }
@@ -1316,10 +1341,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     initializeDemo();
     setupExportHandlers();
-    
+
     // Setup preferences button
     document.getElementById('preferences-btn').addEventListener('click', () => {
         window.demoAnalytics.trackFeatureUsage('preferences', { action: 'open' });
@@ -1327,7 +1352,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.preferencesUI.show();
         }
     });
-    
+
     // Setup analytics button
     document.getElementById('analytics-btn').addEventListener('click', () => {
         window.demoAnalytics.trackFeatureUsage('analytics_dashboard', { action: 'open' });
@@ -1335,18 +1360,18 @@ document.addEventListener('DOMContentLoaded', () => {
             window.analyticsDashboard.show();
         }
     });
-    
+
     // Listen for preference changes
     document.addEventListener('preferencesChanged', (e) => {
         const { preferences } = e.detail;
-        
+
         // Restart auto-refresh if setting changed
         if (preferences.dashboard?.autoRefresh) {
             startAutoRefresh();
         } else {
             stopAutoRefresh();
         }
-        
+
         // Update KPI visibility
         const kpiSection = document.getElementById('kpi-section');
         if (preferences.dashboard?.showKPIs) {
@@ -1354,7 +1379,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             kpiSection.style.display = 'none';
         }
-        
+
         // Apply compact mode
         if (preferences.dashboard?.compactMode) {
             document.body.classList.add('compact-mode');
@@ -1369,17 +1394,17 @@ window.addEventListener('pagehide', () => {
     if (websocketConnection) {
         window.demoWebSocket.disconnect('sales_dashboard', demoSession);
     }
-    
+
     // Stop auto-save and auto-refresh
     if (autoSaveInterval) {
         clearInterval(autoSaveInterval);
         window.userPreferences.stopAutoSave('sales_dashboard', demoSession);
     }
-    
+
     if (autoRefreshInterval) {
         clearInterval(autoRefreshInterval);
     }
-    
+
     // Track demo completion and save final state
     if (window.demoAnalytics && demoSession) {
         window.demoAnalytics.trackDemoComplete('sales_dashboard', demoSession, {
@@ -1389,7 +1414,7 @@ window.addEventListener('pagehide', () => {
             sessionDuration: Date.now() - (window.demoAnalytics.startTime || 0)
         });
     }
-    
+
     if (window.userPreferences && demoSession) {
         window.userPreferences.saveDemoState('sales_dashboard', demoSession, {
             period: document.getElementById('period-selector').value,

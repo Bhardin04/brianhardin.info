@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Breadcrumb Navigation** - Consistent breadcrumb nav (`Home > Section > Page`) on project detail and all demo pages, replacing simple back-links with semantic `<nav aria-label="Breadcrumb">` markup for improved wayfinding and SEO
 - **Custom Error Pages** - Styled 404 and 500 error pages extending base template with navigation back to site
 - **XML Sitemap** - `/sitemap.xml` endpoint with static pages, project details, blog posts, and demo pages
 - **RSS Feed** - `/blog/feed.xml` endpoint with RSS 2.0 format and atom:link self-reference
