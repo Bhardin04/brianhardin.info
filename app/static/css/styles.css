@@ -1419,7 +1419,7 @@ textarea {
 }
 
 .dark .logo-wordmark {
-    color: var(--color-gray-100);
+    color: var(--color-gray-900);
 }
 
 /* Headshot photography treatment (Brand Guide: slightly desaturated) */
@@ -2296,15 +2296,17 @@ a:visited:hover {
     border-color: var(--color-primary-light);
 }
 
-.stats-number {
+.stats-number,
+.stat-number {
     font-size: var(--text-3xl);
     font-weight: var(--font-bold);
-    color: var(--color-primary-600);
+    color: var(--color-primary);
     line-height: var(--leading-tight);
 }
 
-.dark .stats-number {
-    color: var(--color-primary-400);
+.dark .stats-number,
+.dark .stat-number {
+    color: var(--color-accent-light);
 }
 
 .stats-label {
