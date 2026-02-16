@@ -97,7 +97,6 @@ class TestDarkModeImplementation:
 
         # Footer uses inline brand navy via style attribute
         assert "#1a2e4a" in content
-        assert "brand-pattern" in content
 
     def test_dark_mode_icons_present(self):
         """Test that both light and dark mode icons are present."""

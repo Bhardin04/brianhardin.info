@@ -21,7 +21,7 @@
                 </svg>
                 {% if current_tag %}Filtered by {{ current_tag }}{% else %}Technical Blog{% endif %}
             </div>
-            <h1 class="text-responsive-3xl font-extrabold text-gradient-primary mb-6">
+            <h1 class="text-responsive-3xl font-semibold font-display text-gradient-primary mb-6">
                 {{ page_title }}
             </h1>
             <p class="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
@@ -43,17 +43,70 @@
         <!-- Main Content -->
         <div class="lg:col-span-2">
             {% if posts %}
+                {% set post_list = posts %}
+
+                <!-- Featured Post Hero (only when no tag filter) -->
+                {% if not current_tag and posts | length > 0 %}
+                {% set featured = posts[0] %}
+                <article class="card blog-card-featured p-8 mb-8 border-l-4 border-l-brand-500 dark:border-l-brand-400 reveal">
+                    <div class="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-brand-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-medium text-xs">{{ featured.author[0].upper() }}</span>
+                        </div>
+                        <span class="font-medium text-gray-700 dark:text-gray-300">{{ featured.author }}</span>
+                        <span>&middot;</span>
+                        <time datetime="{{ featured.published_at or featured.created_at }}">
+                            {{ (featured.published_at or featured.created_at).strftime('%B %d, %Y') }}
+                        </time>
+                        <span>&middot;</span>
+                        <span>{{ featured.reading_time_minutes }} min read</span>
+                    </div>
+
+                    <h2 class="text-2xl font-semibold font-display text-gray-900 dark:text-white mb-3">
+                        <a href="/blog/{{ featured.slug }}" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">
+                            {{ featured.title }}
+                        </a>
+                    </h2>
+
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">{{ featured.excerpt }}</p>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-wrap gap-2">
+                            {% for tag in featured.tags %}
+                                <a href="/blog?tag={{ tag }}"
+                                   class="px-3 py-1 text-xs bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full hover:bg-brand-200 dark:hover:bg-brand-800 transition-colors">
+                                    {{ tag }}
+                                </a>
+                            {% endfor %}
+                        </div>
+
+                        <a href="/blog/{{ featured.slug }}"
+                           class="btn-accent text-sm px-4 py-2">
+                            Read Article
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </article>
+                {% set post_list = posts[1:] %}
+                {% endif %}
+
                 <div class="space-y-8">
-                    {% for post in posts %}
-                        <article class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow reveal">
-                            <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-3">
+                    {% for post in post_list %}
+                        <article class="card p-6 border-l-4 border-l-brand-500 dark:border-l-brand-400 reveal">
+                            <div class="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                <div class="w-6 h-6 bg-gradient-to-br from-brand-500 to-brand-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-white font-medium" style="font-size: 0.625rem;">{{ post.author[0].upper() }}</span>
+                                </div>
                                 <time datetime="{{ post.published_at or post.created_at }}">
                                     {{ (post.published_at or post.created_at).strftime('%B %d, %Y') }}
                                 </time>
+                                <span>&middot;</span>
                                 <span>{{ post.reading_time_minutes }} min read</span>
                             </div>
 
-                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                            <h2 class="text-2xl font-semibold font-display text-gray-900 dark:text-white mb-3">
                                 <a href="/blog/{{ post.slug }}" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">
                                     {{ post.title }}
                                 </a>
@@ -92,12 +145,15 @@
         </div>
 
         <!-- Sidebar -->
-        <div class="lg:col-span-1">
-            <div class="space-y-8">
+        <div class="lg:col-span-1 blog-sidebar">
+            <div class="space-y-8 lg:sticky lg:top-24">
                 <!-- Featured Posts -->
                 {% if featured_posts %}
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Featured Posts</h3>
+                    <div class="card p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-1 h-6 bg-brand-500 dark:bg-brand-400 rounded-full"></div>
+                            <h3 class="text-lg font-semibold font-display text-gray-900 dark:text-white">Featured Posts</h3>
+                        </div>
                         <div class="space-y-4">
                             {% for post in featured_posts %}
                                 <article class="border-b border-gray-200 dark:border-gray-700 last:border-b-0 pb-4 last:pb-0">
@@ -119,8 +175,11 @@
 
                 <!-- Tags -->
                 {% if all_tags %}
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Topics</h3>
+                    <div class="card p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-1 h-6 bg-brand-500 dark:bg-brand-400 rounded-full"></div>
+                            <h3 class="text-lg font-semibold font-display text-gray-900 dark:text-white">Topics</h3>
+                        </div>
                         <div class="flex flex-wrap gap-2">
                             {% for tag in all_tags %}
                                 <a href="/blog?tag={{ tag }}"
@@ -146,8 +205,11 @@
                 {% endif %}
 
                 <!-- About -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">About This Blog</h3>
+                <div class="card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-1 h-6 bg-brand-500 dark:bg-brand-400 rounded-full"></div>
+                        <h3 class="text-lg font-semibold font-display text-gray-900 dark:text-white">About This Blog</h3>
+                    </div>
                     <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
                         I share technical insights, tutorials, and thoughts on Python development,
                         FastAPI, web technologies, and software engineering practices.
