@@ -12,34 +12,34 @@ const fs = require('fs');
       },
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
-    
+
     const page = await browser.newPage();
-    
+
     // Handle page errors
     page.on('error', (err) => {
       console.error('Page error:', err);
     });
-    
+
     page.on('pageerror', (err) => {
       console.error('Page error:', err);
     });
-  
+
   try {
     console.log('Navigating to homepage...');
     await page.goto('http://127.0.0.1:8000', { waitUntil: 'networkidle2' });
-    
+
     // Wait for page to fully load
     await page.waitForTimeout(2000);
-    
+
     console.log('Taking light mode screenshot...');
-    await page.screenshot({ 
+    await page.screenshot({
       path: 'homepage-light-after-fix.png',
-      fullPage: true 
+      fullPage: true
     });
-    
+
     // Look for dark mode toggle button
     console.log('Looking for dark mode toggle button...');
-    
+
     // Try multiple possible selectors for the dark mode toggle
     const possibleSelectors = [
       '[data-theme-toggle]',
@@ -54,10 +54,10 @@ const fs = require('fs');
       '.toggle-switch',
       '.theme-switcher'
     ];
-    
+
     let toggleButton = null;
     let usedSelector = null;
-    
+
     for (const selector of possibleSelectors) {
       try {
         const element = await page.$(selector);
@@ -71,7 +71,7 @@ const fs = require('fs');
         // Continue to next selector
       }
     }
-    
+
     // If no specific toggle found, look for any button in the navigation
     if (!toggleButton) {
       console.log('Looking for any buttons in navigation...');
@@ -82,17 +82,17 @@ const fs = require('fs');
         console.log(`Using first navigation button as toggle`);
       }
     }
-    
+
     // If still no toggle found, check for any clickable elements that might be the toggle
     if (!toggleButton) {
       console.log('Looking for any clickable elements that might be theme toggle...');
       const clickableElements = await page.$$('a, button, [onclick], [data-toggle]');
-      
+
       for (const element of clickableElements) {
         const text = await page.evaluate(el => el.textContent?.toLowerCase() || '', element);
         const ariaLabel = await page.evaluate(el => el.getAttribute('aria-label')?.toLowerCase() || '', element);
         const className = await page.evaluate(el => el.className?.toLowerCase() || '', element);
-        
+
         if (text.includes('dark') || text.includes('theme') || text.includes('mode') ||
             ariaLabel.includes('dark') || ariaLabel.includes('theme') || ariaLabel.includes('mode') ||
             className.includes('dark') || className.includes('theme') || className.includes('toggle')) {
@@ -103,25 +103,25 @@ const fs = require('fs');
         }
       }
     }
-    
+
     if (toggleButton) {
       console.log(`Clicking dark mode toggle (${usedSelector})...`);
       await toggleButton.click();
-      
+
       // Wait for theme transition
       await page.waitForTimeout(1000);
-      
+
       console.log('Taking dark mode screenshot...');
-      await page.screenshot({ 
+      await page.screenshot({
         path: 'homepage-dark-after-fix.png',
-        fullPage: true 
+        fullPage: true
       });
-      
+
       console.log('Screenshots captured successfully!');
-      
+
       // Analyze the page elements for dark mode changes
       console.log('Analyzing page elements...');
-      
+
       const analysis = await page.evaluate(() => {
         const results = {
           bodyBackground: getComputedStyle(document.body).backgroundColor,
@@ -132,7 +132,7 @@ const fs = require('fs');
           buttonElements: [],
           toggleButtonInfo: null
         };
-        
+
         // Analyze navigation elements
         const navElements = document.querySelectorAll('nav, .navbar, header');
         navElements.forEach((nav, index) => {
@@ -144,7 +144,7 @@ const fs = require('fs');
             tagName: nav.tagName
           });
         });
-        
+
         // Analyze headings
         const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
         headings.forEach((heading, index) => {
@@ -156,7 +156,7 @@ const fs = require('fs');
             tagName: heading.tagName
           });
         });
-        
+
         // Analyze links
         const links = document.querySelectorAll('a');
         links.forEach((link, index) => {
@@ -168,7 +168,7 @@ const fs = require('fs');
             href: link.href
           });
         });
-        
+
         // Analyze buttons
         const buttons = document.querySelectorAll('button');
         buttons.forEach((button, index) => {
@@ -181,14 +181,14 @@ const fs = require('fs');
             border: styles.border
           });
         });
-        
+
         // Try to find and analyze the toggle button specifically
         const possibleToggles = document.querySelectorAll('button, [data-theme-toggle], .theme-toggle, .dark-mode-toggle');
         possibleToggles.forEach(toggle => {
           const text = toggle.textContent?.toLowerCase() || '';
           const ariaLabel = toggle.getAttribute('aria-label')?.toLowerCase() || '';
           const className = toggle.className?.toLowerCase() || '';
-          
+
           if (text.includes('dark') || text.includes('theme') || text.includes('mode') ||
               ariaLabel.includes('dark') || ariaLabel.includes('theme') || ariaLabel.includes('mode') ||
               className.includes('dark') || className.includes('theme') || className.includes('toggle')) {
@@ -205,25 +205,25 @@ const fs = require('fs');
             };
           }
         });
-        
+
         return results;
       });
-      
+
       // Save analysis to file
       fs.writeFileSync('dark-mode-analysis.json', JSON.stringify(analysis, null, 2));
       console.log('Analysis saved to dark-mode-analysis.json');
-      
+
     } else {
       console.log('Could not find dark mode toggle button. Taking screenshots anyway...');
-      
+
       // Take a second screenshot anyway in case there's an automatic theme
       await page.waitForTimeout(3000);
-      await page.screenshot({ 
+      await page.screenshot({
         path: 'homepage-dark-after-fix.png',
-        fullPage: true 
+        fullPage: true
       });
     }
-    
+
   } catch (error) {
     console.error('Error during test:', error);
   } finally {
@@ -231,7 +231,7 @@ const fs = require('fs');
       await page.close();
     }
   }
-  
+
   } catch (error) {
     console.error('Error launching browser:', error);
   } finally {

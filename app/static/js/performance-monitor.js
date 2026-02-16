@@ -19,7 +19,7 @@ class PerformanceMonitor {
         this.monitoringInterval = null;
         this.performanceHistory = [];
         this.maxHistorySize = 100;
-        
+
         this.initialize();
     }
 
@@ -37,12 +37,12 @@ class PerformanceMonitor {
      */
     startMonitoring() {
         if (this.isMonitoring) return;
-        
+
         this.isMonitoring = true;
         this.monitoringInterval = setInterval(() => {
             this.collectMetrics();
         }, 15000); // Collect metrics every 15 seconds instead of 5
-        
+
         console.log('Performance monitoring started');
     }
 
@@ -51,13 +51,13 @@ class PerformanceMonitor {
      */
     stopMonitoring() {
         if (!this.isMonitoring) return;
-        
+
         this.isMonitoring = false;
         if (this.monitoringInterval) {
             clearInterval(this.monitoringInterval);
             this.monitoringInterval = null;
         }
-        
+
         console.log('Performance monitoring stopped');
     }
 
@@ -79,12 +79,12 @@ class PerformanceMonitor {
         this.metrics.set(timestamp, metrics);
         this.addToHistory(metrics);
         this.checkThresholds(metrics);
-        
+
         // Track with analytics
         if (window.demoAnalytics) {
             window.demoAnalytics.trackPerformance('system_metrics', metrics);
         }
-        
+
         return metrics;
     }
 
@@ -114,7 +114,7 @@ class PerformanceMonitor {
         if (!window.performance || !window.performance.getEntriesByType) {
             return { available: false };
         }
-        
+
         const navigation = window.performance.getEntriesByType('navigation')[0];
         if (!navigation) {
             return { available: false };
@@ -138,7 +138,7 @@ class PerformanceMonitor {
         if (!window.performance || !window.performance.getEntriesByType) {
             return { available: false };
         }
-        
+
         const resources = window.performance.getEntriesByType('resource');
         if (resources.length === 0) {
             return { available: false };
@@ -165,7 +165,7 @@ class PerformanceMonitor {
         if (!window.performance || !window.performance.getEntriesByType) {
             return { available: false };
         }
-        
+
         // Get paint metrics
         const paintEntries = window.performance.getEntriesByType('paint');
         const paintMetrics = {};
@@ -197,7 +197,7 @@ class PerformanceMonitor {
     getErrorMetrics() {
         const errorKey = 'performance_errors';
         const errors = this.metrics.get(errorKey) || { count: 0, recent: [] };
-        
+
         return {
             totalErrors: errors.count,
             recentErrors: errors.recent.slice(-5), // Last 5 errors
@@ -256,10 +256,10 @@ class PerformanceMonitor {
     calculateErrorRate() {
         const recentMetrics = this.getRecentMetrics(10);
         if (recentMetrics.length === 0) return 0;
-        
+
         const totalEvents = recentMetrics.reduce((sum, m) => sum + (m.eventCount || 0), 0);
         const totalErrors = recentMetrics.reduce((sum, m) => sum + (m.errors?.totalErrors || 0), 0);
-        
+
         return totalEvents > 0 ? totalErrors / totalEvents : 0;
     }
 
@@ -279,7 +279,7 @@ class PerformanceMonitor {
         // Calculate based on reconnection attempts, message failures, etc.
         const recentMetrics = this.getRecentMetrics(5);
         if (recentMetrics.length === 0) return 1.0;
-        
+
         // Simple stability calculation (1.0 = perfect, 0.0 = completely unstable)
         return 0.95; // Placeholder
     }
@@ -344,12 +344,12 @@ class PerformanceMonitor {
      */
     addAlert(alert) {
         this.alerts.push(alert);
-        
+
         // Keep only recent alerts (last 50)
         if (this.alerts.length > 50) {
             this.alerts = this.alerts.slice(-50);
         }
-        
+
         // Track with analytics
         if (window.demoAnalytics) {
             window.demoAnalytics.trackEvent('performance_alert', alert);
@@ -368,7 +368,7 @@ class PerformanceMonitor {
                 'error'
             );
         }
-        
+
         console.warn(`Performance Alert [${alert.severity.toUpperCase()}]:`, alert.message, alert.data);
     }
 
@@ -382,7 +382,7 @@ class PerformanceMonitor {
                 const layoutShiftObserver = new PerformanceObserver((list) => {
                     for (const entry of list.getEntries()) {
                         if (entry.hadRecentInput) continue;
-                        
+
                         if (window.demoAnalytics) {
                             window.demoAnalytics.trackPerformance('layout_shift', {
                                 value: entry.value,
@@ -395,7 +395,7 @@ class PerformanceMonitor {
                         }
                     }
                 });
-                
+
                 layoutShiftObserver.observe({ entryTypes: ['layout-shift'] });
             } catch (error) {
                 console.warn('Layout shift observer not supported:', error);
@@ -406,7 +406,7 @@ class PerformanceMonitor {
                 const lcpObserver = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
                     const lastEntry = entries[entries.length - 1];
-                    
+
                     if (window.demoAnalytics) {
                         window.demoAnalytics.trackPerformance('largest_contentful_paint', {
                             startTime: lastEntry.startTime,
@@ -415,7 +415,7 @@ class PerformanceMonitor {
                         });
                     }
                 });
-                
+
                 lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
             } catch (error) {
                 console.warn('LCP observer not supported:', error);
@@ -441,7 +441,7 @@ class PerformanceMonitor {
      */
     addToHistory(metrics) {
         this.performanceHistory.push(metrics);
-        
+
         if (this.performanceHistory.length > this.maxHistorySize) {
             this.performanceHistory.shift();
         }
@@ -481,7 +481,7 @@ class PerformanceMonitor {
         const values = metrics
             .map(m => this.getNestedProperty(m, property))
             .filter(v => v !== null && v !== undefined);
-        
+
         return values.length > 0 ? values.reduce((sum, v) => sum + v, 0) / values.length : 0;
     }
 
@@ -546,11 +546,11 @@ class PerformanceMonitor {
         const link = document.createElement('a');
         link.href = url;
         link.download = `performance_data_${new Date().toISOString().split('T')[0]}.json`;
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         URL.revokeObjectURL(url);
     }
 
@@ -571,10 +571,10 @@ class PerformanceMonitor {
             if (!this.metrics.has(key)) {
                 this.metrics.set(key, []);
             }
-            
+
             const metricHistory = this.metrics.get(key);
             metricHistory.push(performanceData);
-            
+
             // Keep only recent entries
             if (metricHistory.length > 100) {
                 metricHistory.shift();

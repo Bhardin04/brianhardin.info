@@ -105,13 +105,13 @@ function logIssue(severity, message, page, viewport, screenshot = null) {
 // Test functions
 async function testLayoutIntegrity(page, pageInfo, viewport) {
   const issues = [];
-  
+
   try {
     // Check for horizontal scrollbar on mobile/tablet
     if (viewport.category !== 'desktop') {
       const bodyWidth = await page.evaluate(() => document.body.scrollWidth);
       const viewportWidth = viewport.width;
-      
+
       if (bodyWidth > viewportWidth) {
         issues.push({
           type: 'layout',
@@ -120,12 +120,12 @@ async function testLayoutIntegrity(page, pageInfo, viewport) {
         });
       }
     }
-    
+
     // Check for elements extending beyond viewport
     const overflowElements = await page.evaluate(() => {
       const elements = document.querySelectorAll('*');
       const overflowing = [];
-      
+
       elements.forEach(el => {
         const rect = el.getBoundingClientRect();
         if (rect.right > window.innerWidth) {
@@ -138,10 +138,10 @@ async function testLayoutIntegrity(page, pageInfo, viewport) {
           });
         }
       });
-      
+
       return overflowing;
     });
-    
+
     if (overflowElements.length > 0) {
       issues.push({
         type: 'overflow',
@@ -150,7 +150,7 @@ async function testLayoutIntegrity(page, pageInfo, viewport) {
         details: overflowElements
       });
     }
-    
+
   } catch (error) {
     issues.push({
       type: 'error',
@@ -158,23 +158,23 @@ async function testLayoutIntegrity(page, pageInfo, viewport) {
       message: `Error testing layout integrity: ${error.message}`
     });
   }
-  
+
   return issues;
 }
 
 async function testTextReadability(page, pageInfo, viewport) {
   const issues = [];
-  
+
   try {
     const textIssues = await page.evaluate(() => {
       const problems = [];
       const textElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, button');
-      
+
       textElements.forEach(el => {
         const computedStyle = window.getComputedStyle(el);
         const fontSize = parseFloat(computedStyle.fontSize);
         const lineHeight = parseFloat(computedStyle.lineHeight);
-        
+
         // Check minimum font size for readability
         if (fontSize < 14) {
           problems.push({
@@ -184,7 +184,7 @@ async function testTextReadability(page, pageInfo, viewport) {
             text: el.textContent.substring(0, 50) + '...'
           });
         }
-        
+
         // Check line height for readability
         if (lineHeight && lineHeight / fontSize < 1.2) {
           problems.push({
@@ -196,10 +196,10 @@ async function testTextReadability(page, pageInfo, viewport) {
           });
         }
       });
-      
+
       return problems;
     });
-    
+
     if (textIssues.length > 0) {
       issues.push({
         type: 'readability',
@@ -208,7 +208,7 @@ async function testTextReadability(page, pageInfo, viewport) {
         details: textIssues
       });
     }
-    
+
   } catch (error) {
     issues.push({
       type: 'error',
@@ -216,24 +216,24 @@ async function testTextReadability(page, pageInfo, viewport) {
       message: `Error testing text readability: ${error.message}`
     });
   }
-  
+
   return issues;
 }
 
 async function testTapTargets(page, pageInfo, viewport) {
   const issues = [];
-  
+
   if (viewport.hasTouch) {
     try {
       const tapTargetIssues = await page.evaluate(() => {
         const problems = [];
         const interactiveElements = document.querySelectorAll('a, button, input, select, textarea, [onclick], [role="button"]');
-        
+
         interactiveElements.forEach(el => {
           const rect = el.getBoundingClientRect();
           const width = rect.width;
           const height = rect.height;
-          
+
           // Minimum tap target size should be 44x44px
           if (width < 44 || height < 44) {
             problems.push({
@@ -245,10 +245,10 @@ async function testTapTargets(page, pageInfo, viewport) {
             });
           }
         });
-        
+
         return problems;
       });
-      
+
       if (tapTargetIssues.length > 0) {
         issues.push({
           type: 'tap-targets',
@@ -257,7 +257,7 @@ async function testTapTargets(page, pageInfo, viewport) {
           details: tapTargetIssues
         });
       }
-      
+
     } catch (error) {
       issues.push({
         type: 'error',
@@ -266,21 +266,21 @@ async function testTapTargets(page, pageInfo, viewport) {
       });
     }
   }
-  
+
   return issues;
 }
 
 async function testNavigation(page, pageInfo, viewport) {
   const issues = [];
-  
+
   try {
     const navIssues = await page.evaluate(() => {
       const problems = [];
       const navElements = document.querySelectorAll('nav, [role="navigation"], .navbar, .nav-menu');
-      
+
       navElements.forEach(nav => {
         const rect = nav.getBoundingClientRect();
-        
+
         // Check if navigation is visible
         if (rect.width === 0 || rect.height === 0) {
           problems.push({
@@ -289,7 +289,7 @@ async function testNavigation(page, pageInfo, viewport) {
             className: nav.className
           });
         }
-        
+
         // Check for navigation links
         const links = nav.querySelectorAll('a');
         if (links.length === 0) {
@@ -300,10 +300,10 @@ async function testNavigation(page, pageInfo, viewport) {
           });
         }
       });
-      
+
       return problems;
     });
-    
+
     if (navIssues.length > 0) {
       issues.push({
         type: 'navigation',
@@ -312,7 +312,7 @@ async function testNavigation(page, pageInfo, viewport) {
         details: navIssues
       });
     }
-    
+
   } catch (error) {
     issues.push({
       type: 'error',
@@ -320,21 +320,21 @@ async function testNavigation(page, pageInfo, viewport) {
       message: `Error testing navigation: ${error.message}`
     });
   }
-  
+
   return issues;
 }
 
 async function testImages(page, pageInfo, viewport) {
   const issues = [];
-  
+
   try {
     const imageIssues = await page.evaluate(() => {
       const problems = [];
       const images = document.querySelectorAll('img');
-      
+
       images.forEach(img => {
         const rect = img.getBoundingClientRect();
-        
+
         // Check if image extends beyond viewport
         if (rect.right > window.innerWidth) {
           problems.push({
@@ -344,7 +344,7 @@ async function testImages(page, pageInfo, viewport) {
             viewportWidth: window.innerWidth
           });
         }
-        
+
         // Check for missing alt text
         if (!img.alt) {
           problems.push({
@@ -353,10 +353,10 @@ async function testImages(page, pageInfo, viewport) {
           });
         }
       });
-      
+
       return problems;
     });
-    
+
     if (imageIssues.length > 0) {
       issues.push({
         type: 'images',
@@ -365,7 +365,7 @@ async function testImages(page, pageInfo, viewport) {
         details: imageIssues
       });
     }
-    
+
   } catch (error) {
     issues.push({
       type: 'error',
@@ -373,24 +373,24 @@ async function testImages(page, pageInfo, viewport) {
       message: `Error testing images: ${error.message}`
     });
   }
-  
+
   return issues;
 }
 
 async function testForms(page, pageInfo, viewport) {
   const issues = [];
-  
+
   try {
     const formIssues = await page.evaluate(() => {
       const problems = [];
       const forms = document.querySelectorAll('form');
-      
+
       forms.forEach(form => {
         const inputs = form.querySelectorAll('input, textarea, select');
-        
+
         inputs.forEach(input => {
           const rect = input.getBoundingClientRect();
-          
+
           // Check minimum size for form elements
           if (rect.height < 44) {
             problems.push({
@@ -403,10 +403,10 @@ async function testForms(page, pageInfo, viewport) {
           }
         });
       });
-      
+
       return problems;
     });
-    
+
     if (formIssues.length > 0) {
       issues.push({
         type: 'forms',
@@ -415,7 +415,7 @@ async function testForms(page, pageInfo, viewport) {
         details: formIssues
       });
     }
-    
+
   } catch (error) {
     issues.push({
       type: 'error',
@@ -423,7 +423,7 @@ async function testForms(page, pageInfo, viewport) {
       message: `Error testing forms: ${error.message}`
     });
   }
-  
+
   return issues;
 }
 
@@ -432,23 +432,23 @@ async function runResponsiveTests() {
   console.log('Testing website: brianhardin.info');
   console.log('Total test combinations:', viewports.length * pages.length);
   console.log('');
-  
+
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
-  
+
   try {
     for (const pageInfo of pages) {
       for (const viewport of viewports) {
         testResults.summary.totalTests++;
-        
+
         console.log(`Testing ${pageInfo.name} on ${viewport.name} (${viewport.width}x${viewport.height})`);
-        
+
         const page = await browser.newPage();
         await page.setViewport(viewport);
-        
+
         const testResult = {
           page: pageInfo.name,
           viewport: viewport.name,
@@ -459,14 +459,14 @@ async function runResponsiveTests() {
           screenshot: null,
           timestamp: new Date().toISOString()
         };
-        
+
         try {
           // Navigate to page
           await page.goto(pageInfo.url, { waitUntil: 'networkidle2', timeout: 30000 });
-          
+
           // Wait for page to fully load
           await page.waitForTimeout(2000);
-          
+
           // Run all tests
           const layoutIssues = await testLayoutIntegrity(page, pageInfo, viewport);
           const textIssues = await testTextReadability(page, pageInfo, viewport);
@@ -474,7 +474,7 @@ async function runResponsiveTests() {
           const navIssues = await testNavigation(page, pageInfo, viewport);
           const imageIssues = await testImages(page, pageInfo, viewport);
           const formIssues = await testForms(page, pageInfo, viewport);
-          
+
           const allIssues = [
             ...layoutIssues,
             ...textIssues,
@@ -483,19 +483,19 @@ async function runResponsiveTests() {
             ...imageIssues,
             ...formIssues
           ];
-          
+
           testResult.issues = allIssues;
-          
+
           // Take screenshot
           const screenshotPath = path.join(screenshotDir, `${sanitizeFilename(pageInfo.name)}_${sanitizeFilename(viewport.name)}.png`);
           await page.screenshot({ path: screenshotPath, fullPage: true });
           testResult.screenshot = screenshotPath;
-          
+
           // Log issues
           allIssues.forEach(issue => {
             logIssue(issue.severity, issue.message, pageInfo, viewport, screenshotPath);
           });
-          
+
           if (allIssues.length === 0) {
             testResults.summary.passedTests++;
             console.log(`✓ PASS: No issues found`);
@@ -503,28 +503,28 @@ async function runResponsiveTests() {
             testResults.summary.failedTests++;
             console.log(`✗ FAIL: ${allIssues.length} issues found`);
           }
-          
+
         } catch (error) {
           testResult.issues.push({
             type: 'error',
             severity: 'high',
             message: `Failed to test page: ${error.message}`
           });
-          
+
           logIssue('high', `Failed to test page: ${error.message}`, pageInfo, viewport);
           testResults.summary.failedTests++;
         }
-        
+
         testResults.detailed.push(testResult);
         await page.close();
         console.log('');
       }
     }
-    
+
   } finally {
     await browser.close();
   }
-  
+
   // Generate report
   await generateReport();
 }
@@ -555,7 +555,7 @@ All screenshots have been saved to: ${screenshotDir}
 
   const reportPath = path.join(__dirname, 'responsive-design-report.md');
   fs.writeFileSync(reportPath, reportContent);
-  
+
   console.log('='.repeat(60));
   console.log('RESPONSIVE DESIGN TEST SUMMARY');
   console.log('='.repeat(60));
@@ -567,7 +567,7 @@ All screenshots have been saved to: ${screenshotDir}
   console.log(`Report saved to: ${reportPath}`);
   console.log(`Screenshots saved to: ${screenshotDir}`);
   console.log('');
-  
+
   if (testResults.summary.issues.length > 0) {
     console.log('KEY ISSUES FOUND:');
     testResults.summary.issues.forEach((issue, index) => {
@@ -585,11 +585,11 @@ function generateIssuesSummary() {
     medium: 0,
     low: 0
   };
-  
+
   testResults.summary.issues.forEach(issue => {
     severityCounts[issue.severity]++;
   });
-  
+
   return `- High Priority: ${severityCounts.high}
 - Medium Priority: ${severityCounts.medium}
 - Low Priority: ${severityCounts.low}
@@ -600,55 +600,55 @@ function generateDetailedResults() {
   return testResults.detailed.map(result => {
     const issueCount = result.issues.length;
     const status = issueCount === 0 ? '✓ PASS' : `✗ FAIL (${issueCount} issues)`;
-    
+
     let details = `### ${result.page} - ${result.viewport} (${result.dimensions})
 **Status:** ${status}
 **Category:** ${result.category}
 `;
-    
+
     if (result.issues.length > 0) {
       details += `**Issues:**\n`;
       result.issues.forEach((issue, index) => {
         details += `${index + 1}. [${issue.severity.toUpperCase()}] ${issue.message}\n`;
       });
     }
-    
+
     details += `**Screenshot:** ${result.screenshot}\n`;
-    
+
     return details;
   }).join('\n');
 }
 
 function generateRecommendations() {
   const recommendations = [];
-  
+
   // Analyze common issues and provide recommendations
   const issueTypes = {};
   testResults.summary.issues.forEach(issue => {
     const type = issue.message.split(':')[0] || 'general';
     issueTypes[type] = (issueTypes[type] || 0) + 1;
   });
-  
+
   if (issueTypes['Horizontal overflow detected']) {
     recommendations.push('- **Fix horizontal overflow**: Ensure all content fits within viewport widths, especially on mobile devices. Use max-width: 100% and overflow-x: hidden where appropriate.');
   }
-  
+
   if (issueTypes['tap targets smaller than 44x44px']) {
     recommendations.push('- **Improve tap targets**: Increase the size of buttons and links to at least 44x44px for better mobile usability.');
   }
-  
+
   if (issueTypes['text readability issues']) {
     recommendations.push('- **Enhance text readability**: Ensure minimum font sizes (14px+) and adequate line heights (1.4+) for better readability across devices.');
   }
-  
+
   if (issueTypes['image issues']) {
     recommendations.push('- **Optimize images**: Ensure images are responsive and include alt text for accessibility.');
   }
-  
+
   if (recommendations.length === 0) {
     recommendations.push('- **Great job!** No major responsive design issues were found. The website appears to be well-optimized for different screen sizes.');
   }
-  
+
   return recommendations.join('\n');
 }
 

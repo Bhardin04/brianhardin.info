@@ -65,7 +65,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                 </div>
                 {% endif %}
-                
+
                 <!-- Project Header with Icon -->
                 <div class="p-6 pb-4">
                     <div class="flex items-start justify-between mb-4">
@@ -109,16 +109,16 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                         {{ project.title }}
                     </h3>
-                    
+
                     <p class="text-muted leading-relaxed mb-6">
                         {{ project.description }}
                     </p>
                 </div>
-                
+
                 <!-- Technologies Stack -->
                 <div class="px-6 pb-6">
                     <div class="mb-6">
@@ -131,10 +131,10 @@
                             {% endfor %}
                         </div>
                     </div>
-                    
+
                     <!-- Action Buttons -->
                     <div class="flex space-x-3">
-                        <a href="/projects/{{ project.id }}" 
+                        <a href="/projects/{{ project.id }}"
                            class="flex-1 btn btn-secondary text-sm py-2 px-4 justify-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -144,7 +144,7 @@
                         </a>
                         {% if project.demo_url %}
                             {% if project.demo_url.startswith('/demos/') %}
-                        <a href="{{ project.demo_url }}" 
+                        <a href="{{ project.demo_url }}"
                            class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm py-2 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 hover:shadow-lg flex items-center justify-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -152,7 +152,7 @@
                             Interactive Demo
                         </a>
                             {% else %}
-                        <a href="{{ project.demo_url }}" target="_blank" 
+                        <a href="{{ project.demo_url }}" target="_blank"
                            class="flex-1 btn-primary text-sm py-2 px-4 justify-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
@@ -163,13 +163,13 @@
                         {% endif %}
                     </div>
                 </div>
-                
+
                 <!-- Hover Effect Overlay -->
                 <div class="absolute inset-0 bg-gradient-to-t from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </article>
             {% endfor %}
         </div>
-        
+
         <!-- Empty State Message -->
         {% if not projects %}
         <div class="text-center py-16">
@@ -196,13 +196,13 @@
     document.addEventListener('DOMContentLoaded', function() {
         const categoryFilter = document.getElementById('categoryFilter');
         const projectCards = document.querySelectorAll('.project-card');
-        
+
         categoryFilter.addEventListener('change', function() {
             const selectedCategory = this.value;
-            
+
             projectCards.forEach(card => {
                 const cardCategory = card.getAttribute('data-category');
-                
+
                 if (selectedCategory === 'all' || cardCategory === selectedCategory) {
                     card.style.display = 'block';
                     card.classList.add('fade-in');
@@ -211,7 +211,7 @@
                     card.classList.remove('fade-in');
                 }
             });
-            
+
             // Update grid layout after filtering
             const visibleCards = document.querySelectorAll('.project-card[style="display: block"], .project-card:not([style])');
             if (visibleCards.length === 0) {
@@ -220,7 +220,7 @@
                 hideNoResultsMessage();
             }
         });
-        
+
         function showNoResultsMessage() {
             const grid = document.getElementById('projectsGrid');
             if (!document.getElementById('noResultsMessage')) {
@@ -245,7 +245,7 @@
                 grid.appendChild(message);
             }
         }
-        
+
         function hideNoResultsMessage() {
             const message = document.getElementById('noResultsMessage');
             if (message) {
@@ -259,7 +259,7 @@
     .fade-in {
         animation: fadeIn 0.3s ease-in-out;
     }
-    
+
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }

@@ -23,7 +23,7 @@ class ComprehensiveDarkModeTest {
 
     async initialize() {
         console.log('🚀 Initializing Comprehensive Dark Mode Test...');
-        
+
         // Create directories
         [this.screenshotDir, this.reportDir].forEach(dir => {
             if (!fs.existsSync(dir)) {
@@ -51,7 +51,7 @@ class ComprehensiveDarkModeTest {
 
     async testPage(pageName, pagePath) {
         console.log(`\n🔍 Testing ${pageName} page...`);
-        
+
         const page = await this.browser.newPage();
         const pageResult = {
             name: pageName,
@@ -105,7 +105,7 @@ class ComprehensiveDarkModeTest {
             // Test dark mode toggle
             if (pageResult.hasToggle) {
                 console.log(`🔄 Testing dark mode toggle on ${pageName}...`);
-                
+
                 // Method 1: Try clicking the toggle
                 try {
                     await toggle.click();
@@ -172,7 +172,7 @@ class ComprehensiveDarkModeTest {
             const nav = document.querySelector('nav');
             const footer = document.querySelector('footer');
             const main = document.querySelector('main');
-            
+
             const getStyle = (element) => {
                 if (!element) return null;
                 const style = window.getComputedStyle(element);
@@ -194,7 +194,7 @@ class ComprehensiveDarkModeTest {
 
     async testLocalStoragePersistence() {
         console.log('\n🔍 Testing localStorage persistence...');
-        
+
         const page = await this.browser.newPage();
         try {
             // Go to homepage
@@ -245,7 +245,7 @@ class ComprehensiveDarkModeTest {
         const pages = Object.values(this.results.pages);
         this.results.summary.totalPages = pages.length;
         this.results.summary.pagesWithToggle = pages.filter(p => p.hasToggle).length;
-        this.results.summary.pagesWithWorkingDarkMode = pages.filter(p => 
+        this.results.summary.pagesWithWorkingDarkMode = pages.filter(p =>
             p.hasToggle && p.darkMode && p.darkMode.isDark
         ).length;
 
@@ -285,17 +285,17 @@ class ComprehensiveDarkModeTest {
         };
 
         const pages = Object.values(this.results.pages);
-        
+
         pages.forEach(page => {
             if (page.lightMode && page.darkMode && page.themeColors.light && page.themeColors.dark) {
                 const light = page.themeColors.light;
                 const dark = page.themeColors.dark;
-                
+
                 // Check if colors actually changed
                 const bodyChanged = light.body?.background !== dark.body?.background;
                 const navChanged = light.nav?.background !== dark.nav?.background;
                 const footerChanged = light.footer?.background !== dark.footer?.background;
-                
+
                 analysis.colorChangeAnalysis[page.name] = {
                     bodyChanged,
                     navChanged,
@@ -346,7 +346,7 @@ class ComprehensiveDarkModeTest {
         console.log('\n' + '='.repeat(70));
         console.log('📋 COMPREHENSIVE DARK MODE TEST REPORT');
         console.log('='.repeat(70));
-        
+
         const summary = this.results.summary;
         console.log(`📊 Summary:`);
         console.log(`   Total pages tested: ${summary.totalPages}`);
@@ -363,7 +363,7 @@ class ComprehensiveDarkModeTest {
             console.log(`     Dark mode active: ${page.darkMode?.isDark ? '✅' : '❌'}`);
             console.log(`     Light bg: ${page.lightMode?.bodyBackground || 'Unknown'}`);
             console.log(`     Dark bg: ${page.darkMode?.bodyBackground || 'Unknown'}`);
-            
+
             if (page.errors.length > 0) {
                 console.log(`     Errors: ${page.errors.join(', ')}`);
             }
@@ -394,10 +394,10 @@ class ComprehensiveDarkModeTest {
     async run() {
         try {
             await this.initialize();
-            
+
             // Reset to light mode first
             await this.resetTheme();
-            
+
             // Test all pages
             const pages = [
                 { name: 'homepage', path: '/' },
@@ -418,7 +418,7 @@ class ComprehensiveDarkModeTest {
 
             // Generate final report
             const report = await this.generateReport();
-            
+
             return report;
 
         } catch (error) {

@@ -32,7 +32,7 @@
     </filter>
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-      <feMerge> 
+      <feMerge>
         <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
@@ -100,9 +100,9 @@
     <line x1="100" y1="590" x2="740" y2="590"/>
     <line x1="100" y1="640" x2="740" y2="640"/>
   </g>
-  <path d="M 100 580 L 150 560 L 200 540 L 250 520 L 300 500 L 350 480 L 400 460 L 450 440 L 500 420 L 550 400 L 600 380 L 650 360 L 700 340 L 740 320 L 740 640 L 100 640 Z" 
+  <path d="M 100 580 L 150 560 L 200 540 L 250 520 L 300 500 L 350 480 L 400 460 L 450 440 L 500 420 L 550 400 L 600 380 L 650 360 L 700 340 L 740 320 L 740 640 L 100 640 Z"
         fill="url(#primary-gradient)" opacity="0.1"/>
-  <path d="M 100 580 L 150 560 L 200 540 L 250 520 L 300 500 L 350 480 L 400 460 L 450 440 L 500 420 L 550 400 L 600 380 L 650 360 L 700 340 L 740 320" 
+  <path d="M 100 580 L 150 560 L 200 540 L 250 520 L 300 500 L 350 480 L 400 460 L 450 440 L 500 420 L 550 400 L 600 380 L 650 360 L 700 340 L 740 320"
         stroke="url(#primary-gradient)" stroke-width="4" fill="none"/>
   <circle cx="100" cy="580" r="6" fill="#3b82f6"/>
   <circle cx="200" cy="540" r="6" fill="#3b82f6"/>

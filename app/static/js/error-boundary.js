@@ -20,7 +20,7 @@ class ErrorBoundary {
         this.isInErrorState = false;
         this.retryAttempts = 0;
         this.maxRetries = options.maxRetries || 3;
-        
+
         this.initialize();
     }
 
@@ -97,7 +97,7 @@ class ErrorBoundary {
     setupAsyncErrorCatching() {
         // Wrap fetch calls within this boundary
         this.wrapAsyncFunctions();
-        
+
         // Monitor promise rejections
         this.monitorPromiseRejections();
     }
@@ -109,17 +109,17 @@ class ErrorBoundary {
         // This is a simplified implementation
         // In practice, you'd need more sophisticated wrapping
         const originalFetch = window.fetch;
-        
+
         // Store reference to this boundary
         const boundary = this;
-        
+
         // Override fetch for elements within this boundary
         if (this.element.id) {
             const boundaryId = this.element.id;
-            
+
             // Add data attribute to track boundary context
             this.element.setAttribute('data-error-boundary', boundaryId);
-            
+
             // Elements within this boundary can reference it
             this.element.addEventListener('fetch-error', (e) => {
                 boundary.handleError({
@@ -138,7 +138,7 @@ class ErrorBoundary {
     monitorPromiseRejections() {
         // Track unhandled promise rejections that might belong to this boundary
         const boundary = this;
-        
+
         window.addEventListener('unhandledrejection', (e) => {
             // Try to determine if this rejection belongs to our boundary
             if (boundary.isPromiseFromBoundary(e.promise)) {
@@ -148,7 +148,7 @@ class ErrorBoundary {
                     error: e.reason,
                     promise: e.promise
                 });
-                
+
                 // Prevent global error handler
                 e.preventDefault();
             }
@@ -160,7 +160,7 @@ class ErrorBoundary {
      */
     setupResourceErrorCatching() {
         const resources = this.element.querySelectorAll('img, link, script, iframe');
-        
+
         resources.forEach(resource => {
             resource.addEventListener('error', (e) => {
                 this.handleError({
@@ -209,10 +209,10 @@ class ErrorBoundary {
             } else if (element.tagName === 'IMG') {
                 this.validateImage(element);
             }
-            
+
             // Check for accessibility issues
             this.validateAccessibility(element);
-            
+
         } catch (error) {
             this.handleError({
                 type: 'element_validation_error',
@@ -248,7 +248,7 @@ class ErrorBoundary {
                 throw new Error(`Invalid image URL: ${img.src}`);
             }
         }
-        
+
         // Check for alt text (accessibility)
         if (!img.alt && !img.getAttribute('aria-label')) {
             console.warn('Image missing alt text:', img.src);
@@ -263,7 +263,7 @@ class ErrorBoundary {
         if (element.hasAttribute('role')) {
             const role = element.getAttribute('role');
             const validRoles = ['button', 'link', 'heading', 'banner', 'navigation', 'main', 'complementary'];
-            
+
             if (!validRoles.includes(role)) {
                 console.warn(`Unknown ARIA role: ${role}`, element);
             }
@@ -283,7 +283,7 @@ class ErrorBoundary {
     handleError(errorInfo) {
         this.errorCount++;
         this.lastError = errorInfo;
-        
+
         // Log error if enabled
         if (this.options.logErrors) {
             console.error(`Error in boundary ${this.getBoundaryId()}:`, errorInfo);
@@ -346,10 +346,10 @@ class ErrorBoundary {
         }
 
         this.retryAttempts++;
-        
+
         // Show retry notification
         this.showRetryNotification(this.retryAttempts);
-        
+
         // Wait with exponential backoff
         const delay = Math.min(1000 * Math.pow(2, this.retryAttempts - 1), 10000);
         await this.delay(delay);
@@ -392,15 +392,15 @@ class ErrorBoundary {
         return new Promise((resolve) => {
             const script = document.createElement('script');
             script.src = errorInfo.source;
-            
+
             script.onload = () => {
                 resolve({ success: true });
             };
-            
+
             script.onerror = () => {
                 resolve({ success: false, reason: 'Script load failed' });
             };
-            
+
             document.head.appendChild(script);
         });
     }
@@ -412,15 +412,15 @@ class ErrorBoundary {
         if (errorInfo.element) {
             return new Promise((resolve) => {
                 const element = errorInfo.element;
-                
+
                 element.onload = () => {
                     resolve({ success: true });
                 };
-                
+
                 element.onerror = () => {
                     resolve({ success: false, reason: 'Resource load failed' });
                 };
-                
+
                 // Retry loading
                 const src = element.src || element.href;
                 element.src = '';
@@ -431,7 +431,7 @@ class ErrorBoundary {
                 }, 100);
             });
         }
-        
+
         return { success: false, reason: 'No element to retry' };
     }
 
@@ -450,16 +450,16 @@ class ErrorBoundary {
         try {
             // Save current state
             const currentState = this.saveState();
-            
+
             // Reset to original content
             this.element.innerHTML = this.originalContent;
-            
+
             // Reinitialize
             this.initialize();
-            
+
             // Restore state if possible
             this.restoreState(currentState);
-            
+
             return { success: true, method: 'component_reload' };
         } catch (error) {
             return { success: false, error };
@@ -476,7 +476,7 @@ class ErrorBoundary {
                 return { success: true, method: 'cache', data: cachedData };
             }
         }
-        
+
         return { success: false, reason: 'No cache available' };
     }
 
@@ -485,13 +485,13 @@ class ErrorBoundary {
      */
     async showFallback(errorInfo) {
         this.isInErrorState = true;
-        
+
         const fallbackHTML = this.generateFallbackHTML(errorInfo);
         this.element.innerHTML = fallbackHTML;
-        
+
         // Add retry functionality
         this.setupFallbackActions();
-        
+
         return { success: true, method: 'fallback' };
     }
 
@@ -500,7 +500,7 @@ class ErrorBoundary {
      */
     generateFallbackHTML(errorInfo) {
         const boundaryId = this.getBoundaryId();
-        
+
         return `
             <div class="error-boundary-fallback" data-boundary="${boundaryId}">
                 <div class="error-boundary-content">
@@ -533,12 +533,12 @@ class ErrorBoundary {
      */
     setupFallbackActions() {
         const boundaryId = this.getBoundaryId();
-        
+
         // Register global actions
         if (!window.ErrorBoundary.actions) {
             window.ErrorBoundary.actions = {};
         }
-        
+
         window.ErrorBoundary.actions[boundaryId] = {
             retry: () => this.retry(),
             toggleDetails: () => this.toggleDetails(),
@@ -557,7 +557,7 @@ class ErrorBoundary {
             'promise_rejection': 'An operation failed unexpectedly.',
             'render_error': 'This component encountered a display issue.'
         };
-        
+
         return messages[errorInfo.type] || 'An unexpected error occurred in this component.';
     }
 
@@ -580,14 +580,14 @@ class ErrorBoundary {
         // Save current state for recovery
         const inputs = this.element.querySelectorAll('input, select, textarea');
         const state = {};
-        
+
         inputs.forEach(input => {
             if (input.id || input.name) {
                 const key = input.id || input.name;
                 state[key] = input.type === 'checkbox' ? input.checked : input.value;
             }
         });
-        
+
         return state;
     }
 
@@ -628,7 +628,7 @@ class ErrorBoundary {
     onRecoverySuccess(result) {
         this.isInErrorState = false;
         this.retryAttempts = 0;
-        
+
         if (window.errorHandler?.showNotification) {
             window.errorHandler.showNotification(
                 'Recovery Successful',
@@ -640,7 +640,7 @@ class ErrorBoundary {
 
     onRecoveryFailure(errorInfo) {
         this.isInErrorState = true;
-        
+
         if (window.errorHandler?.showNotification) {
             window.errorHandler.showNotification(
                 'Recovery Failed',
@@ -680,7 +680,7 @@ class ErrorBoundary {
         if (details) {
             const isHidden = details.style.display === 'none';
             details.style.display = isHidden ? 'block' : 'none';
-            
+
             const btn = this.element.querySelector('.details-btn');
             if (btn) {
                 btn.textContent = isHidden ? 'Hide Details' : 'Show Details';
@@ -693,13 +693,13 @@ class ErrorBoundary {
         this.errorCount = 0;
         this.retryAttempts = 0;
         this.lastError = null;
-        
+
         // Restore original content
         this.element.innerHTML = this.originalContent;
-        
+
         // Reinitialize
         this.initialize();
-        
+
         if (window.errorHandler?.showNotification) {
             window.errorHandler.showNotification(
                 'Component Reset',
@@ -716,7 +716,7 @@ class ErrorBoundary {
         if (this.mutationObserver) {
             this.mutationObserver.disconnect();
         }
-        
+
         // Remove from global registry
         const boundaryId = this.getBoundaryId();
         if (window.ErrorBoundary.actions?.[boundaryId]) {
@@ -729,17 +729,17 @@ class ErrorBoundary {
 ErrorBoundary.boundaries = new Map();
 
 ErrorBoundary.create = function(selector, options = {}) {
-    const elements = typeof selector === 'string' ? 
+    const elements = typeof selector === 'string' ?
         document.querySelectorAll(selector) : [selector];
-    
+
     const boundaries = [];
-    
+
     elements.forEach(element => {
         const boundary = new ErrorBoundary(element, options);
         ErrorBoundary.boundaries.set(boundary.getBoundaryId(), boundary);
         boundaries.push(boundary);
     });
-    
+
     return boundaries.length === 1 ? boundaries[0] : boundaries;
 };
 

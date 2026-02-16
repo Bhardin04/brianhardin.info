@@ -16,7 +16,7 @@ class DemoAnalyticsTracker {
         this.batchSize = 20; // Smaller batches
         this.sendInterval = 120000; // 2 minutes instead of 30 seconds
         this.maxRetries = 3;
-        
+
         this.initializeTracking();
     }
 
@@ -47,7 +47,7 @@ class DemoAnalyticsTracker {
         this.setupEventListeners();
         this.startPerformanceMonitoring();
         this.startBatchSending();
-        
+
         // Track initial page load performance
         this.trackPageLoadPerformance();
     }
@@ -68,7 +68,7 @@ class DemoAnalyticsTracker {
             language: navigator.language,
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
         };
-        
+
         this.pageViews.push(pageView);
         this.trackEvent('page_view', pageView);
     }
@@ -100,7 +100,7 @@ class DemoAnalyticsTracker {
      */
     trackDemoComplete(demoType, sessionId, completionData = {}) {
         const duration = Date.now() - (this.currentDemo?.startTime || 0);
-        
+
         this.trackEvent('demo_complete', {
             demoType: demoType,
             demoSessionId: sessionId,
@@ -283,7 +283,7 @@ class DemoAnalyticsTracker {
         };
 
         this.events.push(event);
-        
+
         // Console log for development
         if (this.isDevelopment()) {
             console.log('Analytics Event:', event);
@@ -317,19 +317,19 @@ class DemoAnalyticsTracker {
     setupEventListeners() {
         // Track clicks - exclude navigation links to prevent blocking
         document.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || 
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' ||
                 e.target.hasAttribute('data-track') || e.target.closest('[data-track]')) {
-                
+
                 // Skip tracking for navigation links that leave the demo pages
                 if (e.target.tagName === 'A' && e.target.href) {
                     const href = e.target.href;
-                    if (href.includes('/demos') || href.includes('/projects') || href.includes('/contact') || 
+                    if (href.includes('/demos') || href.includes('/projects') || href.includes('/contact') ||
                         href.includes('/about') || href.includes('/resume') || href.includes('/blog')) {
                         console.log('Skipping analytics for navigation link to prevent blocking');
                         return;
                     }
                 }
-                
+
                 // Track other interactions normally
                 this.trackInteraction(e.target, 'click');
             }
@@ -342,7 +342,7 @@ class DemoAnalyticsTracker {
 
         // Track input changes on key form elements
         document.addEventListener('change', (e) => {
-            if (e.target.tagName === 'SELECT' || e.target.type === 'checkbox' || 
+            if (e.target.tagName === 'SELECT' || e.target.type === 'checkbox' ||
                 e.target.type === 'radio' || e.target.hasAttribute('data-track-change')) {
                 this.trackInteraction(e.target, 'change', {
                     value: e.target.value || e.target.checked
@@ -409,27 +409,27 @@ class DemoAnalyticsTracker {
         let frameCount = 0;
         let measurementCount = 0;
         const maxMeasurements = 10; // Only measure for 10 seconds, then stop
-        
+
         const measureFPS = (currentTime) => {
             frameCount++;
-            
+
             if (currentTime - lastTime >= 5000) { // Every 5 seconds instead of 1
                 const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
                 this.trackPerformance('fps', fps);
-                
+
                 frameCount = 0;
                 lastTime = currentTime;
                 measurementCount++;
-                
+
                 // Stop aggressive FPS monitoring after initial measurements
                 if (measurementCount >= maxMeasurements) {
                     return; // Stop the loop
                 }
             }
-            
+
             requestAnimationFrame(measureFPS);
         };
-        
+
         requestAnimationFrame(measureFPS);
     }
 
@@ -450,7 +450,7 @@ class DemoAnalyticsTracker {
                 }
             });
         });
-        
+
         observer.observe({ entryTypes: ['resource'] });
     }
 
@@ -496,10 +496,10 @@ class DemoAnalyticsTracker {
             } else {
                 await this.sendAnalyticsData(batch);
             }
-            
+
             // Clear sent data
             this.performanceMetrics.clear();
-            
+
         } catch (error) {
             console.error('Failed to send analytics batch:', error);
             // Re-add events to queue for retry
@@ -578,11 +578,11 @@ class DemoAnalyticsTracker {
         const link = document.createElement('a');
         link.href = url;
         link.download = `analytics_${this.sessionId}_${new Date().toISOString().split('T')[0]}.json`;
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         URL.revokeObjectURL(url);
     }
 
@@ -590,7 +590,7 @@ class DemoAnalyticsTracker {
      * Check if in development mode
      */
     isDevelopment() {
-        return window.location.hostname === 'localhost' || 
+        return window.location.hostname === 'localhost' ||
                window.location.hostname === '127.0.0.1' ||
                window.location.protocol === 'file:';
     }

@@ -19,7 +19,7 @@ class DemoWebSocketClient {
      */
     connect(demoType, sessionId, options = {}) {
         const connectionKey = `${demoType}-${sessionId}`;
-        
+
         // Don't create duplicate connections
         if (this.connections.has(connectionKey)) {
             console.log(`WebSocket already connected for ${connectionKey}`);
@@ -57,7 +57,7 @@ class DemoWebSocketClient {
             console.log(`WebSocket connected: ${connectionKey}`);
             this.reconnectAttempts.set(connectionKey, 0);
             this.startHeartbeat(connectionKey);
-            
+
             // Trigger connection event
             this.triggerEvent('connected', {
                 connectionKey,
@@ -76,9 +76,9 @@ class DemoWebSocketClient {
             try {
                 const data = JSON.parse(event.data);
                 console.log(`WebSocket message received:`, data);
-                
+
                 this.handleMessage(connectionKey, data);
-                
+
                 // Call user-defined onMessage handler
                 if (options.onMessage) {
                     options.onMessage(data);
@@ -92,7 +92,7 @@ class DemoWebSocketClient {
             console.log(`WebSocket closed: ${connectionKey}`, event);
             this.stopHeartbeat(connectionKey);
             this.connections.delete(connectionKey);
-            
+
             // Trigger disconnection event
             this.triggerEvent('disconnected', {
                 connectionKey,
@@ -114,7 +114,7 @@ class DemoWebSocketClient {
 
         ws.onerror = (error) => {
             console.error(`WebSocket error: ${connectionKey}`, error);
-            
+
             // Trigger error event
             this.triggerEvent('error', {
                 connectionKey,
@@ -135,7 +135,7 @@ class DemoWebSocketClient {
      */
     handleMessage(connectionKey, data) {
         const messageType = data.type;
-        
+
         // Handle built-in message types
         switch (messageType) {
             case 'connection_established':
@@ -201,7 +201,7 @@ class DemoWebSocketClient {
      */
     handlePaymentProcessingUpdate(connectionKey, data) {
         const { update_type, data: updateData } = data;
-        
+
         switch (update_type) {
             case 'step_update':
                 this.updatePaymentProcessingStep(updateData);
@@ -220,13 +220,13 @@ class DemoWebSocketClient {
      */
     handlePipelineProgress(connectionKey, data) {
         const { step, progress, status, details } = data;
-        
+
         // Update progress indicators
         this.updatePipelineProgress(step, progress, status, details);
-        
+
         // Update step status in UI
         this.updatePipelineStepStatus(step, status);
-        
+
         if (status === 'completed' && progress >= 100) {
             this.showNotification('Pipeline Complete', 'Data processing finished successfully', 'success');
         }
@@ -237,7 +237,7 @@ class DemoWebSocketClient {
      */
     handleDashboardUpdate(connectionKey, data) {
         const { chart_type, data: chartData } = data;
-        
+
         switch (chart_type) {
             case 'kpi_update':
                 this.updateDashboardKPIs(chartData);
@@ -256,7 +256,7 @@ class DemoWebSocketClient {
      */
     handleCollectionsUpdate(connectionKey, data) {
         const { metric_type, data: metricsData } = data;
-        
+
         switch (metric_type) {
             case 'dso_update':
                 this.updateDSOMetrics(metricsData);
@@ -275,10 +275,10 @@ class DemoWebSocketClient {
      */
     handleErrorNotification(connectionKey, data) {
         const { error_type, message, details } = data;
-        
+
         console.error('Demo error notification:', data);
         this.showNotification('Error', message, 'error');
-        
+
         // Trigger error event for specific handling
         this.triggerEvent('demo-error', {
             connectionKey,
@@ -293,7 +293,7 @@ class DemoWebSocketClient {
      */
     handleSystemNotification(connectionKey, data) {
         const { notification_type, title, message } = data;
-        
+
         this.showNotification(title, message, notification_type);
     }
 
@@ -303,7 +303,7 @@ class DemoWebSocketClient {
     sendMessage(demoType, sessionId, message) {
         const connectionKey = `${demoType}-${sessionId}`;
         const ws = this.connections.get(connectionKey);
-        
+
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             console.error('WebSocket not connected or not ready');
             return false;
@@ -323,11 +323,11 @@ class DemoWebSocketClient {
      */
     onMessage(demoType, sessionId, handler) {
         const connectionKey = `${demoType}-${sessionId}`;
-        
+
         if (!this.messageHandlers.has(connectionKey)) {
             this.messageHandlers.set(connectionKey, []);
         }
-        
+
         this.messageHandlers.get(connectionKey).push(handler);
     }
 
@@ -356,7 +356,7 @@ class DemoWebSocketClient {
     disconnect(demoType, sessionId) {
         const connectionKey = `${demoType}-${sessionId}`;
         const ws = this.connections.get(connectionKey);
-        
+
         if (ws) {
             this.stopHeartbeat(connectionKey);
             ws.close(1000, 'Client disconnect');
@@ -374,7 +374,7 @@ class DemoWebSocketClient {
             this.stopHeartbeat(connectionKey);
             ws.close(1000, 'Client disconnect all');
         }
-        
+
         this.connections.clear();
         this.messageHandlers.clear();
         this.reconnectAttempts.clear();
@@ -385,7 +385,7 @@ class DemoWebSocketClient {
      */
     startHeartbeat(connectionKey) {
         this.stopHeartbeat(connectionKey); // Clear any existing heartbeat
-        
+
         const timer = setInterval(() => {
             const ws = this.connections.get(connectionKey);
             if (ws && ws.readyState === WebSocket.OPEN) {
@@ -394,7 +394,7 @@ class DemoWebSocketClient {
                 this.stopHeartbeat(connectionKey);
             }
         }, this.heartbeatInterval);
-        
+
         this.heartbeatTimers.set(connectionKey, timer);
     }
 
@@ -414,7 +414,7 @@ class DemoWebSocketClient {
      */
     attemptReconnection(connectionKey, demoType, sessionId, options) {
         const attempts = this.reconnectAttempts.get(connectionKey) || 0;
-        
+
         if (attempts >= this.maxReconnectAttempts) {
             console.log(`Max reconnection attempts reached for ${connectionKey}`);
             this.showNotification('Connection Lost', 'Unable to reconnect to real-time updates', 'error');
@@ -423,9 +423,9 @@ class DemoWebSocketClient {
 
         const delay = this.reconnectDelay * Math.pow(2, attempts); // Exponential backoff
         console.log(`Attempting reconnection ${attempts + 1}/${this.maxReconnectAttempts} for ${connectionKey} in ${delay}ms`);
-        
+
         this.reconnectAttempts.set(connectionKey, attempts + 1);
-        
+
         setTimeout(() => {
             this.connect(demoType, sessionId, options);
         }, delay);
@@ -499,11 +499,11 @@ class DemoWebSocketClient {
         // Update progress bars and step indicators
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
-        
+
         if (progressBar) {
             progressBar.style.width = `${progress}%`;
         }
-        
+
         if (progressText) {
             progressText.textContent = `${progress.toFixed(1)}%`;
         }
@@ -535,11 +535,11 @@ class DemoWebSocketClient {
     getConnectionStatus(demoType, sessionId) {
         const connectionKey = `${demoType}-${sessionId}`;
         const ws = this.connections.get(connectionKey);
-        
+
         if (!ws) {
             return 'disconnected';
         }
-        
+
         switch (ws.readyState) {
             case WebSocket.CONNECTING: return 'connecting';
             case WebSocket.OPEN: return 'connected';
