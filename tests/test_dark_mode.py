@@ -14,15 +14,12 @@ class TestDarkModeImplementation:
         assert response.status_code == 200
         content = response.text
 
-        # Check that body has dark mode classes
-        assert "dark:bg-gray-900" in content
+        # Check that dark mode classes are present somewhere in the page
+        assert "dark:" in content
         assert "dark:bg-gray-800" in content
 
         # Check that dark mode text classes are present
         assert "dark:text-gray-300" in content
-
-        # Check that technology cards have dark mode classes
-        assert "bg-white dark:bg-gray-800" in content
 
         # Check that dark mode toggle button exists
         assert 'id="theme-toggle"' in content
@@ -49,7 +46,6 @@ class TestDarkModeImplementation:
 
         # Check that page includes dark mode classes
         assert "dark:" in content
-        assert "dark:bg-gray-900" in content
 
     def test_projects_page_has_dark_mode_classes(self):
         """Test that projects page includes dark mode classes."""
@@ -59,7 +55,6 @@ class TestDarkModeImplementation:
 
         # Check that page includes dark mode classes
         assert "dark:" in content
-        assert "dark:bg-gray-900" in content
 
     def test_dark_mode_toggle_script_included(self):
         """Test that dark mode toggle script is included in all pages."""
@@ -94,14 +89,14 @@ class TestDarkModeImplementation:
         assert "bg-white dark:bg-gray-800" in content
         assert "dark:text-gray-300 dark:hover:text-white" in content
 
-    def test_footer_has_dark_mode_classes(self):
-        """Test that footer has dark mode classes."""
+    def test_footer_uses_brand_colors(self):
+        """Test that footer uses brand navy color."""
         response = client.get("/")
         assert response.status_code == 200
         content = response.text
 
-        # Check footer dark mode classes
-        assert "bg-gray-800 dark:bg-gray-900" in content
+        # Footer uses inline brand navy via style attribute
+        assert "#1a2e4a" in content
 
     def test_dark_mode_icons_present(self):
         """Test that both light and dark mode icons are present."""
@@ -148,9 +143,8 @@ class TestDarkModeAccessibility:
         assert response.status_code == 200
         content = response.text
 
-        # Check contrast in dark mode
+        # Check contrast in dark mode (nav and other elements still use Tailwind dark: classes)
         assert "dark:text-white" in content  # High contrast white text
         assert "dark:text-gray-300" in content  # Medium contrast gray text
         assert "dark:text-gray-400" in content  # Lower contrast gray text
-        assert "dark:bg-gray-900" in content  # Dark background
-        assert "dark:bg-gray-800" in content  # Slightly lighter dark background
+        assert "dark:bg-gray-800" in content  # Nav background

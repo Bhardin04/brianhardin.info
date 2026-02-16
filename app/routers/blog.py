@@ -131,12 +131,32 @@ async def blog_post(request: Request, slug: str) -> Response:
                 if len(related_posts) >= 3:
                     break
 
+    # Compute previous/next posts chronologically
+    published_posts = sorted(
+        [p for p in all_posts if p.published],
+        key=lambda p: p.published_at or p.created_at,
+        reverse=True,
+    )
+    current_idx = next(
+        (i for i, p in enumerate(published_posts) if p.slug == post.slug), None
+    )
+    prev_post = (
+        published_posts[current_idx - 1] if current_idx and current_idx > 0 else None
+    )
+    next_post = (
+        published_posts[current_idx + 1]
+        if current_idx is not None and current_idx < len(published_posts) - 1
+        else None
+    )
+
     return templates.TemplateResponse(
         request,
         "blog/post.html",
         context={
             "post": post,
             "related_posts": related_posts,
+            "prev_post": prev_post,
+            "next_post": next_post,
             "current_page": "blog",
         },
     )
