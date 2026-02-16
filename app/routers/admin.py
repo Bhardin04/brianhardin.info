@@ -14,7 +14,9 @@ from app.database.connection import get_db
 from app.database.models import AdminSession, BlogPost, ContactMessage, Project
 from app.middleware import generate_csrf_token, validate_csrf_token
 from app.services.blog_db import blog_service_db, generate_slug
+from app.services.contact_db import contact_message_service
 from app.services.project_db import project_service_db
+from app.services.settings_db import site_settings_service
 
 logger = logging.getLogger(__name__)
 
@@ -487,3 +489,150 @@ async def project_delete(
         await project_service_db.delete(db, project)
 
     return RedirectResponse(url="/admin/projects", status_code=302)
+
+
+# ---------- Messages ----------
+
+
+@router.get("/messages", response_class=HTMLResponse)
+async def messages_list(
+    request: Request,
+    session: AdminSession = Depends(require_admin),
+    archived: str = "",
+) -> Response:
+    """List contact messages."""
+    show_archived = archived.lower() == "true"
+    messages: list[ContactMessage] = []
+    async for db in get_db():
+        messages = await contact_message_service.get_all(db, archived=show_archived)
+
+    return templates.TemplateResponse(
+        request,
+        "admin/messages/list.html",
+        context={
+            "admin_user": session.github_username,
+            "messages": messages,
+            "show_archived": show_archived,
+        },
+    )
+
+
+@router.get("/messages/{message_id}", response_class=HTMLResponse)
+async def message_detail(
+    request: Request,
+    message_id: int,
+    session: AdminSession = Depends(require_admin),
+) -> Response:
+    """View a single message (marks as read)."""
+    async for db in get_db():
+        msg = await contact_message_service.get_by_id(db, message_id)
+        if not msg:
+            raise HTTPException(status_code=404, detail="Message not found")
+
+        if not msg.read:
+            await contact_message_service.mark_read(db, msg)
+
+        return templates.TemplateResponse(
+            request,
+            "admin/messages/detail.html",
+            context={
+                "admin_user": session.github_username,
+                "msg": msg,
+            },
+        )
+
+    raise HTTPException(status_code=500, detail="Database unavailable")
+
+
+@router.post("/messages/{message_id}/archive")
+async def message_archive(
+    request: Request,
+    message_id: int,
+    session: AdminSession = Depends(require_admin),
+) -> Response:
+    """Toggle archive status of a message."""
+    async for db in get_db():
+        msg = await contact_message_service.get_by_id(db, message_id)
+        if not msg:
+            raise HTTPException(status_code=404, detail="Message not found")
+        await contact_message_service.toggle_archive(db, msg)
+
+    return RedirectResponse(url="/admin/messages", status_code=302)
+
+
+@router.post("/messages/{message_id}/delete")
+async def message_delete(
+    request: Request,
+    message_id: int,
+    session: AdminSession = Depends(require_admin),
+) -> Response:
+    """Delete a message."""
+    async for db in get_db():
+        msg = await contact_message_service.get_by_id(db, message_id)
+        if not msg:
+            raise HTTPException(status_code=404, detail="Message not found")
+        await contact_message_service.delete(db, msg)
+
+    return RedirectResponse(url="/admin/messages", status_code=302)
+
+
+# ---------- Settings ----------
+
+
+@router.get("/settings", response_class=HTMLResponse)
+async def settings_page(
+    request: Request,
+    session: AdminSession = Depends(require_admin),
+    saved: str = "",
+) -> Response:
+    """Site settings page."""
+    settings: dict[str, str] = {}
+    async for db in get_db():
+        settings = await site_settings_service.get_all(db)
+
+    csrf = generate_csrf_token()
+    response = templates.TemplateResponse(
+        request,
+        "admin/settings.html",
+        context={
+            "admin_user": session.github_username,
+            "settings": settings,
+            "csrf_token": csrf,
+            "saved": saved == "true",
+        },
+    )
+    response.set_cookie("csrf_token", csrf, httponly=True, samesite="strict")
+    return response
+
+
+@router.post("/settings")
+async def settings_save(
+    request: Request,
+    session: AdminSession = Depends(require_admin),
+    site_title: str = Form(""),
+    site_description: str = Form(""),
+    contact_email: str = Form(""),
+    github_url: str = Form(""),
+    linkedin_url: str = Form(""),
+    twitter_url: str = Form(""),
+    csrf_token: str = Form(...),
+) -> Response:
+    """Save site settings."""
+    cookie_csrf = request.cookies.get("csrf_token", "")
+    if csrf_token != cookie_csrf or not validate_csrf_token(csrf_token):
+        raise HTTPException(status_code=403, detail="Invalid CSRF token")
+
+    async for db in get_db():
+        await site_settings_service.set_many(
+            db,
+            {
+                "site_title": site_title,
+                "site_description": site_description,
+                "contact_email": contact_email,
+                "github_url": github_url,
+                "linkedin_url": linkedin_url,
+                "twitter_url": twitter_url,
+            },
+        )
+
+    return RedirectResponse(url="/admin/settings?saved=true", status_code=302)

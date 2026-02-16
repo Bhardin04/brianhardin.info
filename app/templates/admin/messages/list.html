@@ -1,0 +1,57 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Messages</h1>
+        <div class="flex items-center space-x-2">
+            <a href="/admin/messages"
+               class="text-sm px-3 py-1.5 rounded-lg {{ 'bg-blue-600 text-white' if not show_archived else 'border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700' }} transition-colors">
+                Inbox
+            </a>
+            <a href="/admin/messages?archived=true"
+               class="text-sm px-3 py-1.5 rounded-lg {{ 'bg-blue-600 text-white' if show_archived else 'border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700' }} transition-colors">
+                Archived
+            </a>
+        </div>
+    </div>
+
+    {% if messages %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+            {% for msg in messages %}
+            <a href="/admin/messages/{{ msg.id }}" class="block hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="px-6 py-4 flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm font-medium {{ 'text-gray-900 dark:text-white' if not msg.read else 'text-gray-600 dark:text-gray-400' }}">{{ msg.name }}</span>
+                            {% if not msg.read %}
+                            <span class="inline-flex w-2 h-2 rounded-full bg-blue-500"></span>
+                            {% endif %}
+                            {% if msg.company %}
+                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ msg.company }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="text-sm {{ 'font-medium text-gray-800 dark:text-gray-200' if not msg.read else 'text-gray-600 dark:text-gray-400' }}">{{ msg.subject or '(no subject)' }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ msg.message[:100] }}</p>
+                    </div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                        {{ msg.created_at.strftime('%b %d, %Y') }}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 px-6 py-12 text-center">
+        <svg class="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <p class="text-gray-500 dark:text-gray-400">{{ 'No archived messages.' if show_archived else 'No messages yet.' }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

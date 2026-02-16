@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Message from {{ msg.name }}{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="/admin/messages" class="text-sm text-gray-600 dark:text-gray-400 hover:underline">Back to messages</a>
+        <div class="flex items-center space-x-2">
+            <form method="post" action="/admin/messages/{{ msg.id }}/archive">
+                <button type="submit"
+                        class="text-sm px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    {{ 'Unarchive' if msg.archived else 'Archive' }}
+                </button>
+            </form>
+            <form method="post" action="/admin/messages/{{ msg.id }}/delete"
+                  onsubmit="return confirm('Delete this message?')">
+                <button type="submit"
+                        class="text-sm px-3 py-1.5 rounded-lg border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+        <div class="flex items-start justify-between">
+            <div>
+                <h1 class="text-xl font-bold text-gray-900 dark:text-white">{{ msg.subject or '(no subject)' }}</h1>
+                <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    From <span class="font-medium text-gray-900 dark:text-white">{{ msg.name }}</span>
+                    &lt;<a href="mailto:{{ msg.email }}" class="text-blue-600 dark:text-blue-400 hover:underline">{{ msg.email }}</a>&gt;
+                    {% if msg.company %}
+                    <span class="ml-2 text-gray-500 dark:text-gray-400">{{ msg.company }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{ msg.created_at.strftime('%b %d, %Y at %I:%M %p') }}</span>
+        </div>
+
+        <hr class="border-gray-200 dark:border-gray-700">
+
+        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{{ msg.message }}</div>
+    </div>
+</div>
+{% endblock %}
