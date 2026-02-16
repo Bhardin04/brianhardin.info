@@ -7,7 +7,7 @@
     <!-- Demo Header -->
     <div class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Collections Management Dashboard</h1>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
@@ -367,11 +367,17 @@ async function initializeDemo() {
 
 // Update session status indicator
 function updateSessionStatus(status, color) {
+    const colorClasses = {
+        green: 'h-2 w-2 bg-green-400 rounded-full mr-2',
+        red: 'h-2 w-2 bg-red-400 rounded-full mr-2',
+        yellow: 'h-2 w-2 bg-yellow-400 rounded-full mr-2',
+        blue: 'h-2 w-2 bg-blue-400 rounded-full mr-2'
+    };
     const statusElement = document.getElementById('session-status');
     const dot = statusElement.querySelector('div');
-    const text = statusElement.childNodes[2];
-    
-    dot.className = `h-2 w-2 bg-${color}-400 rounded-full mr-2`;
+    const text = statusElement.querySelector('span') || statusElement.childNodes[2];
+
+    dot.className = colorClasses[color] || colorClasses.yellow;
     text.textContent = status;
 }
 
@@ -563,7 +569,12 @@ function renderCollectorPerformance(collectors) {
 function renderCustomerTable(customers) {
     const tbody = document.getElementById('customer-tbody');
     tbody.innerHTML = '';
-    
+
+    if (!customers || customers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No customers match the current filters.</td></tr>';
+        return;
+    }
+
     customers.forEach(customer => {
         const row = document.createElement('tr');
         row.className = 'hover:bg-gray-50 dark:hover:bg-slate-700';
@@ -704,25 +715,25 @@ function renderInsights() {
 // Utility functions
 function getRiskColor(risk) {
     switch (risk) {
-        case 'high': return 'bg-red-100 text-red-800';
-        case 'medium': return 'bg-yellow-100 text-yellow-800';
-        default: return 'bg-green-100 text-green-800';
+        case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+        case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+        default: return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
     }
 }
 
 function getPriorityColor(priority) {
-    return priority <= 2 ? 'bg-red-100 text-red-800' : 
-           priority <= 4 ? 'bg-yellow-100 text-yellow-800' : 
-           'bg-green-100 text-green-800';
+    return priority <= 2 ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
+           priority <= 4 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+           'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
 }
 
 function getActionColor(action) {
     switch (action) {
-        case 'phone_call': return 'bg-blue-100 text-blue-800';
-        case 'email_follow_up': return 'bg-purple-100 text-purple-800';
-        case 'meeting_scheduled': return 'bg-green-100 text-green-800';
-        case 'payment_plan': return 'bg-orange-100 text-orange-800';
-        default: return 'bg-gray-100 text-gray-800';
+        case 'phone_call': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+        case 'email_follow_up': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+        case 'meeting_scheduled': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+        case 'payment_plan': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300';
+        default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300';
     }
 }
 
@@ -783,7 +794,16 @@ document.getElementById('risk-filter').addEventListener('change', function(e) {
     renderCustomerTable(filteredCustomers);
 });
 
-document.getElementById('customer-search').addEventListener('input', function(e) {
+// Debounce utility
+function debounce(fn, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+document.getElementById('customer-search').addEventListener('input', debounce(function(e) {
     const searchTerm = e.target.value.toLowerCase();
     const riskLevel = document.getElementById('risk-filter').value;
     
@@ -801,7 +821,7 @@ document.getElementById('customer-search').addEventListener('input', function(e)
     }
     
     renderCustomerTable(filteredCustomers);
-});
+}, 300));
 
 // Initialize demo when page loads
 document.addEventListener('DOMContentLoaded', () => {

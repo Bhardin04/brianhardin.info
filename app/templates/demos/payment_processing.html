@@ -7,7 +7,7 @@
     <!-- Demo Header -->
     <div class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Payment Processing Demo</h1>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
@@ -246,11 +246,17 @@ async function initializeDemo() {
 
 // Update session status indicator
 function updateSessionStatus(status, color) {
+    const colorClasses = {
+        green: 'h-2 w-2 bg-green-400 rounded-full mr-2',
+        red: 'h-2 w-2 bg-red-400 rounded-full mr-2',
+        yellow: 'h-2 w-2 bg-yellow-400 rounded-full mr-2',
+        blue: 'h-2 w-2 bg-blue-400 rounded-full mr-2'
+    };
     const statusElement = document.getElementById('session-status');
     const dot = statusElement.querySelector('div');
-    const text = statusElement.childNodes[2];
-    
-    dot.className = `h-2 w-2 bg-${color}-400 rounded-full mr-2`;
+    const text = statusElement.querySelector('span') || statusElement.childNodes[2];
+
+    dot.className = colorClasses[color] || colorClasses.yellow;
     text.textContent = status;
 }
 
@@ -345,16 +351,25 @@ function formatNumber(num) {
     return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-// Filter invoices
-document.getElementById('ledger-filter').addEventListener('input', function(e) {
+// Debounce utility
+function debounce(fn, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+// Filter invoices (debounced)
+document.getElementById('ledger-filter').addEventListener('input', debounce(function(e) {
     const filter = e.target.value.toLowerCase();
-    const filteredInvoices = allInvoices.filter(invoice => 
+    const filteredInvoices = allInvoices.filter(invoice =>
         invoice.customer_name.toLowerCase().includes(filter) ||
         invoice.invoice_number.toLowerCase().includes(filter) ||
         invoice.balance.toString().includes(filter)
     );
     displayInvoices(filteredInvoices);
-});
+}, 300));
 
 // Customer selection change
 document.getElementById('customer-select').addEventListener('change', function(e) {

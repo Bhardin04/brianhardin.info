@@ -113,6 +113,10 @@ class ConnectionManager {
      * Start connection quality monitoring
      */
     startConnectionMonitoring() {
+        // Only run periodic pings on demo pages that need real-time connectivity
+        const isDemoPage = window.location.pathname.startsWith('/demos/') && window.location.pathname !== '/demos/';
+        if (!isDemoPage) return;
+
         this.pingInterval = setInterval(() => {
             this.measureConnectionQuality();
         }, 30000); // Every 30 seconds
