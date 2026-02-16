@@ -26,9 +26,34 @@
                         <a href="/projects/8" class="text-sm text-orange-600 hover:text-orange-500 dark:text-orange-400">
                             📋 Project Details
                         </a>
-                        <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
-                            ← Back to Demos
-                        </a>
+                        <nav class="flex" aria-label="Breadcrumb">
+                            <ol class="inline-flex items-center space-x-1">
+                                <li class="inline-flex items-center">
+                                    <a href="/" class="text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                        </svg>
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="/demos" class="ml-1 text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">Demos</a>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="ml-1 text-sm text-gray-400 dark:text-gray-500 font-medium">Collections Dashboard</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -37,12 +62,12 @@
 
     <!-- Dashboard Content -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8">
-        
+
         <!-- DSO Metrics Section -->
         <div class="mb-8 error-boundary" data-error-context="dso-metrics-section">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">DSO Analytics & Performance</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
+
                 <!-- Current DSO -->
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                     <div class="flex items-center justify-between">
@@ -99,7 +124,7 @@
                         <div class="w-12 h-12 relative">
                             <svg class="w-12 h-12 transform -rotate-90" viewBox="0 0 24 24">
                                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" class="text-gray-200 dark:text-gray-600"/>
-                                <circle id="collection-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" 
+                                <circle id="collection-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"
                                         class="text-green-600" stroke-dasharray="0 62.83" stroke-linecap="round"/>
                             </svg>
                         </div>
@@ -110,7 +135,7 @@
 
         <!-- Main Dashboard Grid -->
         <div class="grid lg:grid-cols-12 gap-8 mb-8 error-boundary" data-error-context="dashboard-grid-section">
-            
+
             <!-- Aging Analysis -->
             <div class="lg:col-span-6">
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
@@ -178,7 +203,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="p-6">
                 <div class="overflow-x-auto">
                     <table id="customer-table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -231,7 +256,7 @@
 
         <!-- Activity Summary -->
         <div class="grid lg:grid-cols-3 gap-6">
-            
+
             <!-- Collection Activities -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
@@ -319,13 +344,13 @@ async function initializeDemo() {
                 'Content-Type': 'application/json',
             }
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             demoSession = result.data.session_id;
             updateSessionStatus('Connected', 'green');
-            
+
             // Initialize analytics tracking
             if (window.demoAnalytics) {
                 window.demoAnalytics.trackDemoStart('collections_dashboard', demoSession, {
@@ -333,12 +358,12 @@ async function initializeDemo() {
                     screenResolution: `${screen.width}x${screen.height}`
                 });
             }
-            
+
             // Apply user preferences if available
             if (window.userPreferences) {
                 window.userPreferences.applyTheme();
             }
-            
+
             await loadCollectionsData();
         } else {
             updateSessionStatus('Error', 'red');
@@ -348,7 +373,7 @@ async function initializeDemo() {
         updateSessionStatus('Error', 'red');
         console.error('Error initializing demo:', error);
         console.error('Error details:', error.message, error.stack);
-        
+
         // Use error handler for recovery
         if (window.errorHandler) {
             const errorInfo = {
@@ -359,7 +384,7 @@ async function initializeDemo() {
                 timestamp: Date.now(),
                 severity: 'high'
             };
-            
+
             window.errorHandler.handleError(errorInfo);
         }
     }
@@ -393,20 +418,20 @@ async function loadCollectionsData() {
                 session_id: demoSession
             })
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             collectionsData = result.data;
             customerTargets = collectionsData.customer_targets;
-            
+
             renderDSOMetrics(collectionsData.dso_metrics);
             renderAgingChart(collectionsData.aging_analysis);
             renderCollectorPerformance(collectionsData.collector_performance);
             renderCustomerTable(customerTargets);
             renderActivitySummary(collectionsData.collector_performance);
             renderInsights();
-            
+
             // Hide loading indicators
             document.getElementById('loading-customers').style.display = 'none';
         } else {
@@ -422,39 +447,39 @@ function renderDSOMetrics(dsoData) {
     document.getElementById('current-dso').textContent = dsoData.current_dso.toFixed(1);
     document.getElementById('target-dso').textContent = dsoData.target_dso.toFixed(0);
     document.getElementById('industry-benchmark').textContent = dsoData.industry_benchmark.toFixed(0);
-    
+
     // Calculate DSO progress
     const dsoProgress = Math.min((dsoData.target_dso / dsoData.current_dso) * 100, 100);
     const progressBar = document.getElementById('dso-progress');
     const progressColor = dsoProgress >= 80 ? 'bg-green-600' : dsoProgress >= 60 ? 'bg-yellow-600' : 'bg-red-600';
     progressBar.className = `h-2 rounded-full ${progressColor}`;
     progressBar.style.width = `${dsoProgress}%`;
-    
+
     // DSO trend
     const previousDSO = dsoData.previous_month_dso;
     const change = dsoData.current_dso - previousDSO;
     const changePercent = ((change / previousDSO) * 100);
     const isImproving = change < 0; // Lower DSO is better
-    
+
     document.getElementById('dso-change').textContent = `${change > 0 ? '+' : ''}${change.toFixed(1)}`;
     document.getElementById('dso-change').className = `text-2xl font-bold ${isImproving ? 'text-green-600' : 'text-red-600'}`;
-    
-    const trendIcon = isImproving 
+
+    const trendIcon = isImproving
         ? '<svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" transform="rotate(180)"></path></svg>'
         : '<svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
-    
+
     document.getElementById('dso-trend-icon').innerHTML = trendIcon;
-    
+
     // Benchmark comparison
     const benchmarkDiff = dsoData.current_dso - dsoData.industry_benchmark;
     const benchmarkColor = benchmarkDiff <= 0 ? 'text-green-600' : 'text-red-600';
     document.getElementById('benchmark-comparison').textContent = `${benchmarkDiff > 0 ? '+' : ''}${benchmarkDiff.toFixed(1)} vs industry`;
     document.getElementById('benchmark-comparison').className = `text-xs ${benchmarkColor}`;
-    
+
     // Collection rate (calculated)
     const collectionRate = 72.5; // Simulated collection rate
     document.getElementById('collection-rate').textContent = `${collectionRate.toFixed(1)}%`;
-    
+
     // Update collection rate circle
     const circumference = 2 * Math.PI * 10;
     const offset = circumference - (collectionRate / 100) * circumference;
@@ -466,19 +491,19 @@ function renderDSOMetrics(dsoData) {
 function renderAgingChart(agingData) {
     try {
         const ctx = document.getElementById('aging-chart');
-        
+
         if (charts.aging) {
             charts.aging.destroy();
         }
-        
+
         // Clear loading state
         ctx.innerHTML = '<canvas></canvas>';
         const canvas = ctx.querySelector('canvas');
-    
+
     const labels = agingData.map(bucket => bucket.bucket_name);
     const amounts = agingData.map(bucket => bucket.amount);
     const counts = agingData.map(bucket => bucket.count);
-    
+
     charts.aging = new Chart(canvas, {
         type: 'doughnut',
         data: {
@@ -523,7 +548,7 @@ function renderAgingChart(agingData) {
             timestamp: Date.now(),
             severity: 'medium'
         };
-        
+
         if (window.errorHandler) {
             window.errorHandler.handleError(errorInfo);
         }
@@ -534,14 +559,14 @@ function renderAgingChart(agingData) {
 function renderCollectorPerformance(collectors) {
     const container = document.getElementById('collector-ranking');
     container.innerHTML = '';
-    
+
     collectors.forEach((collector, index) => {
         const targetProgress = (collector.collections_mtd / collector.target_mtd) * 100;
         const targetColor = targetProgress >= 100 ? 'bg-green-600' : targetProgress >= 80 ? 'bg-yellow-600' : 'bg-red-600';
-        
+
         const card = document.createElement('div');
         card.className = 'flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700 rounded-lg';
-        
+
         card.innerHTML = `
             <div class="flex items-center">
                 <div class="flex items-center justify-center w-8 h-8 rounded-full ${index < 3 ? 'bg-orange-600' : 'bg-gray-400'} text-white text-sm font-bold mr-3">
@@ -560,7 +585,7 @@ function renderCollectorPerformance(collectors) {
                 </div>
             </div>
         `;
-        
+
         container.appendChild(card);
     });
 }
@@ -578,11 +603,11 @@ function renderCustomerTable(customers) {
     customers.forEach(customer => {
         const row = document.createElement('tr');
         row.className = 'hover:bg-gray-50 dark:hover:bg-slate-700';
-        
+
         const riskColor = getRiskColor(customer.risk_score);
         const priorityColor = getPriorityColor(customer.priority_rank);
         const actionColor = getActionColor(customer.next_action);
-        
+
         row.innerHTML = `
             <td class="px-4 py-4 whitespace-nowrap">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${priorityColor}">
@@ -613,13 +638,13 @@ function renderCustomerTable(customers) {
                 </span>
             </td>
             <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                ${customer.payment_promise ? 
+                ${customer.payment_promise ?
                     `$${formatNumber(customer.payment_promise.amount)}<br>
-                     <span class="text-xs">${formatDate(customer.payment_promise.promise_date)}</span>` 
+                     <span class="text-xs">${formatDate(customer.payment_promise.promise_date)}</span>`
                     : 'None'}
             </td>
         `;
-        
+
         tbody.appendChild(row);
     });
 }
@@ -630,7 +655,7 @@ function renderActivitySummary(collectors) {
     const totalEmails = collectors.reduce((sum, c) => sum + c.emails_sent, 0);
     const totalMeetings = collectors.reduce((sum, c) => sum + c.meetings_held, 0);
     const avgSuccessRate = (collectors.reduce((sum, c) => sum + c.success_rate, 0) / collectors.length) * 100;
-    
+
     const content = document.getElementById('activity-summary');
     content.innerHTML = `
         <div class="flex justify-between items-center">
@@ -657,7 +682,7 @@ function renderInsights() {
     const highRiskCustomers = customerTargets.filter(c => c.risk_score === 'high').length;
     const overdueCustomers = customerTargets.filter(c => c.days_past_due > 60).length;
     const promisedPayments = customerTargets.filter(c => c.payment_promise).length;
-    
+
     const content = document.getElementById('insights-content');
     content.innerHTML = `
         <div class="space-y-4">
@@ -676,7 +701,7 @@ function renderInsights() {
                     </p>
                 </div>
             </div>
-            
+
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <div class="flex items-center justify-center h-6 w-6 rounded-full bg-orange-100">
@@ -692,7 +717,7 @@ function renderInsights() {
                     </p>
                 </div>
             </div>
-            
+
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <div class="flex items-center justify-center h-6 w-6 rounded-full bg-green-100">
@@ -777,20 +802,20 @@ document.getElementById('refresh-btn').addEventListener('click', loadCollections
 document.getElementById('risk-filter').addEventListener('change', function(e) {
     const riskLevel = e.target.value;
     const searchTerm = document.getElementById('customer-search').value.toLowerCase();
-    
+
     let filteredCustomers = customerTargets;
-    
+
     if (riskLevel) {
         filteredCustomers = filteredCustomers.filter(c => c.risk_score === riskLevel);
     }
-    
+
     if (searchTerm) {
-        filteredCustomers = filteredCustomers.filter(c => 
+        filteredCustomers = filteredCustomers.filter(c =>
             c.customer_name.toLowerCase().includes(searchTerm) ||
             c.customer_id.toLowerCase().includes(searchTerm)
         );
     }
-    
+
     renderCustomerTable(filteredCustomers);
 });
 
@@ -806,20 +831,20 @@ function debounce(fn, delay) {
 document.getElementById('customer-search').addEventListener('input', debounce(function(e) {
     const searchTerm = e.target.value.toLowerCase();
     const riskLevel = document.getElementById('risk-filter').value;
-    
+
     let filteredCustomers = customerTargets;
-    
+
     if (riskLevel) {
         filteredCustomers = filteredCustomers.filter(c => c.risk_score === riskLevel);
     }
-    
+
     if (searchTerm) {
-        filteredCustomers = filteredCustomers.filter(c => 
+        filteredCustomers = filteredCustomers.filter(c =>
             c.customer_name.toLowerCase().includes(searchTerm) ||
             c.customer_id.toLowerCase().includes(searchTerm)
         );
     }
-    
+
     renderCustomerTable(filteredCustomers);
 }, 300));
 
@@ -841,14 +866,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     initializeDemo();
-    
+
     // Initialize analytics if available
     if (window.demoAnalytics) {
         // Analytics is already initialized in constructor, no need to call initialize
     }
-    
+
     // Initialize performance monitoring
     if (window.performanceMonitor) {
         window.performanceMonitor.startMonitoring('collections_dashboard');

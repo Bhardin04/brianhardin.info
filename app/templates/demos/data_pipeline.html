@@ -23,9 +23,34 @@
                         <a href="/projects/7" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
                             📋 Project Details
                         </a>
-                        <a href="/demos" class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
-                            ← Back to Demos
-                        </a>
+                        <nav class="flex" aria-label="Breadcrumb">
+                            <ol class="inline-flex items-center space-x-1">
+                                <li class="inline-flex items-center">
+                                    <a href="/" class="text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                        </svg>
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="/demos" class="ml-1 text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">Demos</a>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div class="flex items-center">
+                                        <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="ml-1 text-sm text-gray-400 dark:text-gray-500 font-medium">Data Pipeline</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -34,7 +59,7 @@
 
     <!-- Demo Content -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8">
-        
+
         <!-- Pipeline Steps Navigation -->
         <div class="mb-8">
             <div class="flex items-center justify-between">
@@ -79,7 +104,7 @@
         </div>
 
         <div class="grid lg:grid-cols-12 gap-8">
-            
+
             <!-- Configuration Panel -->
             <div class="lg:col-span-4">
                 <!-- Step 1: Data Source Selection -->
@@ -88,7 +113,7 @@
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Data Source Configuration</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Select NetSuite data source and extraction parameters</p>
                     </div>
-                    
+
                     <div class="p-6">
                         <form id="extraction-form" class="space-y-4">
                             <!-- Data Source -->
@@ -107,14 +132,14 @@
                                     <label for="start-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Start Date
                                     </label>
-                                    <input type="date" id="start-date" 
+                                    <input type="date" id="start-date"
                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700">
                                 </div>
                                 <div>
                                     <label for="end-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         End Date
                                     </label>
-                                    <input type="date" id="end-date" 
+                                    <input type="date" id="end-date"
                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700">
                                 </div>
                             </div>
@@ -124,7 +149,7 @@
                                 <label for="customer-filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Customer Filter (Optional)
                                 </label>
-                                <input type="text" id="customer-filter" 
+                                <input type="text" id="customer-filter"
                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
                                        placeholder="Filter by customer name or ID">
                             </div>
@@ -139,7 +164,7 @@
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <span class="text-gray-500 sm:text-sm">$</span>
                                         </div>
-                                        <input type="number" step="0.01" id="amount-min" 
+                                        <input type="number" step="0.01" id="amount-min"
                                                class="w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
                                                placeholder="0.00">
                                     </div>
@@ -152,7 +177,7 @@
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <span class="text-gray-500 sm:text-sm">$</span>
                                         </div>
-                                        <input type="number" step="0.01" id="amount-max" 
+                                        <input type="number" step="0.01" id="amount-max"
                                                class="w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700"
                                                placeholder="100000.00">
                                     </div>
@@ -221,14 +246,14 @@
 
             <!-- Main Display Panel -->
             <div class="lg:col-span-8">
-                
+
                 <!-- Data Preview Panel -->
                 <div id="data-preview" class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
                     <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Data Preview</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Sample records matching your selection criteria</p>
                     </div>
-                    
+
                     <div class="p-6">
                         <div id="preview-content" class="text-center py-8 text-gray-500 dark:text-gray-400">
                             Select a data source and configure extraction parameters to preview data
@@ -242,7 +267,7 @@
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Data Transformation</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-300">NetSuite to SAP field mapping and transformation rules</p>
                     </div>
-                    
+
                     <div class="p-6">
                         <div id="transformation-content">
                             <!-- Dynamic transformation mapping will be inserted here -->
@@ -256,7 +281,7 @@
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Processing Pipeline</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Real-time data processing and validation status</p>
                     </div>
-                    
+
                     <div class="p-6">
                         <div id="processing-content" role="status" aria-live="polite">
                             <!-- Dynamic processing status will be inserted here -->
@@ -270,7 +295,7 @@
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Processing Results</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Extraction and transformation summary</p>
                     </div>
-                    
+
                     <div class="p-6">
                         <div id="results-content">
                             <!-- Dynamic results will be inserted here -->
@@ -310,14 +335,14 @@ async function initializeDemo() {
                 'Content-Type': 'application/json',
             }
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             demoSession = result.data.session_id;
             availableSources = result.data.available_sources;
             outputFormats = result.data.output_formats;
-            
+
             updateSessionStatus('Connected', 'green');
             populateDataSources();
             setDefaultDates();
@@ -352,7 +377,7 @@ function updateSessionStatus(status, color) {
 function populateDataSources() {
     const select = document.getElementById('data-source');
     select.innerHTML = '<option value="">Select data source...</option>';
-    
+
     availableSources.forEach(source => {
         const option = document.createElement('option');
         option.value = source.value;
@@ -365,7 +390,7 @@ function populateDataSources() {
 function setDefaultDates() {
     const endDate = new Date();
     const startDate = new Date(endDate.getTime() - (30 * 24 * 60 * 60 * 1000));
-    
+
     document.getElementById('end-date').value = endDate.toISOString().split('T')[0];
     document.getElementById('start-date').value = startDate.toISOString().split('T')[0];
 }
@@ -377,7 +402,7 @@ function updateStepIndicator(step) {
         const stepElement = document.getElementById(`step-${i}`);
         const isActive = i <= step;
         const isCompleted = i < step;
-        
+
         if (isCompleted) {
             stepElement.className = 'flex items-center justify-center w-8 h-8 bg-green-600 rounded-full';
             stepElement.setAttribute('aria-label', `Step ${i}: completed`);
@@ -406,10 +431,10 @@ document.getElementById('data-source').addEventListener('change', function(e) {
 // Show data preview
 function showDataPreview(sourceType) {
     const previewContent = document.getElementById('preview-content');
-    
+
     // Sample data based on source type
     const sampleData = getSampleDataForSource(sourceType);
-    
+
     previewContent.innerHTML = `
         <div class="text-left">
             <div class="mb-4">
@@ -418,11 +443,11 @@ function showDataPreview(sourceType) {
                 </span>
                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Sample records preview</span>
             </div>
-            
+
             <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 font-mono text-sm overflow-x-auto">
                 <pre class="text-gray-800 dark:text-gray-200">${JSON.stringify(sampleData, null, 2)}</pre>
             </div>
-            
+
             <div class="mt-4 text-sm text-gray-600 dark:text-gray-300">
                 Configure extraction parameters and click "Start Data Extraction" to proceed.
             </div>
@@ -480,14 +505,14 @@ function getSampleDataForSource(sourceType) {
             }
         ]
     };
-    
+
     return samples[sourceType] || [{"message": "No sample data available"}];
 }
 
 // Form submission handler
 document.getElementById('extraction-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    
+
     const errorsDiv = document.getElementById('extraction-form-errors');
     errorsDiv.classList.add('hidden');
     errorsDiv.textContent = '';
@@ -516,7 +541,7 @@ document.getElementById('extraction-form').addEventListener('submit', async func
         errorsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         return;
     }
-    
+
     // Start extraction process
     await startExtractionProcess(formData);
 });
@@ -526,17 +551,17 @@ async function startExtractionProcess(params) {
     const extractBtn = document.getElementById('extract-btn');
     extractBtn.disabled = true;
     extractBtn.textContent = 'Processing...';
-    
+
     // Step 2: Show transformation mapping
     updateStepIndicator(2);
     showTransformationMapping(params.source, params.output_format);
-    
+
     // Step 3: Show processing
     setTimeout(() => {
         updateStepIndicator(3);
         showProcessingStatus();
     }, 2000);
-    
+
     // Step 4: Extract data and show results
     setTimeout(async () => {
         await extractData(params);
@@ -547,11 +572,11 @@ async function startExtractionProcess(params) {
 function showTransformationMapping(sourceType, outputFormat) {
     const panel = document.getElementById('transformation-panel');
     const content = document.getElementById('transformation-content');
-    
+
     panel.classList.remove('hidden');
-    
+
     const mappings = getTransformationMappings(sourceType);
-    
+
     content.innerHTML = `
         <div class="grid md:grid-cols-2 gap-6">
             <div>
@@ -567,7 +592,7 @@ function showTransformationMapping(sourceType, outputFormat) {
                     `).join('')}
                 </div>
             </div>
-            
+
             <div>
                 <h4 class="font-medium text-gray-900 dark:text-white mb-3">SAP Target Fields (${outputFormat.toUpperCase()})</h4>
                 <div class="space-y-2">
@@ -580,7 +605,7 @@ function showTransformationMapping(sourceType, outputFormat) {
                 </div>
             </div>
         </div>
-        
+
         <div class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
             <h5 class="font-medium text-yellow-800 dark:text-yellow-200 mb-2">Transformation Rules</h5>
             <ul class="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
@@ -611,7 +636,7 @@ function getTransformationMappings(sourceType) {
             { source: 'due_date', target: 'DueDate', transformation: 'Date format' }
         ]
     };
-    
+
     return mappings[sourceType] || [];
 }
 
@@ -619,9 +644,9 @@ function getTransformationMappings(sourceType) {
 function showProcessingStatus() {
     const panel = document.getElementById('processing-panel');
     const content = document.getElementById('processing-content');
-    
+
     panel.classList.remove('hidden');
-    
+
     content.innerHTML = `
         <div class="space-y-4">
             <div class="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
@@ -631,7 +656,7 @@ function showProcessingStatus() {
                 </div>
                 <span class="text-sm text-blue-600">In Progress</span>
             </div>
-            
+
             <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
                 <div class="flex items-center">
                     <div class="h-5 w-5 border-2 border-gray-300 rounded-full mr-3"></div>
@@ -639,7 +664,7 @@ function showProcessingStatus() {
                 </div>
                 <span class="text-sm text-gray-500">Pending</span>
             </div>
-            
+
             <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
                 <div class="flex items-center">
                     <div class="h-5 w-5 border-2 border-gray-300 rounded-full mr-3"></div>
@@ -647,7 +672,7 @@ function showProcessingStatus() {
                 </div>
                 <span class="text-sm text-gray-500">Pending</span>
             </div>
-            
+
             <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
                 <div class="flex items-center">
                     <div class="h-5 w-5 border-2 border-gray-300 rounded-full mr-3"></div>
@@ -656,7 +681,7 @@ function showProcessingStatus() {
                 <span class="text-sm text-gray-500">Pending</span>
             </div>
         </div>
-        
+
         <div class="mt-6">
             <div class="bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                 <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-1000" style="width: 25%" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" aria-label="Pipeline progress"></div>
@@ -664,7 +689,7 @@ function showProcessingStatus() {
             <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Processing pipeline: <span id="progress-text">25%</span> complete</p>
         </div>
     `;
-    
+
     // Animate progress
     setTimeout(() => {
         const bar = document.getElementById('progress-bar');
@@ -683,7 +708,7 @@ async function extractData(params) {
                 total_records: params.record_limit || 100
             });
         }
-        
+
         const response = await fetch('/demos/api/data-pipeline/extract', {
             method: 'POST',
             headers: {
@@ -694,9 +719,9 @@ async function extractData(params) {
                 params: params
             })
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             updateStepIndicator(4);
             showResults(result.data);
@@ -716,9 +741,9 @@ async function extractData(params) {
 function showResults(result) {
     const panel = document.getElementById('results-panel');
     const content = document.getElementById('results-content');
-    
+
     panel.classList.remove('hidden');
-    
+
     const successRate = result.success_rate * 100;
     const statusStyles = successRate >= 95
         ? { bg: 'bg-green-50 dark:bg-green-900/20', text: 'text-green-600', label: 'text-green-800 dark:text-green-200' }
@@ -741,7 +766,7 @@ function showResults(result) {
                 <div class="text-sm ${statusStyles.label}">Success Rate</div>
             </div>
         </div>
-        
+
         <div class="grid md:grid-cols-2 gap-6">
             <div>
                 <h4 class="font-medium text-gray-900 dark:text-white mb-3">Processing Summary</h4>
@@ -760,7 +785,7 @@ function showResults(result) {
                     </div>
                 </div>
             </div>
-            
+
             ${result.errors && result.errors.length > 0 ? `
             <div>
                 <h4 class="font-medium text-gray-900 dark:text-white mb-3">Processing Errors</h4>
@@ -774,7 +799,7 @@ function showResults(result) {
             </div>
             ` : ''}
         </div>
-        
+
         <div class="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div class="flex items-center">
                 <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -789,7 +814,7 @@ function showResults(result) {
             </p>
         </div>
     `;
-    
+
     // Update processing status to completed
     updateProcessingStatus();
 }
@@ -797,7 +822,7 @@ function showResults(result) {
 // Update processing status to completed
 function updateProcessingStatus() {
     const content = document.getElementById('processing-content');
-    
+
     content.innerHTML = `
         <div class="space-y-4">
             <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
@@ -809,7 +834,7 @@ function updateProcessingStatus() {
                 </div>
                 <span class="text-sm text-green-600">Complete</span>
             </div>
-            
+
             <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                 <div class="flex items-center">
                     <svg class="h-5 w-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -819,7 +844,7 @@ function updateProcessingStatus() {
                 </div>
                 <span class="text-sm text-green-600">Complete</span>
             </div>
-            
+
             <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                 <div class="flex items-center">
                     <svg class="h-5 w-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -829,7 +854,7 @@ function updateProcessingStatus() {
                 </div>
                 <span class="text-sm text-green-600">Complete</span>
             </div>
-            
+
             <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                 <div class="flex items-center">
                     <svg class="h-5 w-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -840,7 +865,7 @@ function updateProcessingStatus() {
                 <span class="text-sm text-green-600">Complete</span>
             </div>
         </div>
-        
+
         <div class="mt-6">
             <div class="bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                 <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
@@ -854,10 +879,10 @@ function updateProcessingStatus() {
 function showError(message) {
     const panel = document.getElementById('results-panel');
     const content = document.getElementById('results-content');
-    
+
     panel.classList.remove('hidden');
     updateStepIndicator(4);
-    
+
     content.innerHTML = `
         <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
             <div class="flex items-center mb-4">
@@ -889,7 +914,7 @@ function retryExtraction() {
 // Setup WebSocket connection for real-time updates
 function setupWebSocketConnection() {
     if (!demoSession) return;
-    
+
     websocketConnection = window.demoWebSocket.connect('data_pipeline', demoSession, {
         onMessage: (data) => {
             handleRealtimeUpdate(data);
@@ -918,15 +943,15 @@ function handleRealtimeUpdate(data) {
 function updatePipelineProgress(step, progress, status, details) {
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
-    
+
     if (progressBar) {
         progressBar.style.width = `${progress}%`;
     }
-    
+
     if (progressText) {
         progressText.textContent = `${progress.toFixed(1)}%`;
     }
-    
+
     // Update step description if details are provided
     if (details && details.current_stage) {
         const stageText = document.querySelector('#pipeline-content p');
@@ -934,7 +959,7 @@ function updatePipelineProgress(step, progress, status, details) {
             stageText.innerHTML = `Processing pipeline: <span class="font-medium">${details.current_stage}</span> - <span id="progress-text">${progress.toFixed(1)}%</span> complete`;
         }
     }
-    
+
     // Show completion notification
     if (status === 'completed' && progress >= 100) {
         if (window.demoWebSocket && window.demoWebSocket.showNotification) {
