@@ -14,6 +14,7 @@ from app.database.connection import get_db
 from app.database.models import AdminSession, BlogPost, ContactMessage, Project
 from app.middleware import generate_csrf_token, validate_csrf_token
 from app.services.blog_db import blog_service_db, generate_slug
+from app.services.project_db import project_service_db
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,13 @@ def _tags_list_from_json(tags_json: str) -> list[str]:
         return json.loads(tags_json)  # type: ignore[no-any-return]
     except (json.JSONDecodeError, TypeError):
         return []
+
+
+def _parse_lines(text: str) -> list[str]:
+    """Parse newline-separated text into a list of strings."""
+    if not text.strip():
+        return []
+    return [line.strip() for line in text.splitlines() if line.strip()]
 
 
 # ---------- Dashboard ----------
@@ -273,3 +281,209 @@ async def blog_toggle_publish(
         await blog_service_db.toggle_publish(db, post)
 
     return RedirectResponse(url="/admin/blog", status_code=302)
+
+
+# ---------- Project CRUD ----------
+
+
+@router.get("/projects", response_class=HTMLResponse)
+async def project_list(
+    request: Request,
+    session: AdminSession = Depends(require_admin),
+) -> Response:
+    """List all projects."""
+    projects: list[Project] = []
+    async for db in get_db():
+        projects = await project_service_db.get_all(db)
+
+    for proj in projects:
+        proj.tech_list = _tags_list_from_json(proj.technologies)  # type: ignore[attr-defined]
+
+    return templates.TemplateResponse(
+        request,
+        "admin/projects/list.html",
+        context={
+            "admin_user": session.github_username,
+            "projects": projects,
+        },
+    )
+
+
+@router.get("/projects/new", response_class=HTMLResponse)
+async def project_new_form(
+    request: Request,
+    session: AdminSession = Depends(require_admin),
+) -> Response:
+    """New project form."""
+    csrf = generate_csrf_token()
+    response = templates.TemplateResponse(
+        request,
+        "admin/projects/edit.html",
+        context={
+            "admin_user": session.github_username,
+            "project": None,
+            "csrf_token": csrf,
+        },
+    )
+    response.set_cookie("csrf_token", csrf, httponly=True, samesite="strict")
+    return response
+
+
+@router.post("/projects/new")
+async def project_create(
+    request: Request,
+    session: AdminSession = Depends(require_admin),
+    title: str = Form(...),
+    description: str = Form(""),
+    long_description: str = Form(""),
+    technologies: str = Form(""),
+    category: str = Form("web_app"),
+    status: str = Form("completed"),
+    featured: str = Form(""),
+    sort_order: int = Form(0),
+    image_url: str = Form(""),
+    github_url: str = Form(""),
+    demo_url: str = Form(""),
+    duration: str = Form(""),
+    role: str = Form(""),
+    team_size: str = Form(""),
+    client_type: str = Form(""),
+    features: str = Form(""),
+    challenges: str = Form(""),
+    csrf_token: str = Form(...),
+) -> Response:
+    """Create a new project."""
+    cookie_csrf = request.cookies.get("csrf_token", "")
+    if csrf_token != cookie_csrf or not validate_csrf_token(csrf_token):
+        raise HTTPException(status_code=403, detail="Invalid CSRF token")
+
+    async for db in get_db():
+        await project_service_db.create(
+            db,
+            title=title,
+            description=description,
+            long_description=long_description,
+            technologies=_parse_tags(technologies),
+            category=category,
+            status=status,
+            featured=featured == "true",
+            sort_order=sort_order,
+            image_url=image_url,
+            github_url=github_url,
+            demo_url=demo_url,
+            duration=duration,
+            role=role,
+            team_size=team_size,
+            client_type=client_type,
+            features=_parse_lines(features),
+            challenges=_parse_lines(challenges),
+        )
+
+    return RedirectResponse(url="/admin/projects", status_code=302)
+
+
+@router.get("/projects/{project_id}/edit", response_class=HTMLResponse)
+async def project_edit_form(
+    request: Request,
+    project_id: int,
+    session: AdminSession = Depends(require_admin),
+) -> Response:
+    """Edit project form."""
+    async for db in get_db():
+        project = await project_service_db.get_by_id(db, project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+
+        project.tech_list = _tags_list_from_json(project.technologies)  # type: ignore[attr-defined]
+        project.features_list = _tags_list_from_json(project.features)  # type: ignore[attr-defined]
+        project.challenges_list = _tags_list_from_json(project.challenges)  # type: ignore[attr-defined]
+
+        csrf = generate_csrf_token()
+        response = templates.TemplateResponse(
+            request,
+            "admin/projects/edit.html",
+            context={
+                "admin_user": session.github_username,
+                "project": project,
+                "csrf_token": csrf,
+            },
+        )
+        response.set_cookie("csrf_token", csrf, httponly=True, samesite="strict")
+        return response
+
+    raise HTTPException(status_code=500, detail="Database unavailable")
+
+
+@router.post("/projects/{project_id}/edit")
+async def project_update(
+    request: Request,
+    project_id: int,
+    session: AdminSession = Depends(require_admin),
+    title: str = Form(...),
+    description: str = Form(""),
+    long_description: str = Form(""),
+    technologies: str = Form(""),
+    category: str = Form("web_app"),
+    status: str = Form("completed"),
+    featured: str = Form(""),
+    sort_order: int = Form(0),
+    image_url: str = Form(""),
+    github_url: str = Form(""),
+    demo_url: str = Form(""),
+    duration: str = Form(""),
+    role: str = Form(""),
+    team_size: str = Form(""),
+    client_type: str = Form(""),
+    features: str = Form(""),
+    challenges: str = Form(""),
+    csrf_token: str = Form(...),
+) -> Response:
+    """Update an existing project."""
+    cookie_csrf = request.cookies.get("csrf_token", "")
+    if csrf_token != cookie_csrf or not validate_csrf_token(csrf_token):
+        raise HTTPException(status_code=403, detail="Invalid CSRF token")
+
+    async for db in get_db():
+        project = await project_service_db.get_by_id(db, project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+
+        await project_service_db.update(
+            db,
+            project,
+            title=title,
+            description=description,
+            long_description=long_description,
+            technologies=_parse_tags(technologies),
+            category=category,
+            status=status,
+            featured=featured == "true",
+            sort_order=sort_order,
+            image_url=image_url,
+            github_url=github_url,
+            demo_url=demo_url,
+            duration=duration,
+            role=role,
+            team_size=team_size,
+            client_type=client_type,
+            features=_parse_lines(features),
+            challenges=_parse_lines(challenges),
+        )
+
+    return RedirectResponse(url="/admin/projects", status_code=302)
+
+
+@router.post("/projects/{project_id}/delete")
+async def project_delete(
+    request: Request,
+    project_id: int,
+    session: AdminSession = Depends(require_admin),
+) -> Response:
+    """Delete a project."""
+    async for db in get_db():
+        project = await project_service_db.get_by_id(db, project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        await project_service_db.delete(db, project)
+
+    return RedirectResponse(url="/admin/projects", status_code=302)
