@@ -1,5 +1,7 @@
 import html
 import logging
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 from datetime import datetime
 
 from fastapi import FastAPI, Request
@@ -11,6 +13,7 @@ from slowapi.errors import RateLimitExceeded
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
+from app.database.connection import close_db, init_db
 from app.middleware import limiter
 from app.routers import api, blog, demos, pages, projects
 from app.services.blog import blog_service
@@ -18,10 +21,19 @@ from app.services.project import project_service
 
 logger = logging.getLogger(__name__)
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    await init_db()
+    yield
+    await close_db()
+
+
 app = FastAPI(
     title="Brian Hardin - Personal Brand",
     description="Personal website showcasing Python projects and skills",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Rate limiting
