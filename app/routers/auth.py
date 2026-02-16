@@ -120,7 +120,9 @@ async def github_callback(
 
     # Create admin session
     session_token = secrets.token_urlsafe(48)
-    expires_at = datetime.now(UTC) + timedelta(hours=SESSION_TTL_HOURS)
+    expires_at = datetime.now(UTC).replace(tzinfo=None) + timedelta(
+        hours=SESSION_TTL_HOURS
+    )
 
     async for db in get_db():
         admin_session = AdminSession(

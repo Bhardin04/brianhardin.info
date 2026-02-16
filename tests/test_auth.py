@@ -36,7 +36,7 @@ async def admin_session():
             session_token=token,
             github_username="testadmin",
             github_id=12345,
-            expires_at=datetime.now(UTC) + timedelta(hours=24),
+            expires_at=datetime.now(UTC).replace(tzinfo=None) + timedelta(hours=24),
         )
         db.add(session)
         await db.commit()
