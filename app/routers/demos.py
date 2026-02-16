@@ -79,7 +79,7 @@ async def automation_demo_page(request: Request) -> HTMLResponse:
 
 # API Endpoints for Payment Processing Demo
 @router.post("/api/payment-processing/session", response_model=None)
-@limiter.limit("10/minute")  # type: ignore[misc]
+@limiter.limit("10/minute")
 async def create_payment_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new payment processing demo session"""
     try:
@@ -115,7 +115,7 @@ async def create_payment_session(request: Request) -> DemoResponse | JSONRespons
 
 
 @router.post("/api/payment-processing/process", response_model=None)
-@limiter.limit("20/minute")  # type: ignore[misc]
+@limiter.limit("20/minute")
 async def process_payment(
     request: Request, payment_data: dict[str, Any]
 ) -> DemoResponse | JSONResponse:
@@ -178,7 +178,7 @@ async def get_customer_invoices(customer_id: str) -> DemoResponse | JSONResponse
 
 # API Endpoints for Data Pipeline Demo
 @router.post("/api/data-pipeline/session", response_model=None)
-@limiter.limit("10/minute")  # type: ignore[misc]
+@limiter.limit("10/minute")
 async def create_pipeline_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new data pipeline demo session"""
     try:
@@ -222,7 +222,7 @@ async def create_pipeline_session(request: Request) -> DemoResponse | JSONRespon
 
 
 @router.post("/api/data-pipeline/extract", response_model=None)
-@limiter.limit("20/minute")  # type: ignore[misc]
+@limiter.limit("20/minute")
 async def extract_pipeline_data(
     request: Request, extraction_request: dict[str, Any]
 ) -> DemoResponse | JSONResponse:
@@ -260,7 +260,7 @@ async def extract_pipeline_data(
 
 # API Endpoints for Dashboard Demo
 @router.post("/api/dashboard/session", response_model=None)
-@limiter.limit("10/minute")  # type: ignore[misc]
+@limiter.limit("10/minute")
 async def create_dashboard_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new dashboard demo session"""
     try:
@@ -293,7 +293,7 @@ async def create_dashboard_session(request: Request) -> DemoResponse | JSONRespo
 
 
 @router.post("/api/dashboard/data", response_model=None)
-@limiter.limit("20/minute")  # type: ignore[misc]
+@limiter.limit("20/minute")
 async def get_dashboard_data(
     request: Request, request_data: dict[str, Any]
 ) -> DemoResponse | JSONResponse:
@@ -330,7 +330,7 @@ async def get_dashboard_data(
 
 # API Endpoints for Collections Demo
 @router.post("/api/collections/session", response_model=None)
-@limiter.limit("10/minute")  # type: ignore[misc]
+@limiter.limit("10/minute")
 async def create_collections_session(request: Request) -> DemoResponse | JSONResponse:
     """Create a new collections demo session"""
     try:
@@ -356,7 +356,7 @@ async def create_collections_session(request: Request) -> DemoResponse | JSONRes
 
 
 @router.post("/api/collections/data", response_model=None)
-@limiter.limit("20/minute")  # type: ignore[misc]
+@limiter.limit("20/minute")
 async def get_collections_data(
     request: Request, request_data: dict[str, Any]
 ) -> DemoResponse | JSONResponse:

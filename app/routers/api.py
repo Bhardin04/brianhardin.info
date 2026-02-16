@@ -122,8 +122,8 @@ async def get_project(project_id: int) -> Project:
 
 
 @router.post("/contact", response_class=HTMLResponse)
-@limiter.limit("1/minute")  # type: ignore[misc]
-@limiter.limit("3/hour")  # type: ignore[misc]
+@limiter.limit("1/minute")
+@limiter.limit("3/hour")
 async def submit_contact_form(
     request: Request,
     name: str = Form(...),
@@ -178,7 +178,7 @@ async def submit_contact_form(
 
 
 @router.post("/analytics")
-@limiter.limit("30/minute")  # type: ignore[misc]
+@limiter.limit("30/minute")
 async def track_analytics(request: Request, data: dict[str, str]) -> dict[str, str]:
     """Analytics tracking endpoint - accepts analytics data but doesn't store it"""
     logger.info(f"Analytics tracked: {data}")
@@ -186,7 +186,7 @@ async def track_analytics(request: Request, data: dict[str, str]) -> dict[str, s
 
 
 @router.post("/error-report")
-@limiter.limit("10/minute")  # type: ignore[misc]
+@limiter.limit("10/minute")
 async def report_error(request: Request, error_data: dict[str, str]) -> dict[str, str]:
     """Error reporting endpoint - logs errors for debugging"""
     logger.error(f"Client error reported: {error_data}")
