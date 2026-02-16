@@ -16,5 +16,6 @@ testing/
 tests/
 node_modules/
 *.md
+!content/**/*.md
 docker-compose.yml
 .pre-commit-config.yaml
