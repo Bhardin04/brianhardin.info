@@ -1661,8 +1661,8 @@ pre code {
 }
 
 /* ===== RESPONSIVE TYPOGRAPHY ===== */
-/* Ensure minimum font sizes for readability */
-body, p, div, span, a, button, input, textarea, select {
+/* Ensure minimum font sizes for form elements (prevents iOS zoom) */
+input, textarea, select {
     font-size: 16px;
     line-height: 1.5;
 }
@@ -1779,36 +1779,38 @@ p {
 }
 
 /* Professional link styling (Brand Guide: Copper default, Copper Light hover) */
-a {
+/* Only style links that don't already have explicit color classes */
+a:not([class*="text-"]):not([class*="btn"]):not([class*="nav"]) {
     color: var(--color-accent);
     text-decoration: none;
     transition: color var(--transition-normal);
 }
 
-a:hover {
+a:not([class*="text-"]):not([class*="btn"]):not([class*="nav"]):hover {
     color: var(--color-accent-light);
     text-decoration: underline;
 }
 
-a:visited {
+/* Visited link styling only for prose/body content links */
+.prose a:visited {
     color: var(--color-primary);
 }
 
-a:visited:hover {
+.prose a:visited:hover {
     color: var(--color-primary-light);
     text-decoration: underline;
 }
 
-.dark a {
+.dark a:not([class*="text-"]):not([class*="btn"]):not([class*="nav"]) {
     color: var(--color-accent-light);
 }
 
-.dark a:hover {
+.dark a:not([class*="text-"]):not([class*="btn"]):not([class*="nav"]):hover {
     color: var(--color-accent);
 }
 
-.dark a:visited {
-    color: var(--color-gray-400);
+.dark .prose a:visited {
+    color: var(--color-gray-500);
 }
 
 /* Improved selection styling */
