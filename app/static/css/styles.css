@@ -8,7 +8,7 @@
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Lexend', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, 'Cascadia Code', monospace;
-  
+
   /* Font Sizes - Premium Scale */
   --text-xs: 0.75rem;     /* 12px */
   --text-sm: 0.875rem;    /* 14px */
@@ -21,7 +21,7 @@
   --text-5xl: 3rem;       /* 48px */
   --text-6xl: 3.75rem;    /* 60px */
   --text-7xl: 4.5rem;     /* 72px */
-  
+
   /* Font Weights - Refined */
   --font-light: 300;
   --font-regular: 400;
@@ -29,53 +29,53 @@
   --font-semibold: 600;
   --font-bold: 700;
   --font-extrabold: 800;
-  
+
   /* Line Heights - Optimized for Readability */
   --leading-tight: 1.2;
   --leading-normal: 1.6;        /* Improved from 1.5 for better readability */
   --leading-relaxed: 1.8;       /* Improved from 1.75 for content flow */
   --leading-loose: 2.0;         /* For very relaxed content sections */
-  
+
   /* Letter Spacing */
   --letter-normal: 0;
   --letter-wide: 0.05em;
-  
+
   /* === COLORS === */
   /* Premium Brand Colors (Deep Slate) - Primary Brand */
   --color-primary: #1E293B;
   --color-primary-light: #334155;
   --color-primary-dark: #0F172A;
-  
+
   /* Secondary Colors (Electric Blue) - Tech & Innovation */
   --color-secondary: #0EA5E9;
   --color-secondary-light: #38BDF8;
   --color-secondary-dark: #0284C7;
-  
+
   /* Accent Colors (Emerald Green) - Python & Growth */
   --color-accent: #10B981;
   --color-accent-light: #34D399;
   --color-accent-dark: #059669;
-  
+
   /* Premium Accent (Amber) - Expertise & Achievement */
   --color-premium: #F59E0B;
   --color-premium-light: #FCD34D;
   --color-premium-dark: #D97706;
-  
+
   /* Brand Identity Colors */
   --color-brand-primary: #1E293B;    /* Deep professional slate */
   --color-brand-secondary: #0EA5E9;  /* Electric blue for tech */
   --color-brand-accent: #10B981;     /* Python green for development */
   --color-brand-premium: #F59E0B;    /* Amber for premium touches */
-  
+
   /* Neutral Colors */
   --color-neutral-light: #F8FAFC;
   --color-neutral-dark: #0F172A;
-  
+
   /* Background Colors */
   --color-bg-primary: #FFFFFF;
   --color-bg-secondary: #F8FAFC;
   --color-bg-accent: #F0F9FF;
-  
+
   /* Extended color palette for compatibility */
   --color-primary-50: #f8fafc;
   --color-primary-100: #f1f5f9;
@@ -87,7 +87,7 @@
   --color-primary-700: #334155;
   --color-primary-800: #1e293b;
   --color-primary-900: #0f172a;
-  
+
   /* Secondary Colors (Electric Blue spectrum) */
   --color-secondary-50: #f0f9ff;
   --color-secondary-100: #e0f2fe;
@@ -99,7 +99,7 @@
   --color-secondary-700: #0369a1;
   --color-secondary-800: #075985;
   --color-secondary-900: #0c4a6e;
-  
+
   /* Neutral Grays */
   --color-gray-50: #f8fafc;
   --color-gray-100: #f1f5f9;
@@ -111,30 +111,30 @@
   --color-gray-700: #334155;
   --color-gray-800: #1e293b;
   --color-gray-900: #0f172a;
-  
+
   /* Semantic Colors */
   --color-success-50: #ecfdf5;
   --color-success-100: #d1fae5;
   --color-success-500: #10b981;
   --color-success-600: #059669;
   --color-success-700: #047857;
-  
+
   --color-warning-50: #fffbeb;
   --color-warning-100: #fef3c7;
   --color-warning-500: #f59e0b;
   --color-warning-600: #d97706;
   --color-warning-700: #b45309;
-  
+
   --color-error-50: #fef2f2;
   --color-error-100: #fee2e2;
   --color-error-500: #ef4444;
   --color-error-600: #dc2626;
   --color-error-700: #b91c1c;
-  
+
   /* Extended color palette for testimonials */
   --color-accent-50: #ecfdf5;
   --color-premium-50: #fffbeb;
-  
+
   /* === SPACING - Refined Scale === */
   --space-xs: 4px;      /* 4px */
   --space-sm: 8px;      /* 8px */
@@ -142,7 +142,11 @@
   --space-lg: 24px;     /* 24px */
   --space-xl: 32px;     /* 32px */
   --space-2xl: 48px;    /* 48px */
-  
+  --space-4: 1rem;      /* 16px - container padding */
+  --space-16: 2rem;     /* 32px - section-sm padding */
+  --space-24: 3rem;     /* 48px - section padding */
+  --space-32: 4rem;     /* 64px - section-lg padding */
+
   /* === SHADOWS - Enhanced with colored shadows === */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
@@ -150,40 +154,40 @@
   --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
   --shadow-premium: 0 32px 64px -12px rgba(0,0,0,0.15);
-  
+
   /* Colored shadows for interactive elements */
   --shadow-primary: 0 8px 25px -8px rgba(30, 41, 59, 0.3);
   --shadow-secondary: 0 8px 25px -8px rgba(14, 165, 233, 0.3);
   --shadow-accent: 0 8px 25px -8px rgba(16, 185, 129, 0.3);
   --shadow-premium: 0 8px 25px -8px rgba(245, 158, 11, 0.3);
-  
+
   /* Glass morphism shadows */
   --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
   --shadow-glass-dark: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  
+
   /* === BORDER RADIUS === */
   --radius-sm: 2px;
   --radius-md: 4px;
   --radius-lg: 8px;
   --radius-full: 9999px;
-  
+
   /* === TRANSITIONS - Premium Motion Design === */
   --transition-fast: 150ms cubic-bezier(0, 0, 0.2, 1);
   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   /* Premium easing curves */
   --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
-  
+
   /* Micro-interactions */
   --transition-micro: 100ms var(--ease-out-expo);
   --transition-button: 200ms var(--ease-in-out-quart);
   --transition-card: 300ms var(--ease-in-out-circ);
   --transition-modal: 400ms var(--ease-in-out-back);
-  
+
   /* Animation delays for staggered effects */
   --delay-1: 50ms;
   --delay-2: 100ms;
@@ -221,16 +225,16 @@
   --color-gray-700: #e2e8f0;
   --color-gray-800: #f1f5f9;
   --color-gray-900: #f8fafc;
-  
+
   /* Update neutral colors for dark mode */
   --color-neutral-light: #1e293b;
   --color-neutral-dark: #f8fafc;
-  
+
   /* Background colors for dark mode */
   --color-bg-primary: #0f172a;
   --color-bg-secondary: #1e293b;
   --color-bg-accent: #0c4a6e;
-  
+
   /* Override light accent colors for dark mode visibility */
   --color-secondary-50: #0c4a6e;
   --color-accent-50: #064e3b;
@@ -456,42 +460,42 @@
     line-height: 1.1;
     margin-bottom: 1rem;
   }
-  
+
   .heading-1 {
     font-size: 2rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
   }
-  
+
   .heading-2 {
     font-size: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
   }
-  
+
   .body-large {
     font-size: 1.125rem;
     margin-bottom: 1.25rem;
   }
-  
+
   .body-text {
     font-size: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .content-section {
     margin-bottom: 2rem;
   }
-  
+
   .content-block {
     margin-bottom: 1.5rem;
   }
-  
+
   .callout {
     padding: 1rem;
     margin: 1.5rem 0;
   }
-  
+
   .section-divider {
     margin: 2.5rem 0;
   }
@@ -641,19 +645,19 @@ img, video, iframe, embed, object {
         padding-left: 0.75rem;
         padding-right: 0.75rem;
     }
-    
+
     /* Ensure no negative margins on mobile */
     * {
         margin-left: 0;
         margin-right: 0;
     }
-    
+
     /* Fix potential table overflow */
     table {
         width: 100%;
         table-layout: fixed;
     }
-    
+
     /* Prevent text from causing overflow */
     pre, code {
         white-space: pre-wrap;
@@ -716,8 +720,8 @@ body {
 .tracking-wide { letter-spacing: var(--letter-wide); }
 
 /* Elegant Typography with Serif Font */
-.text-serif { 
-    font-family: var(--font-secondary); 
+.text-serif {
+    font-family: var(--font-secondary);
     line-height: var(--leading-relaxed);
 }
 
@@ -821,7 +825,7 @@ nav a {
         padding: 14px 24px;
         font-size: 16px;
     }
-    
+
     nav a {
         min-height: 48px;
         padding: 14px 12px;
@@ -895,13 +899,13 @@ textarea {
     nav .flex.items-center.space-x-8 {
         gap: 0.5rem;
     }
-    
+
     nav a {
         padding: 12px 8px;
         font-size: 16px;
         min-height: 44px;
     }
-    
+
     /* Reduce spacing between navigation items on mobile */
     nav .space-x-8 > * + * {
         margin-left: 0.5rem;
@@ -913,12 +917,12 @@ textarea {
     nav .flex.items-center.space-x-8 {
         gap: 0.25rem;
     }
-    
+
     nav a {
         padding: 12px 6px;
         font-size: 14px;
     }
-    
+
     nav .space-x-8 > * + * {
         margin-left: 0.25rem;
     }
@@ -1048,7 +1052,7 @@ textarea {
     transition: all var(--transition-button);
     position: relative;
     overflow: hidden;
-    
+
     /* Subtle shine effect */
     &::before {
         content: '';
@@ -1066,7 +1070,7 @@ textarea {
     background: linear-gradient(135deg, var(--color-secondary-400), var(--color-secondary-500));
     box-shadow: var(--shadow-secondary), 0 0 20px rgba(14, 165, 233, 0.15);
     transform: translateY(-2px) scale(1.02);
-    
+
     &::before {
         left: 100%;
     }
@@ -1163,7 +1167,7 @@ textarea {
     transition: all var(--transition-card);
     position: relative;
     overflow: hidden;
-    
+
     /* Subtle gradient overlay */
     &::before {
         content: '';
@@ -1182,7 +1186,7 @@ textarea {
     box-shadow: var(--shadow-lg), 0 0 30px rgba(14, 165, 233, 0.08);
     transform: translateY(-4px) scale(1.02);
     border-color: var(--color-secondary-300);
-    
+
     &::before {
         opacity: 1;
     }
@@ -1462,7 +1466,7 @@ body, p, div, span, a, button, input, textarea, select {
     .text-responsive-xl { font-size: max(1.875rem, 30px); }
     .text-responsive-2xl { font-size: max(2.25rem, 36px); }
     .text-responsive-3xl { font-size: max(3rem, 48px); }
-    
+
     /* Ensure minimum font sizes on mobile */
     .text-xs { font-size: 14px; }
     .text-sm { font-size: 16px; }
@@ -2532,17 +2536,17 @@ a:hover {
     .slide-up-delay-3 {
         animation-duration: 0.4s;
     }
-    
+
     .hover-lift:hover,
     .hover-float:hover {
         transform: translateY(-2px) scale(1.01);
     }
-    
+
     .brand-logo {
         width: 80px;
         height: 80px;
     }
-    
+
     .brand-pattern::before {
         background-size: 150px 150px;
     }

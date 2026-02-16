@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **Suggestion-level UX improvements** - Dynamic Tailwind class fix (CDN-safe object mapping), debounced search inputs, Google Fonts loaded via `<link>`, scoped connection monitoring to demo pages, reduced motion support (scroll-behavior, transform suppression), print styles, flex-wrap on demo headers, empty state messages for filtered tables, SEO meta tag propagation from page variables, improved CTA copy, mobile menu transition
 - **Dark mode blog sidebar** - Added missing `dark:bg-gray-800` to "About This Blog" card on blog index, fixing invisible text on white background in dark mode
+- **Footer whitespace** - Added sticky footer layout (`flex-col` + `flex-1`), reduced excessive padding on demos page (hero, grid, CTA), tightened contact page bottom padding, defined missing CSS spacing variables (`--space-4`, `--space-16`, `--space-24`, `--space-32`) used by section and container classes
 
 ## [1.4.0] - 2026-02-15
 
