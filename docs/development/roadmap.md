@@ -2,7 +2,7 @@
 
 > **Last Updated**: 2026-02-16
 > **Current Version**: Unreleased (post-v1.4.0)
-> **Test Suite**: 98 tests passing
+> **Test Suite**: 164 tests passing
 
 ## Completed Phases
 
@@ -80,14 +80,19 @@ See [improvements-list.md](improvements-list.md) for full details on each item.
 - [ ] CDN for static assets
 - [ ] Gzip/brotli compression
 
-### Phase 5: Content & CMS
-- [ ] Wire up markdown file-based blog (infrastructure exists in BlogService)
-- [ ] Admin interface for content management
-- [ ] Additional project showcases
-- [ ] Automation Suite demo (currently placeholder)
+### Phase 5: Admin Panel / CMS (In Progress)
+- [x] Database foundation (SQLAlchemy async, PostgreSQL + SQLite)
+- [x] GitHub OAuth authentication
+- [x] Admin dashboard with sidebar navigation
+- [x] Blog CRUD management (create, edit, delete, publish toggle)
+- [x] Project CRUD management (with case study data)
+- [x] Contact message inbox (read, archive, delete)
+- [x] Site settings management
+- [x] Data seeding script (`python -m app.scripts.seed`)
+- [x] Feature-flagged DB migration for public routes (`USE_DATABASE` env var)
+- [ ] Documentation & cleanup (Phase 8)
 
 ### Phase 6: Advanced Features
-- [ ] PostgreSQL for dynamic content
 - [ ] Redis caching layer
 - [ ] Accessibility audit (WCAG compliance)
 - [ ] Visual regression testing

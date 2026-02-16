@@ -5,6 +5,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.responses import Response
 
+from app.config import settings
 from app.models.blog import BlogPost, BlogPostSummary
 from app.services.blog import blog_service
 
@@ -12,24 +13,44 @@ router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 
+async def _get_all_posts(published_only: bool = True) -> list[BlogPost]:
+    """Get all posts from DB or in-memory service."""
+    if settings.USE_DATABASE:
+        from app.database.connection import get_db
+        from app.services.blog_db import blog_service_db
+        from app.services.db_adapters import db_blog_to_pydantic
+
+        async for db in get_db():
+            db_posts = await blog_service_db.get_all(db, published_only=published_only)
+            return [db_blog_to_pydantic(p) for p in db_posts]
+        return []
+    return blog_service.get_all_posts(published_only=published_only)
+
+
 @router.get("/blog", response_class=HTMLResponse)
 async def blog_list(request: Request, tag: str | None = None) -> Response:
     """Blog listing page with optional tag filtering."""
-    posts: list[BlogPost] | list[BlogPostSummary]
+    all_posts = await _get_all_posts(published_only=True)
+
     if tag:
-        posts = blog_service.get_posts_by_tag(tag)
+        posts: list[BlogPost] | list[BlogPostSummary] = [
+            p for p in all_posts if tag.lower() in [t.lower() for t in p.tags]
+        ]
         page_title = f"Blog Posts Tagged '{tag}'"
     else:
-        posts = blog_service.get_posts_summary(published_only=True)
+        posts = sorted(
+            all_posts,
+            key=lambda p: p.published_at or p.created_at,
+            reverse=True,
+        )
         page_title = "Technical Blog"
 
     # Get all unique tags for the sidebar
-    all_posts = blog_service.get_all_posts()
-    all_tags = set()
+    all_tags: set[str] = set()
     for post in all_posts:
         all_tags.update(post.tags)
 
-    featured_posts = blog_service.get_featured_posts(limit=3)
+    featured_posts = [p for p in all_posts if p.featured][:3]
 
     return templates.TemplateResponse(
         request,
@@ -48,7 +69,7 @@ async def blog_list(request: Request, tag: str | None = None) -> Response:
 @router.get("/blog/feed.xml")
 async def blog_rss_feed() -> Response:
     """RSS 2.0 feed of published blog posts."""
-    posts = blog_service.get_all_posts(published_only=True)
+    posts = await _get_all_posts(published_only=True)
     posts.sort(
         key=lambda p: p.published_at or p.created_at,
         reverse=True,
@@ -90,7 +111,8 @@ async def blog_rss_feed() -> Response:
 @router.get("/blog/{slug}", response_class=HTMLResponse)
 async def blog_post(request: Request, slug: str) -> Response:
     """Individual blog post page."""
-    post = blog_service.get_post_by_slug(slug)
+    all_posts = await _get_all_posts(published_only=False)
+    post = next((p for p in all_posts if p.slug == slug), None)
 
     if not post:
         raise HTTPException(status_code=404, detail="Blog post not found")
@@ -101,7 +123,6 @@ async def blog_post(request: Request, slug: str) -> Response:
     # Get related posts (same tags)
     related_posts = []
     if post.tags:
-        all_posts = blog_service.get_all_posts()
         for other_post in all_posts:
             if other_post.id != post.id and any(
                 tag in other_post.tags for tag in post.tags
@@ -127,15 +148,18 @@ async def api_get_posts(
     published_only: bool = True, limit: int | None = None, tag: str | None = None
 ) -> list[BlogPost] | list[BlogPostSummary]:
     """API endpoint to get blog posts."""
+    all_posts = await _get_all_posts(published_only=published_only)
     api_posts: list[BlogPost] | list[BlogPostSummary]
     if tag:
-        api_posts = blog_service.get_posts_by_tag(tag)
-        if published_only:
-            api_posts = [post for post in api_posts if post.published]
+        api_posts = [p for p in all_posts if tag.lower() in [t.lower() for t in p.tags]]
     else:
-        api_posts = blog_service.get_posts_summary(
-            published_only=published_only, limit=limit
+        api_posts = sorted(
+            all_posts,
+            key=lambda p: p.published_at or p.created_at,
+            reverse=True,
         )
+        if limit:
+            api_posts = api_posts[:limit]
 
     return api_posts
 
@@ -143,7 +167,8 @@ async def api_get_posts(
 @router.get("/api/blog/posts/{slug}")
 async def api_get_post(slug: str) -> BlogPost:
     """API endpoint to get a specific blog post."""
-    post = blog_service.get_post_by_slug(slug)
+    all_posts = await _get_all_posts(published_only=False)
+    post = next((p for p in all_posts if p.slug == slug), None)
     if not post:
         raise HTTPException(status_code=404, detail="Blog post not found")
     return post
@@ -152,14 +177,15 @@ async def api_get_post(slug: str) -> BlogPost:
 @router.get("/api/blog/featured")
 async def api_get_featured_posts(limit: int = 3) -> list[BlogPost]:
     """API endpoint to get featured blog posts."""
-    return blog_service.get_featured_posts(limit=limit)
+    all_posts = await _get_all_posts(published_only=True)
+    return [p for p in all_posts if p.featured][:limit]
 
 
 @router.get("/api/blog/tags")
 async def api_get_tags() -> list[str]:
     """API endpoint to get all blog tags."""
-    posts = blog_service.get_all_posts()
+    all_posts = await _get_all_posts(published_only=True)
     tags: set[str] = set()
-    for post in posts:
+    for post in all_posts:
         tags.update(post.tags)
     return sorted(tags)

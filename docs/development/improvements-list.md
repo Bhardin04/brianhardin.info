@@ -2,7 +2,7 @@
 
 > **Last Updated**: 2026-02-16
 > **Project**: brianhardin.info Personal Website
-> **Test Suite**: 98 tests passing, ruff clean, mypy clean
+> **Test Suite**: 164 tests passing, ruff clean, mypy clean
 
 ## Completed Items
 
@@ -114,19 +114,9 @@ class AnalyticsEvent(BaseModel):
 - **Category**: Maintainability
 - **Effort**: Small (30 minutes)
 - **Files**: `app/main.py` (line ~115)
-- **Status**: ⭕ Open
+- **Status**: ✅ Fixed (via Phase 7 DB migration)
 
-Sitemap hardcodes `for pid in [3, 4, 6, 7, 8]`. Should use `project_service.get_all()` so new projects are automatically included.
-
-```python
-# Replace:
-for pid in [3, 4, 6, 7, 8]:
-    urls.append((f"/projects/{pid}", "monthly", "0.7"))
-
-# With:
-for project in project_service.get_all():
-    urls.append((f"/projects/{project.id}", "monthly", "0.7"))
-```
+When `USE_DATABASE=true`, sitemap reads project IDs from the database dynamically. Hardcoded IDs remain as fallback when `USE_DATABASE=false`.
 
 ---
 
@@ -233,11 +223,9 @@ Duplicate endpoints: `GET /health` (main.py) and `GET /api/health` + `HEAD /api/
 - **Category**: Architecture / Technical Debt
 - **Effort**: Medium (3-4 hours)
 - **Files**: `app/services/blog.py`
-- **Status**: ⭕ Open
+- **Status**: ✅ Superseded (by admin CMS)
 
-`BlogService.__init__()` creates a `content/blog` directory and configures markdown parsing, but `get_all_posts()` always returns hardcoded `_get_sample_posts()`. The `_load_post_from_file()` method exists but is never called. Either:
-1. Wire up markdown file loading (recommended - infrastructure already built), or
-2. Remove dead code and document that blog is currently hardcoded
+Blog content is now managed through the admin CMS with database storage (`BlogServiceDB`). The in-memory `BlogService` with hardcoded posts remains as a fallback when `USE_DATABASE=false`. Dead markdown file loading code can be removed in Phase 8 cleanup.
 
 ---
 
@@ -283,7 +271,7 @@ Duplicate endpoints: `GET /health` (main.py) and `GET /api/health` + `HEAD /api/
 | M2 | Typed Pydantic models for demo POST bodies | Security/Quality | Medium | High | ⭕ Open |
 | M3 | Constrain analytics/error report payloads | Security/Quality | Small | Medium | ⭕ Open |
 | M6 | Test error handlers, sitemap, RSS feed | Testing | Small | Medium | ⭕ Open |
-| M7 | Dynamic project IDs in sitemap | Maintainability | Small | Low | ⭕ Open |
+| M7 | Dynamic project IDs in sitemap | Maintainability | Small | Low | ✅ Fixed |
 | **Batch 2** | | | | | |
 | M4 | WebSocket service test coverage (43%) | Testing | Medium | High | ⭕ Open |
 | M5 | Configure structured logging | Observability | Small | Medium | ⭕ Open |
@@ -292,7 +280,7 @@ Duplicate endpoints: `GET /health` (main.py) and `GET /api/health` + `HEAD /api/
 | M13 | Blog and project router edge-case tests | Testing | Small | Medium | ⭕ Open |
 | **Batch 3** | | | | | |
 | M8 | Remove duplicate health check endpoints | Code Quality | Small | Low | ⭕ Open |
-| M9 | Wire up markdown blog or remove dead code | Architecture | Medium | Medium | ⭕ Open |
+| M9 | Wire up markdown blog or remove dead code | Architecture | Medium | Medium | ✅ Superseded |
 | M10 | Fix docker-compose deprecations | Infrastructure | Small | Low | ⭕ Open |
 | M14 | Replace deprecated asyncio.get_event_loop() | Code Quality | Small | Low | ⭕ Open |
 | M15 | Consolidate Jinja2Templates instances | Code Quality | Small | Low | ⭕ Open |
