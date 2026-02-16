@@ -13,7 +13,7 @@ services:
     repo: https://github.com/Bhardin04/brianhardin.info
     branch: main
     region: oregon
-    plan: free
+    plan: starter
     healthCheckPath: /health
     autoDeploy: false
     envVars:
