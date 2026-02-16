@@ -4,80 +4,86 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+<section class="bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 bg-dots">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <div class="text-center">
-            <h1 class="text-5xl font-extrabold text-gray-900 dark:text-white sm:text-6xl lg:text-7xl tracking-tight">
-                Hi, I'm Brian Hardin
-            </h1>
-            <p class="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Python developer passionate about building scalable web applications and showcasing innovative projects.
-            </p>
-            <div class="mt-10 flex justify-center space-x-4">
-                <a href="/projects" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm hover:shadow-md">
-                    View My Projects
-                </a>
-                <a href="/contact" class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-8 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium">
-                    Get In Touch
-                </a>
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <!-- Text Column -->
+            <div class="flex-1 text-center lg:text-left">
+                <p class="text-brand-600 dark:text-brand-400 font-semibold tracking-wide uppercase text-sm mb-4">Python Developer & Software Engineer</p>
+                <h1 class="text-5xl font-extrabold text-gray-900 dark:text-white sm:text-6xl lg:text-7xl tracking-tight">
+                    Hi, I'm Brian
+                    <span class="bg-gradient-to-r from-brand-500 to-purple-600 bg-clip-text text-transparent">Hardin</span>
+                </h1>
+                <p class="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
+                    Passionate about building scalable web applications and crafting elegant solutions with modern Python frameworks.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                    <a href="/projects" class="bg-brand-600 text-white px-8 py-3 rounded-lg hover:bg-brand-700 transition-all font-medium shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5">
+                        View My Projects
+                    </a>
+                    <a href="/contact" class="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-8 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 transition-all font-medium">
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+            <!-- Avatar Column -->
+            <div class="flex-shrink-0">
+                <div class="avatar-initials w-40 h-40 lg:w-56 lg:h-56 text-5xl lg:text-7xl shadow-2xl ring-4 ring-white dark:ring-gray-800">
+                    BH
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-    <div class="mt-20">
-        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">Featured Technologies</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="text-center reveal">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-                    <h3 class="font-semibold text-gray-900 dark:text-white">Python</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Core language</p>
-                </div>
+<!-- Stats Row -->
+<section class="border-y border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="grid grid-cols-3 gap-8 text-center">
+            <div class="reveal">
+                <div class="stat-number text-4xl lg:text-5xl font-extrabold">5+</div>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 font-medium uppercase tracking-wide">Years Experience</p>
             </div>
-            <div class="text-center reveal reveal-delay-1">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-                    <h3 class="font-semibold text-gray-900 dark:text-white">FastAPI</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Web framework</p>
-                </div>
+            <div class="reveal reveal-delay-1">
+                <div class="stat-number text-4xl lg:text-5xl font-extrabold">10+</div>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 font-medium uppercase tracking-wide">Projects Delivered</p>
             </div>
-            <div class="text-center reveal reveal-delay-2">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-                    <h3 class="font-semibold text-gray-900 dark:text-white">HTMX</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Dynamic interactions</p>
-                </div>
+            <div class="reveal reveal-delay-2">
+                <div class="stat-number text-4xl lg:text-5xl font-extrabold">OSS</div>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 font-medium uppercase tracking-wide">Contributor</p>
             </div>
-            <div class="text-center reveal reveal-delay-3">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-                    <h3 class="font-semibold text-gray-900 dark:text-white">Tailwind CSS</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Styling</p>
-                </div>
+        </div>
+    </div>
+</section>
+
 <!-- Technologies Section -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">What I Work With</h2>
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+    <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">What I Work With</h2>
+    <p class="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">The tools and technologies I use to build modern, scalable applications</p>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
-        <div class="text-center">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md hover-lift transition-shadow">
+        <div class="text-center reveal">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md hover-lift transition-all border border-gray-100 dark:border-gray-700">
                 <div class="text-3xl mb-3">&#x1F40D;</div>
                 <h3 class="font-semibold text-gray-900 dark:text-white">Python</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Core language</p>
             </div>
         </div>
-        <div class="text-center">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md hover-lift transition-shadow">
+        <div class="text-center reveal reveal-delay-1">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md hover-lift transition-all border border-gray-100 dark:border-gray-700">
                 <div class="text-3xl mb-3">&#x26A1;</div>
                 <h3 class="font-semibold text-gray-900 dark:text-white">FastAPI</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Web framework</p>
             </div>
         </div>
-        <div class="text-center">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md hover-lift transition-shadow">
+        <div class="text-center reveal reveal-delay-2">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md hover-lift transition-all border border-gray-100 dark:border-gray-700">
                 <div class="text-3xl mb-3">&#x1F504;</div>
                 <h3 class="font-semibold text-gray-900 dark:text-white">HTMX</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Dynamic interactions</p>
             </div>
         </div>
-        <div class="text-center">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md hover-lift transition-shadow">
+        <div class="text-center reveal reveal-delay-3">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md hover-lift transition-all border border-gray-100 dark:border-gray-700">
                 <div class="text-3xl mb-3">&#x1F3A8;</div>
                 <h3 class="font-semibold text-gray-900 dark:text-white">Tailwind CSS</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Styling</p>
@@ -85,4 +91,84 @@
         </div>
     </div>
 </section>
+
+<!-- Featured Projects Section -->
+{% if projects %}
+<section class="bg-gray-50 dark:bg-gray-800/50 py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">Featured Projects</h2>
+        <p class="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">A selection of projects I've built with Python and modern web technologies</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% set accent_colors = ['card-accent-blue', 'card-accent-emerald', 'card-accent-purple', 'card-accent-orange'] %}
+            {% for project in projects %}
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all hover-lift reveal {{ accent_colors[loop.index0 % 4] }}">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ project.title }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">{{ project.description }}</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        {% for tech in project.technologies %}
+                        <span class="px-2.5 py-1 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 text-xs font-medium rounded-full">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="flex space-x-4">
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" class="text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 text-sm font-medium transition-colors">
+                            GitHub &rarr;
+                        </a>
+                        {% endif %}
+                        {% if project.demo_url %}
+                        <a href="{{ project.demo_url }}" class="text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 text-sm font-medium transition-colors">
+                            Live Demo &rarr;
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-10">
+            <a href="/projects" class="inline-flex items-center text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 font-medium transition-colors">
+                View All Projects
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Latest Blog Posts Section -->
+{% if featured_posts %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+    <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">Latest from the Blog</h2>
+    <p class="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">Thoughts on Python, web development, and software engineering</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {% for post in featured_posts[:2] %}
+        <a href="/blog/{{ post.slug }}" class="group block reveal">
+            <article class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700 group-hover:border-brand-300 dark:group-hover:border-brand-600">
+                <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-3">
+                    <time>{{ post.published_at.strftime('%b %d, %Y') if post.published_at else '' }}</time>
+                    {% if post.reading_time_minutes %}
+                    <span>&middot;</span>
+                    <span>{{ post.reading_time_minutes }} min read</span>
+                    {% endif %}
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors mb-2">{{ post.title }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 line-clamp-2">{{ post.excerpt }}</p>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    {% for tag in post.tags[:3] %}
+                    <span class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            </article>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-10">
+        <a href="/blog" class="inline-flex items-center text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 font-medium transition-colors">
+            Read the Blog
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+</section>
+{% endif %}
 {% endblock %}

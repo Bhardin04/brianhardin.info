@@ -127,6 +127,93 @@ input, textarea, select {
     }
 }
 
+/* Subtle dot pattern background */
+.bg-dots {
+    background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.dark .bg-dots {
+    background-image: radial-gradient(circle, #374151 1px, transparent 1px);
+}
+
+/* Avatar placeholder with gradient */
+.avatar-initials {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    border-radius: 9999px;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.4375rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 2rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -1.625rem;
+    top: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background: #3b82f6;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.dark .timeline-dot {
+    border-color: #1f2937;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+
+/* Colored top-border accent classes for cards */
+.card-accent-blue { border-top: 4px solid #3b82f6; }
+.card-accent-emerald { border-top: 4px solid #10b981; }
+.card-accent-purple { border-top: 4px solid #8b5cf6; }
+.card-accent-orange { border-top: 4px solid #f97316; }
+
+/* Stats counter animation */
+.stat-number {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Section divider with gradient */
+.section-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #d1d5db, transparent);
+}
+
+.dark .section-divider {
+    background: linear-gradient(to right, transparent, #4b5563, transparent);
+}
+
 /* Form validation styles */
 .invalid {
     border-color: #ef4444 !important;

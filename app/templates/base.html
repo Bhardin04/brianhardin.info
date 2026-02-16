@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Primary Meta Tags -->
     <title>{% block title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}</title>
     <meta name="title" content="{% block meta_title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}">
@@ -11,7 +11,7 @@
     <meta name="keywords" content="{% block meta_keywords %}Python, FastAPI, Software Engineer, Web Development, Backend Development, Portfolio{% endblock %}">
     <meta name="author" content="Brian Hardin">
     <meta name="robots" content="index, follow">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:url" content="{% block og_url %}https://brianhardin.info{% endblock %}">
@@ -19,17 +19,17 @@
     <meta property="og:description" content="{% block og_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
     <meta property="og:image" content="{% block og_image %}https://brianhardin.info/static/images/og-image.jpg{% endblock %}">
     <meta property="og:site_name" content="Brian Hardin">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{% block twitter_url %}https://brianhardin.info{% endblock %}">
     <meta property="twitter:title" content="{% block twitter_title %}Brian Hardin - Python Developer & Software Engineer{% endblock %}">
     <meta property="twitter:description" content="{% block twitter_description %}Experienced Python developer specializing in FastAPI, web applications, and modern software architecture. View my portfolio and get in touch for your next project.{% endblock %}">
     <meta property="twitter:image" content="{% block twitter_image %}https://brianhardin.info/static/images/og-image.jpg{% endblock %}">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="{% block canonical %}https://brianhardin.info{% endblock %}">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/favicon.ico') }}">
 
@@ -69,7 +69,7 @@
         }
     }
     </script>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -78,6 +78,20 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
                     },
                 },
             },
@@ -89,14 +103,17 @@
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md">Skip to main content</a>
 
+    {% set nav_items = [("home", "/", "Home"), ("about", "/about", "About"), ("projects", "/projects", "Projects"), ("blog", "/blog", "Blog"), ("contact", "/contact", "Contact")] %}
+
     <nav class="bg-white dark:bg-gray-800 shadow-sm" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <a href="/" class="text-xl font-bold text-gray-900 dark:text-white">Brian Hardin</a>
                 </div>
-                <div class="flex items-center space-x-8">
-                    {% set nav_items = [("home", "/", "Home"), ("about", "/about", "About"), ("projects", "/projects", "Projects"), ("blog", "/blog", "Blog"), ("contact", "/contact", "Contact")] %}
+
+                <!-- Desktop navigation -->
+                <div class="hidden md:flex items-center space-x-8">
                     {% for page_id, href, label in nav_items %}
                     <a href="{{ href }}"
                        class="{% if current_page == page_id %}text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white{% endif %} pb-0.5 transition-colors"
@@ -110,22 +127,6 @@
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                         </svg>
                         <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-
-                <!-- Desktop navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">Home</a>
-                    <a href="/about" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">About</a>
-                    <a href="/projects" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">Projects</a>
-                    <a href="/blog" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">Blog</a>
-                    <a href="/contact" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">Contact</a>
-
-                    <!-- Dark mode toggle -->
-                    <button id="theme-toggle" type="button"
-                            class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                        </svg>
-                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 2L13.09 8.26L20 9L14 14.74L15.18 21.02L10 17.77L4.82 21.02L6 14.74L0 9L6.91 8.26L10 2Z"></path>
                         </svg>
                     </button>
@@ -134,7 +135,7 @@
                 <!-- Mobile controls -->
                 <div class="flex items-center space-x-2 md:hidden">
                     <!-- Dark mode toggle (mobile) -->
-                    <button id="theme-toggle-mobile" type="button"
+                    <button id="theme-toggle-mobile" type="button" aria-label="Toggle dark mode"
                             class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                         <svg class="theme-icon-dark hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -162,11 +163,11 @@
         <!-- Mobile menu panel -->
         <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-700">
             <div class="px-4 py-3 space-y-1">
-                <a href="/" class="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Home</a>
-                <a href="/about" class="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">About</a>
-                <a href="/projects" class="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Projects</a>
-                <a href="/blog" class="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Blog</a>
-                <a href="/contact" class="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Contact</a>
+                {% for page_id, href, label in nav_items %}
+                <a href="{{ href }}"
+                   class="block px-3 py-2 rounded-md transition-colors {% if current_page == page_id %}text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-700 font-medium{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}"
+                   {% if current_page == page_id %}aria-current="page"{% endif %}>{{ label }}</a>
+                {% endfor %}
             </div>
         </div>
     </nav>
