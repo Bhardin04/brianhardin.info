@@ -40,9 +40,24 @@
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="/static/images/brand/logo.svg">
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#1a2e4a">
+    <!-- Theme Color (adapts to dark mode) -->
+    <meta name="theme-color" content="#1a2e4a" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1c2e" media="(prefers-color-scheme: dark)">
     <meta name="msapplication-TileColor" content="#1a2e4a">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Prevent FOUC: apply dark mode before any rendering -->
+    <script>
+        (function() {
+            try {
+                var saved = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (saved === 'dark' || (!saved && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch(e) {}
+        })();
+    </script>
 
     <!-- Additional SEO Meta Tags -->
     <meta name="language" content="en">
@@ -172,7 +187,7 @@
     <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
 </head>
 <body class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-md" style="background-color: #1a2e4a; color: white;">Skip to main content</a>
+    <a href="#main-content" class="skip-link sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-md">Skip to main content</a>
 
     <nav class="sticky top-0 z-50 backdrop-blur-sm border-b bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -189,7 +204,7 @@
                     {% set nav_items = [('/', 'Home'), ('/about', 'About'), ('/projects', 'Projects'), ('/demos', 'Demos'), ('/resume', 'Resume'), ('/blog', 'Blog'), ('/contact', 'Contact')] %}
                     {% for href, label in nav_items %}
                     {% set is_active = (request.url.path == href) or (href != '/' and request.url.path.startswith(href)) %}
-                    <a href="{{ href }}" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors min-h-[44px] flex items-center {% if is_active %}font-semibold{% else %}text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white{% endif %}"{% if is_active %} aria-current="page"{% endif %} {% if is_active %}style="color: #b87333;"{% endif %}>{{ label }}</a>
+                    <a href="{{ href }}" class="nav-link font-medium px-3 py-2 rounded-lg transition-colors min-h-[44px] flex items-center {% if is_active %}font-semibold nav-active{% else %}text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white{% endif %}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
                     {% endfor %}
 
                     <!-- Dark mode toggle -->
@@ -209,7 +224,7 @@
                 <div class="flex items-center space-x-2 md:hidden">
                     <!-- Dark mode toggle (mobile) -->
                     <button id="theme-toggle-mobile" type="button" aria-label="Toggle dark mode"
-                            class="focus-ring rounded-lg p-2.5 transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
+                            class="focus-ring rounded-lg p-3 transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
                         <svg class="theme-icon-dark hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                         </svg>
@@ -238,7 +253,7 @@
             <div class="px-4 py-3 space-y-1">
                 {% for href, label in nav_items %}
                 {% set is_active = (request.url.path == href) or (href != '/' and request.url.path.startswith(href)) %}
-                <a href="{{ href }}" class="block px-3 py-3 min-h-[44px] rounded-md transition-colors {% if is_active %}font-semibold{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}"{% if is_active %} aria-current="page" style="color: #b87333; background-color: rgba(184, 115, 51, 0.08);"{% endif %}>{{ label }}</a>
+                <a href="{{ href }}" class="block px-3 py-3 min-h-[44px] rounded-md transition-colors {% if is_active %}font-semibold nav-active-mobile{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -248,7 +263,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="text-gray-100 border-t border-gray-200 dark:border-gray-700 brand-pattern" style="background-color: #1a2e4a;">
+    <footer class="bg-footer text-gray-100 border-t border-gray-200 dark:border-gray-700 brand-pattern">
         <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="flex flex-col md:flex-row justify-between items-center">
@@ -284,7 +299,7 @@
     <!-- Scroll to top button -->
     <button id="scroll-to-top" type="button"
             aria-label="Scroll to top"
-            class="fixed bottom-6 right-6 z-40 hidden w-12 h-12 rounded-full text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-opacity duration-200 opacity-0" style="background-color: #1a2e4a;">
+            class="bg-scroll-top fixed bottom-6 right-6 z-40 hidden w-12 h-12 rounded-full text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-opacity duration-200 opacity-0">
         <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
         </svg>
@@ -301,8 +316,16 @@
         const mobileDarkIcons = document.querySelectorAll('.theme-icon-dark');
         const mobileLightIcons = document.querySelectorAll('.theme-icon-light');
 
+        // Safe localStorage wrapper
+        function getStorage(key) {
+            try { return localStorage.getItem(key); } catch(e) { return null; }
+        }
+        function setStorage(key, val) {
+            try { localStorage.setItem(key, val); } catch(e) {}
+        }
+
         function getPreferredTheme() {
-            const savedTheme = localStorage.getItem('theme');
+            const savedTheme = getStorage('theme');
             if (savedTheme) return savedTheme;
             return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
@@ -318,13 +341,13 @@
             applyThemeIcons(isDark);
         }
 
-        // Initialize
-        applyTheme(getPreferredTheme());
+        // Initialize (theme class already applied by head script, just sync icons)
+        applyThemeIcons(document.documentElement.classList.contains('dark'));
 
         // Toggle handler
         function toggleTheme() {
             const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            setStorage('theme', isDark ? 'dark' : 'light');
             applyThemeIcons(isDark);
         }
 
@@ -333,9 +356,17 @@
 
         // Listen for system theme changes
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-            if (!localStorage.getItem('theme')) {
+            if (!getStorage('theme')) {
                 applyTheme(e.matches ? 'dark' : 'light');
             }
+        });
+
+        // Force light mode for printing
+        window.addEventListener('beforeprint', function() {
+            document.documentElement.classList.remove('dark');
+        });
+        window.addEventListener('afterprint', function() {
+            applyTheme(getPreferredTheme());
         });
 
         // Mobile menu
