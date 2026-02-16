@@ -74,7 +74,7 @@
                         <div class="flex flex-wrap gap-2">
                             {% for tag in featured.tags %}
                                 <a href="/blog?tag={{ tag }}"
-                                   class="px-3 py-1 text-xs bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full hover:bg-brand-200 dark:hover:bg-brand-800 transition-colors">
+                                   class="inline-flex items-center px-3 py-1 text-xs bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full hover:bg-brand-200 dark:hover:bg-brand-800 transition-colors">
                                     {{ tag }}
                                 </a>
                             {% endfor %}
@@ -118,7 +118,7 @@
                                 <div class="flex flex-wrap gap-2">
                                     {% for tag in post.tags %}
                                         <a href="/blog?tag={{ tag }}"
-                                           class="px-3 py-1 text-xs bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full hover:bg-brand-200 dark:hover:bg-brand-800 transition-colors">
+                                           class="inline-flex items-center px-3 py-1 text-xs bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full hover:bg-brand-200 dark:hover:bg-brand-800 transition-colors">
                                             {{ tag }}
                                         </a>
                                     {% endfor %}
@@ -183,7 +183,7 @@
                         <div class="flex flex-wrap gap-2">
                             {% for tag in all_tags %}
                                 <a href="/blog?tag={{ tag }}"
-                                   class="px-3 py-1 text-sm rounded-full transition-colors
+                                   class="inline-flex items-center px-3 py-1 text-sm rounded-full transition-colors
                                           {% if current_tag == tag %}
                                               bg-brand-500 text-white
                                           {% else %}
