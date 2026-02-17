@@ -18,7 +18,6 @@ class AnalyticsDashboard {
      * Initialize dashboard
      */
     initialize() {
-        this.createDashboard();
         this.setupEventListeners();
     }
 
