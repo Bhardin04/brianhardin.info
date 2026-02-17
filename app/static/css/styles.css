@@ -1236,6 +1236,15 @@ textarea {
     border-color: rgba(107, 114, 128, 0.3);
 }
 
+/* Project card accent border — overrides .card's border shorthand */
+.project-card {
+    border-left: 4px solid var(--color-accent-500);
+}
+
+.dark .project-card {
+    border-left-color: var(--color-accent-400);
+}
+
 .card-premium {
     background: white;
     border-radius: var(--radius-md);
@@ -1593,6 +1602,7 @@ a.card:hover {
     padding: 8px 16px;
     font-size: var(--text-sm);
     font-weight: var(--font-medium);
+    line-height: 1.25;
     color: var(--color-gray-600);
     background: transparent;
     border: 1px solid var(--color-gray-300);
@@ -2894,4 +2904,3 @@ a:not([class*="text-"]):not([class*="btn"]):not([class*="nav"]):hover {
         background-size: 150px 150px;
     }
 }
-EOF < /dev/null
