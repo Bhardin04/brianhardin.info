@@ -1575,13 +1575,72 @@ a.card:hover {
     overflow: hidden;
 }
 
-/* Print: hide progress bar, sidebar, post navigation */
+/* Print: hide progress bar, sidebar, post navigation, project sidebar/nav */
 @media print {
     #reading-progress,
     .blog-sidebar,
-    .post-navigation {
+    .post-navigation,
+    .project-sidebar,
+    .project-navigation {
         display: none !important;
     }
+}
+
+/* ===== FILTER PILL COMPONENT ===== */
+.filter-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-gray-600);
+    background: transparent;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-button);
+    white-space: nowrap;
+    min-height: 36px;
+    min-width: auto;
+}
+
+.filter-pill:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: var(--color-accent-50);
+}
+
+.filter-pill.active {
+    color: white;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.filter-pill.active:hover {
+    background: var(--color-accent-dark);
+    border-color: var(--color-accent-dark);
+}
+
+.dark .filter-pill {
+    color: var(--color-gray-400);
+    border-color: var(--color-gray-600);
+}
+
+.dark .filter-pill:hover {
+    color: var(--color-accent-light);
+    border-color: var(--color-accent-light);
+    background: rgba(184, 115, 51, 0.1);
+}
+
+.dark .filter-pill.active {
+    color: white;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.dark .filter-pill.active:hover {
+    background: var(--color-accent-light);
+    border-color: var(--color-accent-light);
 }
 
 /* ===== CODE STYLING ===== */

@@ -68,8 +68,33 @@ async def project_detail(request: Request, project_id: int) -> HTMLResponse:
         p for p in all_projects if p.category == project.category and p.id != project_id
     ][:3]
 
+    # Prev/next navigation (same sort order as listing: featured first, then by date)
+    sorted_projects = sorted(
+        all_projects,
+        key=lambda p: (
+            not p.featured,
+            -(p.created_at.timestamp() if p.created_at else 0),
+        ),
+    )
+    current_idx = next(
+        (i for i, p in enumerate(sorted_projects) if p.id == project_id), None
+    )
+    prev_project = (
+        sorted_projects[current_idx - 1] if current_idx and current_idx > 0 else None
+    )
+    next_project = (
+        sorted_projects[current_idx + 1]
+        if current_idx is not None and current_idx < len(sorted_projects) - 1
+        else None
+    )
+
     return templates.TemplateResponse(
         request,
         "project_detail.html",
-        context={"project": project, "related_projects": related_projects},
+        context={
+            "project": project,
+            "related_projects": related_projects,
+            "prev_project": prev_project,
+            "next_project": next_project,
+        },
     )
