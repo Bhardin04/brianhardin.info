@@ -68,7 +68,7 @@
 {% if projects %}
 <section class="section-sm" id="featuredHero" data-category="{{ projects[0].category }}">
     <div class="container">
-        <div class="card p-0 overflow-hidden border-l-4 border-l-brand-500 dark:border-l-brand-400">
+        <div class="card project-card p-0 overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2">
                 <!-- Text Content -->
                 <div class="p-8 lg:p-12 flex flex-col justify-center">
@@ -126,7 +126,7 @@
     <div class="container">
         <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for project in projects[1:] %}
-            <article class="group relative card p-0 overflow-hidden hover-lift project-card slide-up border-l-4 border-l-brand-500 dark:border-l-brand-400" data-category="{{ project.category }}" style="animation-delay: {{ loop.index0 * 100 }}ms;">
+            <article class="group relative card p-0 overflow-hidden hover-lift project-card slide-up" data-category="{{ project.category }}" style="animation-delay: {{ loop.index0 * 100 }}ms;">
                 <!-- Project Image -->
                 {% if project.image_url %}
                 <div class="relative h-48 bg-gradient-to-br from-brand-50 to-brand-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
@@ -163,11 +163,11 @@
                                 </span>
                                 {% endif %}
                                 {% if project.status == 'completed' %}
-                                <span class="px-2 py-1 bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-300 text-xs font-medium rounded-full">
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-medium rounded-full">
                                     Completed
                                 </span>
                                 {% elif project.status == 'in_progress' %}
-                                <span class="px-2 py-1 bg-warning-100 dark:bg-warning-900/30 text-warning-700 dark:text-warning-300 text-xs font-medium rounded-full">
+                                <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs font-medium rounded-full">
                                     In Progress
                                 </span>
                                 {% endif %}

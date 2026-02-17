@@ -402,8 +402,8 @@
                         <div class="mb-4">
                             <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Status</h4>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm
-                                {% if project.status == 'completed' %}bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-300
-                                {% elif project.status == 'in_progress' %}bg-warning-100 text-warning-800 dark:bg-warning-900/30 dark:text-warning-300
+                                {% if project.status == 'completed' %}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300
+                                {% elif project.status == 'in_progress' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300
                                 {% else %}bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300{% endif %}">
                                 {{ project.status.replace('_', ' ').title() }}
                             </span>
@@ -539,7 +539,7 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {% for related in related_projects %}
-            <a href="/projects/{{ related.id }}" class="group card p-6 border-l-4 border-l-brand-500 dark:border-l-brand-400 hover:border-brand-300 dark:hover:border-brand-700 transition-colors">
+            <a href="/projects/{{ related.id }}" class="group card project-card p-6 hover:border-brand-300 dark:hover:border-brand-700 transition-colors">
                 <h3 class="font-semibold font-display text-gray-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors mb-2">{{ related.title }}</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">{{ related.description }}</p>
                 <div class="flex flex-wrap gap-1">
